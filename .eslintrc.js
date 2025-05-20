@@ -3,9 +3,10 @@ module.exports = {
   env: {
     node: true
   },
-  'extends': [
+  extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
+    'plugin:prettier/recommended'  // ⬅️ Add this
   ],
   parserOptions: {
     ecmaVersion: 2020
