@@ -1,0 +1,7 @@
+{
+  "name": "audio graphic design",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
