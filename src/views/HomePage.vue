@@ -2,6 +2,7 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
+        <h2>Hello</h2>
         <ion-title>Blank</ion-title>
       </ion-toolbar>
     </ion-header>
