@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
+import './tailwind.css';
 
 import { IonicVue } from '@ionic/vue';
 
@@ -32,7 +33,7 @@ import '@ionic/vue/css/display.css';
 import '@ionic/vue/css/palettes/dark.system.css';
 
 /* Theme variables */
-import './theme/variables.css';
+// import './theme/variables.css';
 
 const app = createApp(App)
   .use(IonicVue)

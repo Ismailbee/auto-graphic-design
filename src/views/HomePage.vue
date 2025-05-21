@@ -3,6 +3,10 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-title>Blank</ion-title>
+
+        <div class="bg-blue-500 text-white p-6 rounded-xl shadow-lg">
+    Tailwind is working 🎉
+  </div>
       </ion-toolbar>
     </ion-header>
 
