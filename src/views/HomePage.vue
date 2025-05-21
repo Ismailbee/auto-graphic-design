@@ -1,20 +1,8 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-back-button defaultHref="/home"></ion-back-button>
-        </ion-buttons>
-        <ion-title>Home</ion-title>
-        <ion-buttons slot="end">
-          <ion-button :router-direction="'forward'" :to="'/page2'">
-            Go to Page 2
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content :fullscreen="true">
+    <!-- Use AppHeader component here -->
+    <app-header />
+     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">Home</ion-title>
@@ -45,11 +33,9 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonBackButton,
-  IonButtons,
-  IonButton
 } from '@ionic/vue';
 import { defineComponent } from 'vue';
+import AppHeader from '../components/Header/AppHeader.vue';  // adjust path as needed
 
 export default defineComponent({
   name: 'HomePage',
@@ -59,9 +45,7 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    IonBackButton,
-    IonButtons,
-    IonButton
+    AppHeader
   }
 });
 </script>
