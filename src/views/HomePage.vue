@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <!-- Use AppHeader component here -->
-    <app-header />
+    <app-header title="Home" />
      <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
