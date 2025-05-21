@@ -11,11 +11,11 @@ export default defineConfig({
     vue(),
     legacy()
   ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+ resolve: {
+  alias: {
+    '@': path.resolve(__dirname, './src'),
   },
+},
   test: {
     globals: true,
     environment: 'jsdom'
