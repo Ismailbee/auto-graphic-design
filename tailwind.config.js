@@ -1,14 +1,11 @@
-module.exports = {
+export default {
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
-    "./node_modules/@ionic/**/*.{js,ts,vue}",
+    "./node_modules/@ionic/vue/**/*.js"
   ],
   theme: {
     extend: {},
   },
-  corePlugins: {
-    preflight: false, // Disable Tailwind's base styles if Ionic handles it
-  },
   plugins: [],
-};
+}
