@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <!-- Use AppHeader component here -->
-    <app-header title="Home" />
+    <AppHeader />
      <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
@@ -35,7 +35,7 @@ import {
   IonToolbar,
 } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import AppHeader from '../components/Header/AppHeader.vue';  // adjust path as needed
+import AppHeader from '@/components/Header/AppHeader.vue'; // adjust path as needed
 
 export default defineComponent({
   name: 'HomePage',

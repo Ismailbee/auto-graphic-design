@@ -11,6 +11,9 @@
   </ion-page>
 </template>
 
-<script setup>
-// Your script logic here
+<script>
+export default {
+  name: 'LegalPage',
+  // Component logic
+};
 </script>
