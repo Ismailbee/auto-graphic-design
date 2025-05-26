@@ -1,39 +1,31 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
+
 import HomePage from '../views/HomePage.vue';
-import SchedulingPage from '../components/Header/HeadDetails/SchedulingPage.vue';
-import LegalPage from '../components/Header/HeadDetails/LegalPage.vue';
-import HelpPage from '../components/Header/HeadDetails/HelpPage.vue';
+import LoginPage from '../views/LoginPage.vue';
+import RegisterPage from '../views/RegisterPage.vue';
 
 const routes = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/login'   // Redirect root URL to login page
   },
   {
     path: '/home',
-    name: 'Home',
-    component: HomePage
-  },
- {
-    path: '/scheduling',
-    name: 'Scheduling',
-    component: SchedulingPage,
+    component: HomePage,
   },
   {
-    path: '/legal',
-    name: 'Legal',
-    component: LegalPage,
+    path: '/login',
+    component: LoginPage,
   },
   {
-    path: '/help',
-    name: 'Help',
-    component: HelpPage,
+    path: '/register',   // make sure this is lowercase or consistent with usage
+    component: RegisterPage,
   },
-]
+];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes
-})
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
+});
 
 export default router;

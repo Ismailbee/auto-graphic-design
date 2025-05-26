@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <app-header title="Home" />
+    <!-- <app-header title="Home" /> -->
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
@@ -10,9 +10,72 @@
       </ion-header>
 
       
-            <div class="bg-black text-white font-bold p-4 rounded-lg">
-  Tailwind is now working! ✅
+     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+  <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <img src="https://via.placeholder.com/300" a  lt="Card Image" class="w-full h-48 object-cover">
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-2">Card Title</h2>
+      <p class="text-gray-600 mb-4">Short description goes here.</p>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">View</button>
+    </div>
+    
+  </div>
+   <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <img src="https://via.placeholder.com/300" alt="Card Image" class="w-full h-48 object-cover">
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-2">e</h2>
+      <p class="text-gray-600 mb-4">Short description goes here.</p>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">View</button>
+    </div>
+    
+  </div>
+
+ <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <img src="https://via.placeholder.com/300" alt="Card Image" class="w-full h-48 object-cover">
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-2"></h2>
+      <p class="text-gray-600 mb-4">Short description goes here.</p>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">View</button>
+    </div>
+    
+  </div>
+
+ <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <img src="https://via.placeholder.com/300" alt="Card Image" class="w-full h-48 object-cover">
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-2"></h2>
+      <p class="text-gray-600 mb-4">Short description goes here.</p>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">View</button>
+    </div>
+    
+  </div>
+
+ <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <img src="https://via.placeholder.com/300" alt="Card Image" class="w-full h-48 object-cover">
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-2"></h2>
+      <p class="text-gray-600 mb-4">Short description goes here.</p>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">View</button>
+    </div>
+    
+  </div>
+
+  <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <img src="https://via.placeholder.com/300" alt="Card Image" class="w-full h-48 object-cover">
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-2"></h2>
+      <p class="text-gray-600 mb-4">Short description goes here.</p>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">View</button>
+    </div>
+    
+  </div>
+
+
+
+
+  <!-- Copy and paste the above block for more cards -->
 </div>
+
       
     </ion-content>
   </ion-page>
@@ -29,8 +92,8 @@ import {
   IonRow,
   IonCol,
 } from '@ionic/vue';
+
 import { defineComponent } from 'vue';
-import AppHeader from '../components/Header/AppHeader.vue';
 
 export default defineComponent({
   name: 'HomePage',
@@ -43,7 +106,6 @@ export default defineComponent({
     IonGrid,
     IonRow,
     IonCol,
-    AppHeader,
   },
 });
 </script>
