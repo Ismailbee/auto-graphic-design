@@ -8,7 +8,8 @@
     "preview": "vite preview",
     "test:e2e": "cypress run",
     "test:unit": "vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "type": "module"
   },
   "dependencies": {
     "@capacitor/app": "7.0.1",
@@ -19,9 +20,12 @@
     "@ionic/core": "^8.5.7",
     "@ionic/vue": "^8.5.7",
     "@ionic/vue-router": "^8.5.7",
+    "@lottiefiles/dotlottie-web": "^0.44.0",
+    "@primeuix/themes": "^1.1.1",
     "animate.css": "^4.1.1",
     "firebase": "^11.8.1",
-    "ionicons": "^7.0.0",
+    "ionicons": "^7.4.0",
+    "primevue": "^4.3.4",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {

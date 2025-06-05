@@ -1,31 +1,40 @@
-import { createRouter, createWebHistory } from 'vue-router';
-
-import HomePage from '../views/HomePage.vue';
-import LoginPage from '../views/LoginPage.vue';
-import RegisterPage from '../views/RegisterPage.vue';
+import { createRouter, createWebHistory } from '@ionic/vue-router';
+import LoginPage from '../pages/LoginPage.vue';
+import MainLayout from '../pages/MainLayout.vue';
+import firstShowing from '../pages/firstShowing.vue';
 
 const routes = [
   {
     path: '/',
-    redirect: '/login'   // Redirect root URL to login page
-  },
-  {
-    path: '/home',
-    component: HomePage,
+    redirect: '/login'
   },
   {
     path: '/login',
-    component: LoginPage,
+    name: 'Login', // Add named route for easier navigation
+    component: LoginPage
   },
   {
-    path: '/register',   // make sure this is lowercase or consistent with usage
-    component: RegisterPage,
-  },
+    path: '/app', 
+    component: MainLayout,
+    children: [
+      {
+        path: 'firstPage',
+        name: 'FirstPage', // Named route
+        component: firstShowing,
+        
+      }
+    ]
+  }
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes
 });
+
+// Optional: Add navigation guards
+// router.beforeEach((to, from, next) => {
+//   // Authentication check logic here
+// });
 
 export default router;

@@ -5,7 +5,11 @@ export default {
     "./node_modules/@ionic/vue/**/*.js"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        roboto: ['Roboto', 'sans-serif']  
+      }
+    },
   },
   plugins: [],
 }
