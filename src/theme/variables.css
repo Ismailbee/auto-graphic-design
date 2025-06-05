@@ -1,2 +1,20 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+:root {
+  /* Existing Ionic variables */
+    --ion-color-brand: #ff5722;
+    --ion-color-brand-rgb: 255, 87, 34;
+    --ion-color-brand-contrast: #ffffff;
+    --ion-color-brand-contrast-rgb: 255, 255, 255;
+    --ion-color-brand-shade: #e64a19;
+    --ion-color-brand-tint: #ff7043;
+}
+
+.ion-color-brand {
+  --ion-color-base: var(--ion-color-brand);
+  --ion-color-base-rgb: var(--ion-color-brand-rgb);
+  --ion-color-contrast: var(--ion-color-brand-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-brand-contrast-rgb);
+  --ion-color-shade: var(--ion-color-brand-shade);
+  --ion-color-tint: var(--ion-color-brand-tint);
+}  is it ok like this?

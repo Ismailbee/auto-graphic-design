@@ -1,30 +1,31 @@
+<!-- pages/HomePage.vue -->
 <template>
   <ion-page>
-    <!-- Use AppHeader component here -->
-    <AppHeader />
-     <ion-content :fullscreen="true">
+    <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">Home</ion-title>
         </ion-toolbar>
       </ion-header>
 
-      <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>
-          Start with Ionic
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://ionicframework.com/docs/components"
-          >
-            UI Components
-          </a>
-        </p>
+      <div class="flex w-full h-screen">
+        <!-- Sidebar menu -->
+        <sideBar title="sideBar" />
+
+        <!-- Main content -->
+        <div class="flex-1 p-4 ml-5">
+          <div class="p-4 font-bold text-white bg-green-200 rounded-lg">
+            Tailwind is now working! ✅
+          </div>
+          <div class="p-4 mt-4 font-bold text-white bg-green-200 rounded-lg">
+            Tailwind is now working! ✅
+          </div>
+        </div>
       </div>
     </ion-content>
   </ion-page>
 </template>
+
 
 <script>
 import {
@@ -35,7 +36,7 @@ import {
   IonToolbar,
 } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import AppHeader from '@/components/Header/AppHeader.vue'; // adjust path as needed
+import sideBar from '../components/SideBar/sideBar.vue';
 
 export default defineComponent({
   name: 'HomePage',
@@ -45,7 +46,7 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    AppHeader
+    sideBar
   }
 });
 </script>
