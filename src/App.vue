@@ -1,18 +1,17 @@
 <template>
   <ion-app>
-    <ion-router-outlet />
+    <Sidebar />
+    <ion-router-outlet id="main-content" menu="main-menu" />
   </ion-app>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-import { IonApp, IonRouterOutlet } from '@ionic/vue';
+<script setup>
+import { IonApp, IonRouterOutlet } from '@ionic/vue'
+import Sidebar from './pages/Sidebar.vue'
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    IonApp,
-    IonRouterOutlet,
-  },
-});
+// No need for manual component registration in <script setup>
 </script>
+
+<style>
+/* Global styles if needed */
+</style>
