@@ -13,11 +13,11 @@
         <sideBar title="sideBar" />
 
         <!-- Main content -->
-        <div class="flex-1 p-4 ml-5">
-          <div class="p-4 font-bold text-white bg-green-200 rounded-lg">
+        <div class="flex flex-1 w-screen h-screen gap-5 p-4 ml-5">
+          <div class="flex p-4 font-bold text-white bg-green-200 rounded-lg flex-2">
             Tailwind is now working! ✅
           </div>
-          <div class="p-4 mt-4 font-bold text-white bg-green-200 rounded-lg">
+          <div class="flex flex-1 p-4 font-bold text-white bg-green-200 rounded-lg">
             Tailwind is now working! ✅
           </div>
         </div>
@@ -38,6 +38,7 @@ import {
 import { defineComponent } from 'vue';
 import sideBar from '../components/SideBar/sideBar.vue';
 
+
 export default defineComponent({
   name: 'HomePage',
   components: {
@@ -52,6 +53,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+body{
+  margin: 0;
+}
 #container {
   text-align: center;
   position: absolute;

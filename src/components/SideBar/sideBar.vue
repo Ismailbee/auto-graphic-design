@@ -13,7 +13,7 @@
 
     <!-- Menu Items (Shown only when sidebar is open) -->
     <div v-if="sidebarOpen"
-        class="relative flex flex-col items-start w-full h-screen px-4 m-6 space-y-4 text-white bg-primary">
+        class="relative flex flex-col items-start w-full h-screen px-4 space-y-4 text-white bg-primary">
 
       <!-- Collapse Arrow -->
       <div
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { IonIcon } from '@ionic/vue';
+import { IonIcon, useIonRouter } from '@ionic/vue';
 import {
   addOutline,
   homeOutline,
@@ -48,9 +48,8 @@ import {
 } from 'ionicons/icons';
 
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 
-const router = useRouter();
+const ionRouter = useIonRouter();
 const sidebarOpen = ref(false);
 
 const toggleSidebar = () => {
@@ -67,7 +66,8 @@ const menuItems = [
 ];
 
 const navigateTo = (route) => {
-  router.push(route);
+  // Use Ionic's router push method
+  ionRouter.push(route);
 };
 </script>
 

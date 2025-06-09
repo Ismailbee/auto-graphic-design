@@ -1,67 +1,39 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import 'animate.css';
-import './tailwind.css';
-import MainLayout from './pages/MainLayout.vue';
-
 import { IonicVue } from '@ionic/vue';
-<<<<<<< HEAD
-import sideBar from './components/SideBar/sideBar.vue';
-
-=======
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
+import sideBar from './components/SideBar/sideBar.vue';
 
-// ✅ Import your Sidebar component
-// import Sidebar from './pages/Sidebar.vue'; // Adjust if path is different
->>>>>>> 0ee78c10d423aced720c61001cab0a66bd780332
+import 'animate.css';
+import './tailwind.css';
 
-/* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
 import '@ionic/vue/css/normalize.css';
 import '@ionic/vue/css/structure.css';
 import '@ionic/vue/css/typography.css';
-
-/* Optional CSS utils */
 import '@ionic/vue/css/padding.css';
 import '@ionic/vue/css/float-elements.css';
 import '@ionic/vue/css/text-alignment.css';
 import '@ionic/vue/css/text-transformation.css';
 import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
-
-/* Dark mode theme support */
+import './theme/variables.css';
 import '@ionic/vue/css/palettes/dark.system.css';
 
-// const dotLottie = new DotLottie({
-//     autoplay: true,
-//     loop: true,
-//     canvas: document.querySelector('#dotlottie-canvas'),
-//     src: "<https://lottie.host/YOUR_ANIMATION_ID.lottie>",
-// });
-
-<<<<<<< HEAD
-const app = createApp(App)
-  .use(IonicVue)
-  .use(router)
-  .component('sideBar', sideBar);
-=======
 const app = createApp(App);
 
-app.use(IonicVue);
+app.use(IonicVue);     // Must come before router
 app.use(router);
+
+app.component('sideBar', sideBar);
+
 app.use(PrimeVue, {
   theme: {
     preset: Aura
   }
 });
-
-// ✅ Register Sidebar globally so it can be used in any component
-app.component('MainLayout', MainLayout);
->>>>>>> 0ee78c10d423aced720c61001cab0a66bd780332
 
 router.isReady().then(() => {
   app.mount('#app');
