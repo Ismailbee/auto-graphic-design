@@ -27,14 +27,14 @@
                     style="--background: transparent;  --color: #BA6900;"
                     @click="navigateTo('/home')">
             <ion-icon :icon="home" slot="start" class="text-xl pl-5 text-white group-hover:text-[#BA6900] mr-4" />
-            <ion-label><strong class="hover:text-white text-[17px]">Home</strong></ion-label>
+            <ion-label><strong class="group-hover:text-white text-[17px]">Home</strong></ion-label>
           </ion-item>
           
           <ion-item button lines="none" class="group text-xl text-[#BA6900]  hover:bg-primary-contrast"
                    style="--background: transparent;  --color: #BA6900;"
                    @click="navigateTo('/myAccountPage')">
           <ion-icon :icon="personCircle" slot="start" class="text-xl pl-5 text-white group-hover:text-[#BA6900] mr-4" />
-          <ion-label><strong class="hover:text-white text-[17px]">My Account</strong></ion-label>
+          <ion-label><strong class="group-hover:text-white text-[17px]">My Account</strong></ion-label>
           </ion-item>
         </div>
         
