@@ -13,7 +13,7 @@
         <sideBar title="sideBar" />
 
         <!-- Main content -->
-        <div class="flex flex-1 w-screen h-screen gap-5 p-4 ml-5">
+        <div class="grid w-screen h-screen gap-5 p-4 ml-5">
           <div class="flex p-4 font-bold text-white bg-green-200 rounded-lg flex-2">
             Tailwind is now working! ✅
           </div>

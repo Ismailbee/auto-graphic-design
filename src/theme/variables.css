@@ -2,12 +2,12 @@
 http://ionicframework.com/docs/theming/ */
 :root {
   /* Existing Ionic variables */
-    --ion-color-brand: #ff5722;
+    --ion-color-brand: #502800;
     --ion-color-brand-rgb: 255, 87, 34;
     --ion-color-brand-contrast: #ffffff;
     --ion-color-brand-contrast-rgb: 255, 255, 255;
     --ion-color-brand-shade: #e64a19;
-    --ion-color-brand-tint: #ff7043;
+    --ion-color-brand-tint: #BA6900;
 }
 
 .ion-color-brand {
