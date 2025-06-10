@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>HelpPage</ion-title>
+        <ion-title>Terms of Service</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'HelpPage',
+  name: 'TermsofService',
   // Component logic
 };
 </script>

@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Legal</ion-title>
+        <ion-title>privacy Setting</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'LegalPage',
+  name: 'privvacysetting',
   // Component logic
 };
 </script>

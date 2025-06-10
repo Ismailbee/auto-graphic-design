@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Legal</ion-title>
+        <ion-title>mock-up</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'LegalPage',
+  name: 'mockup',
   // Component logic
 };
 </script>

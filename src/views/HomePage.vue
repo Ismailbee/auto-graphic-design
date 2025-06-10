@@ -36,8 +36,7 @@ import {
   IonToolbar,
 } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import sideBar from '../components/SideBar/sideBar.vue';
-
+import sideBar from '../components/pages/SideBar/sideBar.vue';
 
 export default defineComponent({
   name: 'HomePage',

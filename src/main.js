@@ -4,7 +4,7 @@ import router from './router';
 import { IonicVue } from '@ionic/vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
-import sideBar from './components/SideBar/sideBar.vue';
+import sideBar from '../src/components/pages/SideBar/sideBar.vue';
 
 import 'animate.css';
 import './tailwind.css';

@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Legal</ion-title>
+        <ion-title>Use Redeem Code</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'LegalPage',
+  name: 'useredeemcode',
   // Component logic
 };
 </script>
