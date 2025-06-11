@@ -6,7 +6,12 @@ export default {
     "./node_modules/@ionic/vue/**/*.js"
   ],
   theme: {
-    extend: {},
+     extend: {
+      fontFamily: {
+        kenyan: ['"Kenyan Coffee"',  'sans-serif'],
+        NICKERB1: ['"Nickerbocker-Normal"', 'sans-serif' ],
+      },
+    },
   },
   plugins: [],
 }
