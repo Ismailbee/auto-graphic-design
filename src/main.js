@@ -5,6 +5,7 @@ import { IonicVue } from '@ionic/vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import sideBar from '../src/components/pages/SideBar/sideBar.vue';
+import appHeader from './components/pages/Header/appHeader.vue';
 
 import 'animate.css';
 import './tailwind.css';
@@ -28,6 +29,7 @@ app.use(IonicVue);     // Must come before router
 app.use(router);
 
 app.component('sideBar', sideBar);
+app.component('appHeader', appHeader);
 
 app.use(PrimeVue, {
   theme: {

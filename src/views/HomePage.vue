@@ -1,6 +1,6 @@
-<!-- pages/HomePage.vue -->
 <template>
   <ion-page>
+    
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
@@ -8,23 +8,28 @@
         </ion-toolbar>
       </ion-header>
 
-      <div class="flex w-full h-screen">
+      <div class="fixed top-0 left-0 w-64 h-full ">
+        
+         <div class="fixed top-0 left-0 z-10 w-full bg-white shadow">
+          <!-- AppHeader -->
+        <appHeader title="header" />
+        </div>
+        
         <!-- Sidebar menu -->
         <sideBar title="sideBar" />
 
         <!-- Main content -->
         <div class="grid w-screen h-screen gap-5 p-4 ml-5">
-          <div class="flex p-4 font-bold text-white bg-green-200 rounded-lg flex-2">
-            Tailwind is now working! ✅
-          </div>
           <div class="flex flex-1 p-4 font-bold text-white bg-green-200 rounded-lg">
             Tailwind is now working! ✅
           </div>
         </div>
       </div>
     </ion-content>
+    
   </ion-page>
 </template>
+
 
 
 <script>
@@ -37,6 +42,7 @@ import {
 } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import sideBar from '../components/pages/SideBar/sideBar.vue';
+import appHeader from '../components/pages/Header/appHeader.vue';
 
 export default defineComponent({
   name: 'HomePage',
@@ -46,7 +52,8 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    sideBar
+    sideBar,
+    appHeader
   }
 });
 </script>
