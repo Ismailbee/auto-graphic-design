@@ -8,7 +8,7 @@ import sideBar from '../src/components/pages/SideBar/sideBar.vue';
 import appHeader from './components/pages/Header/appHeader.vue';
 
 import 'animate.css';
-import './tailwind.css';
+import './assets/css/tailwind.css'
 
 import '@ionic/vue/css/core.css';
 import '@ionic/vue/css/normalize.css';
