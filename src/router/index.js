@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 // Welcome & Login Pages
 import WelcomePage from '../components/pages/auth/WelcomePage.vue';
 import LoginPage from '../components/pages/auth/LoginPage.vue';
+import SignUpPage from '../components/pages/auth/SignUpPage.vue'
+
 
 // Top-level pages
 import HomePage from '../views/HomePage.vue';
@@ -27,30 +29,32 @@ import privacypolicyPage from '../components/pages/SideBar/sidBarContent/Legal/p
 import privacysettingPage from '../components/pages/SideBar/sidBarContent/Legal/privacysettingsPage.vue';
 
 const routes = [
-  { path: '/', redirect: '/welcome' },              // 👈 default route
-  { path: '/welcome', component: WelcomePage },     // 👈 welcome screen
-  { path: '/login', component: LoginPage },         // ✅ login screen added
+  { path: '/', redirect: '/welcome' },
+  { path: '/welcome', component: () => import('../components/pages/auth/WelcomePage.vue') },
+  { path: '/login', component: () => import('../components/pages/auth/LoginPage.vue') },
+  { path: '/signup', component: () => import('../components/pages/auth/SignUpPage.vue') },
 
   // Main & Sidebar pages
-  { path: '/home', component: HomePage },
-  { path: '/myAccountPage', component: myAccountPage },
-  { path: '/scheduling', component: SchedulingPage },
-  { path: '/mockupPage', component: mockupPage },
-  { path: '/videosPage', component: videosPage },
+  { path: '/home', component: () => import('../views/HomePage.vue') },
+  { path: '/myAccountPage', component: () => import('../components/pages/SideBar/sidBarContent/myAccountPage.vue') },
+  { path: '/scheduling', component: () => import('../components/pages/SideBar/sidBarContent/SchedulingPage.vue') },
+  { path: '/mockupPage', component: () => import('../components/pages/SideBar/sidBarContent/mockupPage.vue') },
+  { path: '/videosPage', component: () => import('../components/pages/SideBar/sidBarContent/videosPage.vue') },
 
   // Help Pages
-  { path: '/subscriPage', component: subscriPage },
-  { path: '/useredeemcodePage', component: useredeemcodePage },
-  { path: '/suggestfeaturePage', component: suggestfeaturePage },
-  { path: '/helpcenterPage', component: HelpcenterPage },
-  { path: '/rateappPage', component: rateappPage },
+  { path: '/subscriPage', component: () => import('../components/pages/SideBar/sidBarContent/Help/subscriPage.vue') },
+  { path: '/useredeemcodePage', component: () => import('../components/pages/SideBar/sidBarContent/Help/useredeemcodePage.vue') },
+  { path: '/suggestfeaturePage', component: () => import('../components/pages/SideBar/sidBarContent/Help/suggestfeaturePage.vue') },
+  { path: '/helpcenterPage', component: () => import('../components/pages/SideBar/sidBarContent/Help/HelpcenterPage.vue') },
+  { path: '/rateappPage', component: () => import('../components/pages/SideBar/sidBarContent/Help/rateappPage.vue') },
 
   // Legal Pages
-  { path: '/contactPage', component: contactPage },
-  { path: '/termservicePage', component: termservicePage },
-  { path: '/privacypolicyPage', component: privacypolicyPage },
-  { path: '/privacysettingPage', component: privacysettingPage }
-];
+  { path: '/contactPage', component: () => import('../components/pages/SideBar/sidBarContent/Legal/contactPage.vue') },
+  { path: '/termservicePage', component: () => import('../components/pages/SideBar/sidBarContent/Legal/termservicePage.vue') },
+  { path: '/privacypolicyPage', component: () => import('../components/pages/SideBar/sidBarContent/Legal/privacypolicyPage.vue') },
+  { path: '/privacysettingPage', component: () => import('../components/pages/SideBar/sidBarContent/Legal/privacysettingsPage.vue') },
+]
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
