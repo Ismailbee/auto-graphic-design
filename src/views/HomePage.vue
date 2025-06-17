@@ -1,89 +1,129 @@
 <template>
   <ion-page>
-    
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Home</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
-      <div class="fixed top-0 left-0 w-64 h-full ">
-        
-         <div class="fixed top-0 left-0 z-10 w-full bg-white shadow">
-          <!-- AppHeader -->
-        <appHeader title="header" />
-        </div>
-        
-        <!-- Sidebar menu -->
-        <sideBar title="sideBar" />
-
-        <!-- Main content -->
-        <div class="grid w-screen h-screen gap-5 p-4 ml-5">
-          <div class="flex flex-1 p-4 font-bold text-white bg-green-200 rounded-lg">
-            Tailwind is now working! ✅
+    <!-- Scrollable Main Wrapper -->
+    <div
+      ref="scrollContainer"
+      class="relative h-screen overflow-y-auto"
+      @scroll="handleScroll"
+    >
+      <!-- Floating Toggle Button -->
+      <div v-if="!sidebarOpen" class=" fixed z-50 top-[300px] left-[-70px]">
+        <div class="flex items-center w-[140px] h-[135px] rounded-full bg-primary pulse-animation">
+          <div
+            class="flex items-center ml-[80px] justify-center h-[50px] w-[50px] bg-contrast text-white rounded-full cursor-pointer hover:scale-110 transition"
+            @click="toggleSidebar"
+          >
+            <ion-icon :icon="add" class="text-3xl transition-transform hover:scale-125" />
           </div>
         </div>
       </div>
-    </ion-content>
-    
+
+      <!-- Slide-down App Header -->
+      <transition name="slide-down">
+        <app-header
+          v-if="showHeader"
+          class="fixed top-0 left-0 z-40 w-full"
+        />
+      </transition>
+
+      <!-- Sidebar -->
+      <side-bar :sidebarOpen="sidebarOpen" @toggle="toggleSidebar" />
+
+      <!-- Main Content -->
+      <div
+        :class="[
+          'transition-all duration-300 h-screen flex flex-col',
+          sidebarOpen ? 'ml-[285px]' : 'ml-0'
+        ]"
+      >
+        <!-- Body Header -->
+        <body-header title="bodyHeader" @menuClick="toggleSidebar" />
+
+        <!-- Page Content -->
+        <div
+          v-for="i in 4"
+          :key="i"
+          class="flex-1 p-4 mt-[220px] h-full w-full font-bold text-black"
+        >
+          Tailwind is now working! ✅
+        </div>
+      </div>
+    </div>
   </ion-page>
 </template>
 
+<script setup>
+import { ref } from 'vue'
+import { IonPage, IonIcon } from '@ionic/vue'
+import { add } from 'ionicons/icons'
 
+import sideBar from '../components/pages/SideBar/sideBar.vue'
+import appHeader from '../components/pages/Header/appHeader.vue'
+import bodyHeader from '../components/pages/bodyHeader/bodyHeader.vue'
 
-<script>
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/vue';
-import { defineComponent } from 'vue';
-import sideBar from '../components/pages/SideBar/sideBar.vue';
-import appHeader from '../components/pages/Header/appHeader.vue';
+// Sidebar toggle
+const sidebarOpen = ref(false)
+const toggleSidebar = () => {
+  sidebarOpen.value = !sidebarOpen.value
+}
 
-export default defineComponent({
-  name: 'HomePage',
-  components: {
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonTitle,
-    IonToolbar,
-    sideBar,
-    appHeader
-  }
-});
+// Scroll tracking for app-header visibility
+const scrollContainer = ref(null)
+const showHeader = ref(false)
+let lastScrollTop = 0
+
+const handleScroll = () => {
+  const el = scrollContainer.value
+  if (!el) return
+
+  const scrollTop = el.scrollTop
+  const scrollHeight = el.scrollHeight
+  const clientHeight = el.clientHeight
+
+  // Show header when scrolled past 50%
+  const scrolledPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100
+  showHeader.value = scrolledPercentage >= 50
+
+  lastScrollTop = scrollTop
+}
 </script>
 
 <style scoped>
-body{
-  margin: 0;
+/* Colors */
+.bg-primary {
+  background-color: #502800;
 }
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.bg-contrast {
+  background-color: #BA6900;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+/* Pulse Animation for Floating Button */
+.pulse-animation {
+  animation: pulse 5.8s infinite;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
+/* Slide-down transition for <app-header /> */
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
-
-#container a {
-  text-decoration: none;
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-100%);
+  opacity: 0;
 }
 </style>
