@@ -1,6 +1,6 @@
 <template>
   <ion-app>
-    <ion-router-outlet />   <!-- nothing else needed -->
+    <ion-router-outlet :key="$route.fullPath"></ion-router-outlet>
   </ion-app>
 </template>
 
