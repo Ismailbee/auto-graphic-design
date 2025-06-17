@@ -2,10 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Kenyan Coffee';
-  src: url('@/assets/fonts/KenyanCoffee.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
 
+/* 
+ion-app {
+  font-family: 'Roboto', sans-serif;
+} */

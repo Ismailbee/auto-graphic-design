@@ -1,5 +1,13 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+
+ion-app {
+  font-family: 'Roboto', sans-serif;
+}
+
+
+
 :root {
   /* Existing Ionic variables */
     --ion-color-brand: #502800;

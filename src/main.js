@@ -8,7 +8,7 @@ import sideBar from '../src/components/pages/SideBar/sideBar.vue';
 import appHeader from './components/pages/Header/appHeader.vue';
 
 import 'animate.css';
-import './assets/css/tailwind.css'
+import './assets/css/tailwind.css';
 
 import '@ionic/vue/css/core.css';
 import '@ionic/vue/css/normalize.css';
@@ -25,9 +25,12 @@ import '@ionic/vue/css/palettes/dark.system.css';
 
 const app = createApp(App);
 
-app.use(IonicVue);     // Must come before router
-app.use(router);
+// ✅ Add animation support
+app.use(IonicVue, {
+  animated: true
+});
 
+app.use(router);
 app.component('sideBar', sideBar);
 app.component('appHeader', appHeader);
 
