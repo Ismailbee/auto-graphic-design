@@ -15,7 +15,7 @@
         <!-- Main content -->
         <div class="grid w-screen h-screen gap-5 p-4 ml-5">
           <div class="flex p-4 font-bold text-white bg-green-200 rounded-lg flex-2">
-            Tailwind is now working! ✅
+             <templates title="templete" />
           </div>
           <div class="flex flex-1 p-4 font-bold text-white bg-green-200 rounded-lg">
             Tailwind is now working! ✅
@@ -37,6 +37,7 @@ import {
 } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import sideBar from '../components/pages/SideBar/sideBar.vue';
+import Template from '../components/pages/Templates.vue';
 
 export default defineComponent({
   name: 'HomePage',
@@ -46,7 +47,8 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    sideBar
+    sideBar,
+    Template
   }
 });
 </script>
