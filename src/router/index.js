@@ -1,32 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 
-// Welcome & Login Pages
-import WelcomePage from '../components/pages/auth/WelcomePage.vue';
-import LoginPage from '../components/pages/auth/LoginPage.vue';
-import SignUpPage from '../components/pages/auth/SignUpPage.vue'
 
-
-// Top-level pages
-import HomePage from '../views/HomePage.vue';
-
-// Sidebar content pages
-import myAccountPage from '../components/pages/SideBar/sidBarContent/myAccountPage.vue';
-import SchedulingPage from '../components/pages/SideBar/sidBarContent/SchedulingPage.vue';
-import mockupPage from '../components/pages/SideBar/sidBarContent/mockupPage.vue';
-import videosPage from '../components/pages/SideBar/sidBarContent/videosPage.vue';
-
-// Help content pages
-import subscriPage from '../components/pages/SideBar/sidBarContent/Help/subscriPage.vue';
-import useredeemcodePage from '../components/pages/SideBar/sidBarContent/Help/useredeemcodePage.vue';
-import suggestfeaturePage from '../components/pages/SideBar/sidBarContent/Help/suggestfeaturePage.vue';
-import HelpcenterPage from '../components/pages/SideBar/sidBarContent/Help/HelpcenterPage.vue';
-import rateappPage from '../components/pages/SideBar/sidBarContent/Help/rateappPage.vue';
-
-// Legal content pages
-import contactPage from '../components/pages/SideBar/sidBarContent/Legal/contactPage.vue';
-import termservicePage from '../components/pages/SideBar/sidBarContent/Legal/termservicePage.vue';
-import privacypolicyPage from '../components/pages/SideBar/sidBarContent/Legal/privacypolicyPage.vue';
-import privacysettingPage from '../components/pages/SideBar/sidBarContent/Legal/privacysettingsPage.vue';
 
 const routes = [
   { path: '/', redirect: '/welcome' },

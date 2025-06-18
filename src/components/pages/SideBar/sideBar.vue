@@ -61,7 +61,10 @@ const emit = defineEmits(['toggle']);
 const ionRouter = useIonRouter();
 
 const toggleSidebar = () => emit('toggle');
-const navigateTo = (route) => ionRouter.push(route);
+const navigateTo = (route) => {
+  ionRouter.push(route)
+  emit('toggle') // auto-close on mobile
+}
 </script>
 
 <style scoped>

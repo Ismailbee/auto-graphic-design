@@ -7,7 +7,7 @@
       @scroll="handleScroll"
     >
       <!-- Floating Toggle Button -->
-      <div v-if="!sidebarOpen" class=" fixed z-50 top-[300px] left-[-70px]">
+      <div v-if="!sidebarOpen" class="hidden sm:fixed sm:flex z-50 top-[300px] left-[-70px]">
         <div class="flex items-center w-[140px] h-[135px] rounded-full bg-primary pulse-animation">
           <div
             class="flex items-center ml-[80px] justify-center h-[50px] w-[50px] bg-contrast text-white rounded-full cursor-pointer hover:scale-110 transition"
@@ -18,24 +18,33 @@
         </div>
       </div>
 
-      <!-- Slide-down App Header -->
-      <transition name="slide-down">
-        <app-header
-          v-if="showHeader"
-          class="fixed top-0 left-0 z-40 w-full"
-        />
-      </transition>
+    
 
       <!-- Sidebar -->
       <side-bar :sidebarOpen="sidebarOpen" @toggle="toggleSidebar" />
 
       <!-- Main Content -->
-      <div
-        :class="[
-          'transition-all duration-300 h-screen flex flex-col',
-          sidebarOpen ? 'ml-[285px]' : 'ml-0'
-        ]"
-      >
+    <div
+      :class="[
+        'transition-all duration-300 h-screen flex flex-col',
+        sidebarOpen && !isMobile ? 'ml-[285px]' : 'ml-0'
+      ]">
+      <!-- Slide-down App Header -->
+     <transition name="slide-down">
+       <app-header
+          v-if="showHeader || isMobile"
+          @toggle="toggleSidebar"
+          :class="[ 
+            'transition-all duration-200 flex flex-shrink-0 flex-wrap z-40',
+            sidebarOpen && !isMobile ? 'ml-[285px] md:max-w-[1250px]' : 'ml-0 w-full'
+          ]"
+        />
+
+      </transition>
+
+
+
+      
         <!-- Body Header -->
         <body-header title="bodyHeader" @menuClick="toggleSidebar" />
 
@@ -53,7 +62,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { IonPage, IonIcon } from '@ionic/vue'
 import { add } from 'ionicons/icons'
 
@@ -82,10 +91,25 @@ const handleScroll = () => {
 
   // Show header when scrolled past 50%
   const scrolledPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100
-  showHeader.value = scrolledPercentage >= 50
+  showHeader.value = scrolledPercentage >= 38
 
   lastScrollTop = scrollTop
 }
+
+const isMobile = ref(window.innerWidth < 640) // sm: 640px in Tailwind
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 640
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+  if (isMobile.value) showHeader.value = true // 👈 force show on mobile
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <div 
     ref="dropdownRef"
-    class="relative flex flex-col items-center justify-center w-full h-full mx-2 my-1"
+    class="relative flex flex-no-wrap items-center justify-center w-full h-full mx-2 my-1"
   >
     <!-- Circle Button -->
     <div class="flex items-center justify-center bg-gradient-to-b from-[#BA6900]/80 via-white/10 to-transparent h-[33px] w-[33px] rounded-full backdrop-blur-md shadow-md cursor-pointer transition">
@@ -10,23 +10,31 @@
       </div>
     </div>
 
-    <!-- Label and dropdown toggle -->
-    <div @click="toggleDropdown" class="flex items-center justify-center mt-1 cursor-pointer">
-      <span class="text-[12px] font-medium text-white">{{ label }}</span>
-    <ion-icon 
-      :icon="labelIcon"
-      class="text-lg text-[#ca790f] visible ml-1 transition-transform duration-500 inline-block transform"
-      :class="{ 'rotate-180': isOpen }"
-    />
+   <!-- Label and dropdown toggle -->
+<div 
+  @click="toggleDropdown" 
+  class="flex items-center mt-1 space-x-1 cursor-pointer"
+>
+  <span class="text-[12px] font-medium text-[#502800] whitespace-nowrap ml-3">
+    {{ label }}
+  </span>
 
+  <ion-icon 
+    :icon="labelIcon"
+    class="text-lg text-[#ca790f] visible transition-transform duration-500"
+    :class="{ 'rotate-180': isOpen }"
+  />
+</div>
 
-    </div>
 
     <!-- Dropdown Menu -->
-    <div v-if="isOpen" class="absolute top-[70px] z-10 w-[420px]">
-      
+  <div 
+  v-if="isOpen" 
+  class="absolute top-full mt-3 left-32 -translate-x-1/2 z-10 w-[420px]"
+>
+
       <!-- Message bubble tail -->
-      <div class="absolute top-[6px] left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rotate-45 shadow"></div>
+      <div class="absolute top-[6px] left-40 transform -translate-x-1/2 w-4 h-4 bg-white rotate-45 shadow"></div>
 
       <!-- Dropdown Content -->
       <div class="mt-3 bg-white text-[12px] rounded-xl shadow-lg py-3 px-4 text-black relative">

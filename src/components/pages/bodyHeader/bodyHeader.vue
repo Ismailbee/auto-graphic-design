@@ -2,15 +2,15 @@
   <div class="items-center">
     <div class="w-full h-[220px] bg-center pb-2 bg-no-repeat bg-[#fff6dc] to-white flex items-center">
       <!-- Parent Grid -->
-      <div class="grid md:grid-cols-2 w-full h-full border-b-2 border-[#502800]">
+      <div class="sm:grid sm:grid-cols-2 w-full h-full sm:border-b-2 border-[#502800]">
 
         <!-- Left Logo -->
-        <div class="md:pl-[100px] pl-[10px] pt-[50px]">
-          <img :src="imageUrl" alt="Logo" class="w-[60%]" />
+        <div class="md:pl-[100px] p-[10px] sm:pt-[50px] pt-[90px] flex justify-center items-center">
+          <img :src="imageUrl" alt="Logo" class="sm:w-[60%] w-[300px]" />
         </div>
 
         <!-- Right Side -->
-        <div class="flex flex-col justify-between h-full">
+        <div class="flex-col justify-between hidden h-full sm:flex">
 
           <!-- Top Row -->
           <div class="flex items-center justify-end flex-1 pr-8">
@@ -24,8 +24,8 @@
               </div>
             </div>
 
-            <div class="flex items-center justify-center bg-primary w-[75px] h-[55px]">
-              <img :src="imageUr2" alt="Logo" class="w-[40px] h-[40px]" />
+            <div class="flex items-center justify-center bg-primary w-[75px] h-[55px] rounded-[10px]">
+              <img :src="imageUr2" alt="Logo" class="w-[60px] h-[40px]" />
             </div>
           </div>
 
@@ -43,12 +43,12 @@
       </div>
     </div>
 
-    <div class="mt-[50px] px-4 flex items-center justify-center">
-      <div class="relative w-[500px] flex items-center justify-center ">
+    <div class="sm:mt-[50px] mt-3 px-4 flex items-center justify-center">
+      <div class="relative sm:w-[500px] w-[300px] flex items-center justify-center ">
         <input 
           type="text"
           placeholder="Search..."
-          class="w-full max-w-[500px] pl-10 pr-4 py-3  text-sm border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#BA6900] focus:border-transparent transition duration-300 bg-gradient-to-t from-[#D2D3D5] via-[#F1F1F2] to-white"
+          class="w-full max-w-[500px] pl-10 pr-4 py-3  text-sm border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#BA6900] focus:border-transparent transition duration-300 bg-[#fff0c3] sm:bg-gradient-to-t from-[#D2D3D5] via-[#F1F1F2] to-white"
         />
 
         <!-- Icon placed relative to input field, not absolute fixed distance -->
