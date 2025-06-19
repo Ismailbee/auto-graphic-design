@@ -1,111 +1,41 @@
 <template>
-  <div :class="['flex flex-col items-center justify-center h-screen space-y-4 transition-all duration-500', sidebarOpen ? 'w-[285px]' : 'w-[90px]']">
-    
-    <!-- Toggle Button (Circle) -->
-   <div v-if="!sidebarOpen"
-   class="flex items-center ml-[-80px] w-[140px] h-[135px] rounded-full bg-primary">
-     <div 
-         class="flex items-center ml-[80px] justify-center tex  t-white transition rounded-full cursor-pointer h-[50px] w-[50px] bg-contrast hover:scale-110"
-         @click="toggleSidebar">
-      <ion-icon :icon="add" class="text-3xl text-white transition-transform hover:scale-125" />
-    </div>
-   </div>
-
-    <!-- Expanded Sidebar Content -->
-    <ion-content v-if="sidebarOpen" class="relative flex flex-col w-full h-screen px-2 pt-6 text-white rounded-b-50">
+  <div :class="['fixed z-50 flex flex-col items-center justify-center h-screen transition-all duration-300', sidebarOpen ? 'w-[285px]'  : 'w-0']">
+    <ion-content v-if="sidebarOpen" class="relative w-full h-screen px-2 pt-6 text-white bg-primary rounded-b-3xl">
 
       <!-- Collapse Arrow -->
-      <div class="absolute z-10 flex items-center justify-center w-6 h-6 mt-2 mr-2 bg-transparent rounded-full cursor-pointer top-5 right-3 hover:scale-110 hover:bg-[#BA6900]" 
-              @click="toggleSidebar">
+      <div class="absolute z-10 flex items-center justify-center w-8 h-8 transition rounded-full cursor-pointer top-5 right-3 bg-contrast hover:scale-110" @click="toggleSidebar">
         <ion-icon :icon="chevronBackOutline" class="text-xl text-white" />
       </div>
 
-      <!-- Sidebar Menu Items -->
-      <ion-list class="pt-[40px] rounded-b-30 bg-primary overflow-y-auto h-screen">
-       <div>
-          <ion-item button lines="none" class="group  text-[#BA6900] bg-transparent hover:secondary  pr-4 pt-4 hover:bg-primary-contrast"
-                    style="--background: transparent;  --color: #BA6900;"
-                    @click="navigateTo('/home')">
-            <ion-icon :icon="home" slot="start" class="text-xl pl-5 text-white group-hover:text-[#BA6900] mr-4" />
-            <ion-label><strong class="group-hover:text-white text-[17px]">Home</strong></ion-label>
-          </ion-item>
-          
-          <ion-item button lines="none" class="group text-xl text-[#BA6900]  hover:bg-primary-contrast"
-                   style="--background: transparent;  --color: #BA6900;"
-                   @click="navigateTo('/myAccountPage')">
-          <ion-icon :icon="personCircle" slot="start" class="text-xl pl-5 text-white group-hover:text-[#BA6900] mr-4" />
-          <ion-label><strong class="group-hover:text-white text-[17px]">My Account</strong></ion-label>
-          </ion-item>
+      <!-- Menu Sections -->
+      <ion-list class="h-full space-y-3 overflow-y-auto pt-[60px] bg-primary">
+
+        <div class="border-[#90560a] border-b-[0.1px]">
+          <MenuTitle :icon="home" label="Home" @click="navigateTo('/home')" />
+          <MenuTitle :icon="personCircle" label="My Account" @click="navigateTo('/myAccountPage')" />
         </div>
         
-        <div class="pt-4 pb-4 border-[#794613] border-b-[0.01px] border-t-[0.01px]">
-          <ion-item-button1 @click="navigateTo('/scheduling')" class="group">
-              <ion-icon :icon="appsSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Scheduling</ion-label>
-          </ion-item-button1>
-          
-          <ion-item-button1 @click="navigateTo('/mockupPage')" class="group">
-              <ion-icon :icon="walletSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Mock-ups</ion-label>
-          </ion-item-button1>
-          
-          <ion-item-button1 @click="navigateTo('/videosPage')" class="group">
-              <ion-icon :icon="logoYoutube" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Videos</ion-label>
-          </ion-item-button1>          
+        <div class="border-[#90560a] border-b-[0.1px]">
+          <MenuItem :icon="appsSharp" label="Scheduling" @click="navigateTo('/scheduling')" />
+          <MenuItem :icon="walletSharp" label="Mock-ups" @click="navigateTo('/mockupPage')" />
+          <MenuItem :icon="logoYoutube" label="Videos" @click="navigateTo('/videosPage')" />
+        </div>
+   
+        <div class="border-[#90560a] border-b-[0.1px]">
+          <SectionTitle title="Help" />
+          <MenuItem :icon="personAddSharp" label="Subscription" @click="navigateTo('/subscriPage')" />
+          <MenuItem :icon="bagAddSharp" label="Use Redeem Code" @click="navigateTo('/useredeemcodePage')" />
+          <MenuItem :icon="bulbSharp" label="Suggest a Feature" @click="navigateTo('/suggestfeaturePage')" />
+          <MenuItem :icon="helpCircleSharp" label="Help Center" @click="navigateTo('/helpcenterPage')" />
+          <MenuItem :icon="starHalfSharp" label="Rate App" @click="navigateTo('/rateappPage')" />
         </div>
         
-        <div class="pt-4 pb-4 border-[#794613] border-b-[0.01px] border-t-[0.01px]">
-          <h5 class="m-0 pl-7 text-[#BA6900]">HELP</h5>
-          <ion-item-button1 @click="navigateTo('/subscriPage')" class="group">
-              <ion-icon :icon="personAddSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Subscription</ion-label>
-          </ion-item-button1>
-          
-          <ion-item-button1 @click="navigateTo('/useredeemcodePage')" class="group">
-              <ion-icon :icon="bagAddSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Use Redeem Code</ion-label>
-          </ion-item-button1>
-          
-          <ion-item-button1 @click="navigateTo('/suggestfeaturePage')" class="group">
-              <ion-icon :icon="bulbSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Suggest a Feature</ion-label>
-          </ion-item-button1>  
-                  
-          <ion-item-button1 @click="navigateTo('/helpcenterPage')" class="group">
-              <ion-icon :icon="helpCircleSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Help Center</ion-label>
-          </ion-item-button1>  
-                  
-          <ion-item-button1 @click="navigateTo('/rateappPage')" class="group">
-              <ion-icon :icon="starHalfSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Rate App</ion-label>
-          </ion-item-button1>                    
-        </div>
-       
-        <div class="pt-4 pb-4 border-[#794613] border-t-[0.01px]">
-          <h5 class="m-0 pl-7 text-[#BA6900]">LEGAL</h5>
-          <ion-item-button1 @click="navigateTo('/contactPage')" class="group">
-              <ion-icon :icon="chatbubbleSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="text-white shrink-label group-hover:text-[rgb(80,40,0)]">Contact Support</ion-label>
-          </ion-item-button1>
-          
-          <ion-item-button1 @click="navigateTo('/termservicePage')" class="group">
-              <ion-icon :icon="readerSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Terms of Service</ion-label>
-          </ion-item-button1>
-          
-          <ion-item-button1 @click="navigateTo('/privacypolicyPage')" class="group">
-              <ion-icon :icon="shieldHalfSharp" slot="start" class="text-[14px] text-white mr-5 group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Privacy Policy</ion-label>
-          </ion-item-button1>  
-                  
-          <ion-item-button1 @click="navigateTo('/privacysettingPage')" class="group">
-              <ion-icon :icon="shieldCheckmarkSharp" slot="start" class="text-[14px] text-white group-hover:text-[#502800] mr-5" />
-              <ion-label class="shrink-label">Privacy Settings</ion-label>
-          </ion-item-button1>                      
-        </div>
-         
+        <SectionTitle title="Legal" />
+        <MenuItem :icon="chatbubbleSharp" label="Contact Support" @click="navigateTo('/contactPage')" />
+        <MenuItem :icon="readerSharp" label="Terms of Service" @click="navigateTo('/termservicePage')" />
+        <MenuItem :icon="shieldHalfSharp" label="Privacy Policy" @click="navigateTo('/privacypolicyPage')" />
+        <MenuItem :icon="shieldCheckmarkSharp" label="Privacy Settings" @click="navigateTo('/privacysettingPage')" />
+
       </ion-list>
 
     </ion-content>
@@ -113,67 +43,31 @@
 </template>
 
 <script setup>
-import { IonIcon, useIonRouter } from '@ionic/vue';
-import {  } from 'ionicons/icons';
-import ionItemButton1 from '../ionElement/ion-item-button1.vue';
+import { IonIcon, IonContent, IonList } from '@ionic/vue';
+import { defineEmits, defineProps } from 'vue';
+import { useIonRouter } from '@ionic/vue';
 import {
-  add,
-  home, 
-  personCircle, 
-  readerSharp, 
-  walletSharp, 
-  logoYoutube, 
-  appsSharp,  
-  bagAddSharp, 
-  bulbSharp, 
-  helpCircleSharp,  
-  personAddSharp, 
-  starHalfSharp, 
-  chatbubbleSharp, 
-  shieldHalfSharp, 
-  shieldCheckmarkSharp,
-  chevronBackOutline
+  home, personCircle, readerSharp, walletSharp, logoYoutube, appsSharp,
+  bagAddSharp, bulbSharp, helpCircleSharp, personAddSharp, starHalfSharp,
+  chatbubbleSharp, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline
 } from 'ionicons/icons';
 
-import { ref } from 'vue';
+import MenuTitle from './MenuTitle.vue';
+import MenuItem from './MenuItem.vue';
+import SectionTitle from './SectionTitle.vue';
 
+const props = defineProps({ sidebarOpen: Boolean });
+const emit = defineEmits(['toggle']);
 const ionRouter = useIonRouter();
-const sidebarOpen = ref(false);
 
-const toggleSidebar = () => {
-  sidebarOpen.value = !sidebarOpen.value;
-};
-
-
+const toggleSidebar = () => emit('toggle');
 const navigateTo = (route) => {
-  // Use Ionic's router push method
-  ionRouter.push(route);
-};
+  ionRouter.push(route)
+  emit('toggle') // auto-close on mobile
+}
 </script>
 
 <style scoped>
-.bg-primary {
-  background-color: #502800;
-}
-
-.bg-contrast {
-  background-color: #BA6900;
-}
-ion-item{
-  --background: transparent;
-  --color: #BA6900;
-  transition: backround-color 0.3s ease-in-out;
-}
-ion-item:hover {
-  --background: #BA6900;
-  --color: #502800;
-}
-.shrink-label {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  font-size: 13px;
-}
-
+.bg-primary { background-color: #502800; }
+.bg-contrast { background-color: #BA6900; }
 </style>

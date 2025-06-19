@@ -1,11 +1,11 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import { IonicVue } from '@ionic/vue';
+import { IonicVue, IonIcon } from '@ionic/vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import sideBar from '../src/components/pages/SideBar/sideBar.vue';
-
+import bodyHeader from './components/pages/bodyHeader/bodyHeader.vue';
 import 'animate.css';
 import './assets/css/tailwind.css';
 
@@ -31,6 +31,8 @@ app.use(IonicVue, {
 
 app.use(router);
 app.component('sideBar', sideBar);
+app.component('bodyHeader', bodyHeader);
+app.component('ion-icon', IonIcon);
 
 app.use(PrimeVue, {
   theme: {

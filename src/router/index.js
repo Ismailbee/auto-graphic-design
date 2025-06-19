@@ -1,4 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from '@ionic/vue-router';
+
+
 
 const routes = [
   { path: '/', redirect: '/welcome' },
@@ -33,4 +35,3 @@ const router = createRouter({
 });
 
 export default router;
-  
