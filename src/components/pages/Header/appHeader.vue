@@ -48,8 +48,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { searchOutline, reorderThree, chevronUp, diamond, extensionPuzzle, logoAppleAppstore, notificationsOutline, server, } from 'ionicons/icons'
-import headerTemplate from '../Header/headerTemplate.vue'
-import headerIcon from '../Header/headerIcon.vue'
+import headerTemplate from './headerTemplate.vue'
+import headerIcon from './headerIcon.vue'
 
 const imageUr1 = ref('image/logoauto.png')
 const router = useRouter()
