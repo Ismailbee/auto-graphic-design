@@ -6,6 +6,8 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import sideBar from '../src/components/pages/SideBar/sideBar.vue';
 import bodyHeader from './components/pages/bodyHeader/bodyHeader.vue';
+import bodyBase from './components/pages/bodyHeader/bodyBase.vue';
+import appBase from './components/pages/appBase/appBase.vue';
 import 'animate.css';
 import './assets/css/tailwind.css';
 
@@ -32,7 +34,9 @@ app.use(IonicVue, {
 app.use(router);
 app.component('sideBar', sideBar);
 app.component('bodyHeader', bodyHeader);
-app.component('ion-icon', IonIcon);
+app.component('bodyBase', bodyBase);
+app.component('appBase', appBase);
+app.component('IonIcon', IonIcon);
 
 app.use(PrimeVue, {
   theme: {

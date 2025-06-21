@@ -4,18 +4,18 @@
     class="relative flex flex-col items-center justify-center w-full h-full mx-2 my-1"
   >
     <!-- Circle Button -->
-    <div class="flex items-center justify-center bg-gradient-to-b from-[#BA6900]/80 via-white/10 to-transparent h-[33px] w-[33px] rounded-full backdrop-blur-md shadow-md cursor-pointer transition">
-      <div class="flex items-center justify-center h-[25px] w-[25px] bg-[#ca790f] rounded-full transition">
+    
+      <div class="flex items-center justify-center h-[30px] w-[30px] bg-[#ca790f] rounded-full transition">
         <ion-icon :icon="icon" class="text-lg text-white" />
       </div>
-    </div>
+    
 
     <!-- Label and dropdown toggle -->
     <div @click="toggleDropdown" class="flex items-center justify-center mt-1 cursor-pointer">
       <span class="text-[12px] font-medium text-white">{{ label }}</span>
     <ion-icon 
       :icon="labelIcon"
-      class="text-lg text-[#ca790f] visible ml-1 transition-transform duration-500 inline-block transform"
+      class="text-[14px] text-[#ca790f] visible ml-1 transition-transform duration-200 inline-block transform"
       :class="{ 'rotate-180': isOpen }"
     />
 
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Dropdown Menu -->
-    <div v-if="isOpen" class="absolute top-[70px] z-10 w-[420px]">
+    <div v-if="isOpen" class="absolute top-[70px] left-[-145px] z-10 w-[420px]">
       
       <!-- Message bubble tail -->
       <div class="absolute top-[6px] left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rotate-45 shadow"></div>

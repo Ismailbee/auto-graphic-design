@@ -10,6 +10,11 @@ export default {
       fontFamily: {
         sans: ['Roboto', 'sans-serif'], // overrides `font-sans`
       },
+      colors: {
+        primary: '#502800',
+        contrast: '#BA6900',
+        brown: '#BA6900', // Add this line
+      },
     },
   },
   plugins: [],

@@ -7,8 +7,8 @@
       @scroll="handleScroll"
     >
       <!-- Floating Toggle Button -->
-      <div v-if="!sidebarOpen" class="hidden sm:fixed sm:flex z-50 top-[300px] left-[-70px]">
-        <div class="flex items-center w-[140px] h-[135px] rounded-full bg-primary pulse-animation">
+      <div v-if="!sidebarOpen" class="hidden sm:fixed sm:flex z-50 top-[310px] left-[-70px]">
+        <div class="flex items-center w-[140px] h-[105px] rounded-full bg-primary pulse-animation">
           <div
             class="flex items-center ml-[80px] justify-center h-[50px] w-[50px] bg-contrast text-white rounded-full cursor-pointer hover:scale-110 transition"
             @click="toggleSidebar"
@@ -31,14 +31,13 @@
       ]">
       <!-- Slide-down App Header -->
      <transition name="slide-down">
-       <app-header
+      <app-header
           v-if="showHeader || isMobile"
           @toggle="toggleSidebar"
-          :class="[ 
-            'transition-all duration-200 flex flex-shrink-0 flex-wrap z-40',
-            sidebarOpen && !isMobile ? 'ml-[285px] md:max-w-[1250px]' : 'ml-0 w-full'
-          ]"
+          :class="headerClasses"
+          :showHeader="showHeader"
         />
+
 
       </transition>
 
@@ -56,19 +55,28 @@
         >
           Tailwind is now working! ✅
         </div>
+        
+        <div>
+          <body-Base title="bodyBase" />
+        </div>
+        <div>
+          <app-Base title="appBase" />
+        </div>
       </div>
     </div>
   </ion-page>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { IonPage, IonIcon } from '@ionic/vue'
 import { add } from 'ionicons/icons'
 
 import sideBar from '../components/pages/SideBar/sideBar.vue'
 import appHeader from '../components/pages/Header/appHeader.vue'
 import bodyHeader from '../components/pages/bodyHeader/bodyHeader.vue'
+import appBase from '../components/pages/appBase/appBase.vue'
+import bodyBase from '../components/pages/bodyHeader/bodyBase.vue'
 
 // Sidebar toggle
 const sidebarOpen = ref(false)
@@ -89,12 +97,23 @@ const handleScroll = () => {
   const scrollHeight = el.scrollHeight
   const clientHeight = el.clientHeight
 
-  // Show header when scrolled past 50%
   const scrolledPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100
-  showHeader.value = scrolledPercentage >= 38
+  showHeader.value = scrolledPercentage >= 29
 
   lastScrollTop = scrollTop
 }
+
+
+const headerClasses = computed(() => [
+  'transition-all duration-200 flex flex-shrink-0 flex-wrap z-40',
+  sidebarOpen.value && !isMobile.value ? 'ml-[285px] md:max-w-[1250px]' : 'ml-0 w-full',
+  showHeader.value
+    ? isMobile.value
+      ? 'bg-primary text-white'
+      : 'sm:bg-[#f6ebcd] text-black'
+    : 'transition-all duration-200 header-transition'
+])
+
 
 const isMobile = ref(window.innerWidth < 640) // sm: 640px in Tailwind
 
@@ -150,4 +169,9 @@ onUnmounted(() => {
   transform: translateY(-100%);
   opacity: 0;
 }
+
+.header-transition {
+  transition: background-color 0.5s ease, background-image 0.5s ease;
+}
+
 </style>

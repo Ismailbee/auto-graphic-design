@@ -21,7 +21,7 @@
 
   <ion-icon 
     :icon="labelIcon"
-    class="text-lg text-[#ca790f] visible transition-transform duration-500"
+    class="text-lg text-[#502800] visible transition-transform duration-200"
     :class="{ 'rotate-180': isOpen }"
   />
 </div>
@@ -30,7 +30,7 @@
     <!-- Dropdown Menu -->
   <div 
   v-if="isOpen" 
-  class="absolute top-full mt-3 left-32 -translate-x-1/2 z-10 w-[420px]"
+  class="absolute top-full mt-3 left-[160px] -translate-x-1/2 z-10 w-[420px]"
 >
 
       <!-- Message bubble tail -->
@@ -95,9 +95,9 @@ const dropdownRef = ref(null)
 
 // Props & Emits
 defineProps({
-  icon: Object,
+  icon: [String, Object],         // or just String if you're always passing SVG strings
   label: String,
-  labelIcon: Object
+  labelIcon: [String, Object],    // <-- fix here
 })
 defineEmits(['click'])
 
