@@ -1,87 +1,39 @@
 <template>
-  <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Carousel Grid</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content>
-      <ion-slides :options="slideOpts">
-        <!-- Slide 1 -->
-        <ion-slide>
-          <ion-card class="custom-card">
-            <img :src="require('@/assets/graphic1.jpg')" alt="Saudat Business" />
-            <ion-card-content>
-              <h2>SAUDAT CONSULT</h2>
-              <p class="text-gray-600">Gidan Mangoro, Minna</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-slide>
-
-        <!-- Slide 2 -->
-        <ion-slide>
-          <ion-card class="custom-card">
-            <img :src="require('@/assets/graphic2.jpg')" alt="Passing Out" />
-            <ion-card-content>
-              <h2>Update Info</h2>
-              <p class="text-gray-600">| 5 months ago</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-slide>
-
-        <!-- Slide 3 -->
-        <ion-slide>
-          <ion-card class="custom-card">
-            <img :src="require('@/assets/graphic3.jpg')" alt="Saudat Agro" />
-            <ion-card-content>
-              <h2>Advert</h2>
-              <p class="text-gray-600">| 1 year ago</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-slide>
-      </ion-slides>
-    </ion-content>
-  </ion-page>
+  <ion-slides :options="slideOpts" pager="true" class="w-full">
+    <ion-slide v-for="(item, i) in items" :key="i">
+      <ion-card class="rounded-xl shadow-lg w-[90%] mx-auto">
+        <img :src="item.image" class="w-full h-44 object-cover" />
+        <ion-card-content>
+          <h3 class="text-base font-semibold text-gray-800">{{ item.title }}</h3>
+          <p v-if="item.location" class="text-sm text-gray-600 mt-1">
+            {{ item.location }}
+          </p>
+          <p class="text-xs text-gray-400 text-right mt-2">| {{ item.time }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
 </template>
 
 <script setup>
+import MemoImg from '@/assets/template/Memo.png'
+import Sample2 from '@/assets/templates/sample2.jpg'
+import Sample3 from '@/assets/templates/sample3.jpg'
+
+const items = [
+  { title: 'Graduation Memo', location: 'Gidan Mangoro Minna', time: '2 hrs ago', image: MemoImg },
+  { title: 'Update Info',       location: '',                       time: '5 months ago', image: Sample2 },
+  { title: 'Advert',            location: '',                       time: '1 year ago', image: Sample3 }
+]
+
 const slideOpts = {
-  initialSlide: 0,
-  speed: 400,
   slidesPerView: 1.2,
-  spaceBetween: 10,
+  spaceBetween: 12,
+  pagination: { clickable: true },
   breakpoints: {
-    768: {
-      slidesPerView: 2.2
-    },
-    1024: {
-      slidesPerView: 3.2
-    }
+    768: { slidesPerView: 2.2 },
+    1024:{ slidesPerView: 3.2 }
   }
 }
 </script>
-
-<style scoped>
-.custom-card {
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  overflow: hidden;
-}
-
-img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-bottom: 1px solid #ddd;
-}
-
-h2 {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-p {
-  font-size: 0.8rem;
-}
-</style>
+  

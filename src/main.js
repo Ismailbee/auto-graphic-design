@@ -4,6 +4,7 @@ import router from './router';
 import { IonicVue, IonIcon } from '@ionic/vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
+import 'swiper/swiper-bundle.css';
 import sideBar from '../src/components/pages/SideBar/sideBar.vue';
 import bodyHeader from './components/pages/bodyHeader/bodyHeader.vue';
 import 'animate.css';
