@@ -4,12 +4,17 @@ import router from './router';
 import { IonicVue, IonIcon } from '@ionic/vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
-import 'swiper/swiper-bundle.css';
+import 'swiper/swiper-bundle.css'; // ✅ Correct for Swiper v6
+import 'swiper/css'
+import 'swiper/css/pagination'
 import sideBar from '../src/components/pages/SideBar/sideBar.vue';
 import bodyHeader from './components/pages/bodyHeader/bodyHeader.vue';
+import bodyBase from './components/pages/bodyHeader/bodyBase.vue';
+import appBase from './components/pages/appBase/appBase.vue';
 import 'animate.css';
 import './assets/css/tailwind.css';
 
+// Ionic Core CSS
 import '@ionic/vue/css/core.css';
 import '@ionic/vue/css/normalize.css';
 import '@ionic/vue/css/structure.css';
@@ -25,7 +30,6 @@ import '@ionic/vue/css/palettes/dark.system.css';
 
 const app = createApp(App);
 
-// ✅ Add animation support
 app.use(IonicVue, {
   animated: true
 });
@@ -33,7 +37,9 @@ app.use(IonicVue, {
 app.use(router);
 app.component('sideBar', sideBar);
 app.component('bodyHeader', bodyHeader);
-app.component('ion-icon', IonIcon);
+app.component('bodyBase', bodyBase);
+app.component('appBase', appBase);
+app.component('IonIcon', IonIcon);
 
 app.use(PrimeVue, {
   theme: {

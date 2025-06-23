@@ -25,7 +25,7 @@
     "animate.css": "^4.1.1",
     "ionicons": "^7.4.0",
     "primevue": "^4.3.4",
-    "swiper": "^9.4.1",
+    "swiper": "^10.3.1",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
