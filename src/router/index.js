@@ -27,6 +27,11 @@ const routes = [
   { path: '/termservicePage', component: () => import('../components/pages/SideBar/sidBarContent/Legal/termservicePage.vue') },
   { path: '/privacypolicyPage', component: () => import('../components/pages/SideBar/sidBarContent/Legal/privacypolicyPage.vue') },
   { path: '/privacysettingPage', component: () => import('../components/pages/SideBar/sidBarContent/Legal/privacysettingsPage.vue') },
+
+  // Header Pages
+  { path: '/myeditPage', component: () => import('../components/pages/Header/HeaderContent/MyeditPage.vue') },
+  { path: '/tokenPage', component: () => import('../components/pages/Header/HeaderContent/TokenPage.vue') },
+  { path: '/rewardPage', component: () => import('../components/pages/Header/HeaderContent/RewardPage.vue') },
 ]
 
 

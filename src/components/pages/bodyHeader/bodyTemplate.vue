@@ -23,7 +23,7 @@
     </div>
 
     <!-- Dropdown Menu -->
-    <div v-if="isOpen" class="absolute top-[70px] left-[-145px] z-10 w-[420px]">
+    <div v-if="isOpen" class="absolute top-[73px] left-[-145px] z-10 w-[420px]">
       
       <!-- Message bubble tail -->
       <div class="absolute top-[6px] left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rotate-45 shadow"></div>

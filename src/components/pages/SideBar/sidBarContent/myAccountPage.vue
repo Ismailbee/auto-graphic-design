@@ -1,7 +1,12 @@
 <template>
   <ion-page>
-    <ion-header translucent>
-      <ion-toolbar color="primary">
+     <ion-header class="sm:hidden">
+      <ion-toolbar color="brand">
+        <ion-buttons slot="start">
+          <ion-button @click="goBack">
+            <ion-icon :icon="arrowBackOutline" slot="icon-only" />
+          </ion-button>
+        </ion-buttons>
         <ion-title>My Account</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -81,6 +86,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { arrowBackOutline } from 'ionicons/icons'
 import {
   IonPage,
   IonHeader,
@@ -95,6 +102,11 @@ import {
   IonListHeader,
   IonButton
 } from '@ionic/vue'
+
+const router = useRouter()
+function goBack() {
+  router.back()
+}
 
 const notificationsEnabled = ref(true)
 const darkMode = ref(false)

@@ -1,5 +1,16 @@
 <template>
   <ion-page>
+    <ion-header class="sm:hidden">
+      <ion-toolbar color="brand">
+        <ion-buttons slot="start">
+          <ion-button @click="goBack">
+            <ion-icon :icon="arrowBackOutline" slot="icon-only" />
+          </ion-button>
+        </ion-buttons>
+        <ion-title>Subscription</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    
     <ion-content class="bg-gray-50">
       <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="mb-12 text-center">
@@ -16,13 +27,13 @@
           <div class="inline-flex items-center p-1 bg-white rounded-lg shadow-sm">
             <button
               @click="toggleBilling('monthly')"
-              :class="[billing === 'monthly' ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:text-gray-900', 'px-4 py-2 text-sm font-medium rounded-md']"
+              :class="[billing === 'monthly' ? 'bg-contrast text-white' : 'text-gray-700 hover:text-gray-900', 'px-4 py-2 text-sm font-medium rounded-md']"
             >
               Monthly
             </button>
             <button
               @click="toggleBilling('annually')"
-              :class="[billing === 'annually' ? 'bg-indigo-600 text-white' : 'text-gray-700 hover:text-gray-900', 'px-4 py-2 text-sm font-medium rounded-md']"
+              :class="[billing === 'annually' ? 'bg-primary text-white' : 'text-gray-700 hover:text-gray-900', 'px-4 py-2 text-sm font-medium rounded-md']"
             >
               Annually
               <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-indigo-200 text-indigo-800">
@@ -64,7 +75,7 @@
                 </li>
               </ul>
               <div class="mt-8">
-                <ion-button expand="block" fill="outline" color="primary">
+                <ion-button expand="block" fill="outline" color="contrast">
                   Get started
                 </ion-button>
               </div>
@@ -72,8 +83,8 @@
           </div>
 
           <!-- Pro Plan (Featured) -->
-          <div class="overflow-hidden transform bg-white border-2 border-indigo-600 shadow-xl rounded-2xl md:scale-105">
-            <div class="p-6 bg-indigo-600">
+          <div class="overflow-hidden transform bg-white border-2 shadow-xl border-primary rounded-2xl md:scale-105">
+            <div class="p-6 bg-primary">
               <h3 class="text-2xl font-medium text-white">Pro</h3>
               <p class="mt-4 text-indigo-100">Most popular choice</p>
               <div class="mt-6">
@@ -105,7 +116,7 @@
                 </li>
               </ul>
               <div class="mt-8">
-                <ion-button expand="block" color="primary">
+                <ion-button expand="block" color="primary" style="">
                   Get started
                 </ion-button>
               </div>
@@ -163,12 +174,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { IonPage, IonContent, IonButton, IonIcon } from '@ionic/vue';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { arrowBackOutline } from 'ionicons/icons'
 
-const billing = ref('monthly');
+const billing = ref('monthly')
+const router = useRouter()
 
 const toggleBilling = (type) => {
-  billing.value = type;
-};
+  billing.value = type
+}
+
+function goBack() {
+  router.back()
+}
 </script>
