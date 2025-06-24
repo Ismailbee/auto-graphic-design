@@ -1,18 +1,15 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+  <div class="flex items-center justify-center p-5">
     <div class="w-full max-w-6xl">
       <!-- Header -->
-      <div class="text-center mb-10 px-5">
-        <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
-          Design Gallery
-        </h1>
+      <div class="text-center px-3">
         <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
           Where every swipe reveals design perfection
         </p>
       </div>
 
       <!-- Swiper Container -->
-      <div class="relative px-3 mb-16">
+      <div class="relative px-3">
         <Swiper
           :modules="[Autoplay, Pagination]"
           :slides-per-view="3"
@@ -41,27 +38,29 @@
             :key="i"
             class="flex justify-center"
           >
-            <ion-card class="bg-white rounded-2xl shadow-lg overflow-hidden w-full flex flex-col transition-all duration-300 hover:shadow-xl h-full">
-              <div class="relative w-full aspect-[4/3]">
+            <ion-card class="bg-white rounded-2xl shadow-lg overflow-hidden w-full flex flex-col transition-all duration-300 hover:shadow-xl group">
+              <!-- Image container with hover effect -->
+              <div class="relative w-full aspect-[4/3] overflow-hidden">
                 <img
                   :src="item.image"
                   :alt="item.title"
-                  class="w-full h-full object-cover"
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:object-contain"
                   loading="lazy"
                 />
-                <div class="absolute bottom-3 right-3 bg-black bg-opacity-70 text-white px-2 py-1 rounded-full text-xs flex items-center">
+                <div class="absolute bottom-3 right-3 bg-black bg-opacity-70 text-white px-2 py-1 rounded-full text-xs flex items-center z-10">
                   <ion-icon :icon="timeOutline" class="mr-1"></ion-icon>
                   <span>{{ item.time }}</span>
                 </div>
               </div>
               
-              <ion-card-header class="p-4 flex-grow">
-                <ion-card-title class="text-base md:text-lg font-semibold text-gray-800 mb-2">
+              <!-- Card content -->
+              <ion-card-header class="p-4 min-h-[120px] flex flex-col">
+                <ion-card-title class="text-base md:text-lg font-semibold text-gray-800 line-clamp-2">
                   {{ item.title }}
                 </ion-card-title>
                 <ion-card-subtitle 
                   v-if="item.location" 
-                  class="text-sm text-gray-600 flex items-center"
+                  class="text-sm text-gray-600 flex items-center mt-2 line-clamp-2"
                 >
                   <ion-icon :icon="locationOutline" class="mr-1 text-purple-600"></ion-icon>
                   {{ item.location }}
@@ -85,25 +84,28 @@ import { timeOutline, locationOutline } from 'ionicons/icons';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
+import invitationImg from '@/assets/template/invitation.jpg';
+import NamingImg from '@/assets/template/naming Ceremony Memo.jpg';
+import Flyer from '@/assets/template/flyer.jpg';
 
 const items = [
   {
     title: 'Invitation Card',
-    location: 'Gidan Mangoro Minna',
+    location: 'Saudat Consult Business Centre Gidan Mangoro Minna, Niger State',  
     time: '2 hrs ago',
-    image: '@assets/template/invitation.jpg'
+    image: invitationImg
   },
   {
     title: 'Naming Ceremony',
     location: 'Kaduna Central Hall',
     time: '5 months ago',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+    image: NamingImg
   },
   {
     title: 'Wedding Invitation',
     location: 'Abuja Event Center',
     time: '1 year ago',
-    image: 'https://images.unsplash.com/photo-1600857062241-98c0b057cb1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+    image: Flyer
   },
   {
     title: 'Business Conference',
@@ -141,24 +143,49 @@ ion-card {
   @apply shadow-none m-0;
 }
 
-/* Ensure swiper container shows exactly 3 cards */
-.swiper {
-  width: 100%;
-  padding: 20px 0 60px;
-}
-
+/* Ensure consistent card sizing */
 .swiper-slide {
-  height: auto; /* Let the slide height adjust to content */
-  padding: 0 12px; /* Adjust based on your space-between value */
+  height: auto;
 }
 
-/* Remove any fixed width constraints from the card */
-ion-card {
-  @apply w-full h-full; /* Card will fill the slide */
+/* Aspect ratio container */
+.aspect-\[4\/3\] {
+  position: relative;
+  padding-bottom: 75%; /* 4:3 aspect ratio */
 }
 
-/* Adjust pagination position if needed */
-.swiper-pagination {
-  bottom: 0 !important;
+.aspect-\[4\/3\] > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, object-fit 0.5s ease;
 }
-</style>
+
+/* Hover effects */
+.group:hover .aspect-\[4\/3\] > img {
+  transform: scale(1.1);
+  object-fit: contain;
+  background-color: white; /* Add background for transparent images */
+}
+
+/* Text overflow handling */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card content min-height */
+.min-h-\[120px\] {
+  min-height: 120px;
+}
+
+/* Ensure time badge stays on top */
+.z-10 {
+  z-index: 10;
+}
+</style>  

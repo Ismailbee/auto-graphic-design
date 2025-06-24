@@ -1,4 +1,5 @@
 <template>
+<ion-page>
     <!-- Main Scroll Container -->
     <div
       ref="scrollContainer"
@@ -45,8 +46,14 @@
         <body-header title="bodyHeader" @menuClick="toggleSidebar" />
 
         <!-- Page Content -->
-        <div class="w-full py-10">
+        <div class="w-full ">
           <CarouselCards />
+
+          <div class="mb-[100px]">
+
+            <Templates />
+          </div>
+            <UsersComment />
         </div>
         
         <div class="mt-[300px]">
@@ -57,7 +64,7 @@
         </div>
       </div>
     </div>
-  
+  </ion-page>
 </template>
 
 
@@ -72,6 +79,8 @@ import bodyHeader from '../components/pages/bodyHeader/bodyHeader.vue'
 import appBase from '../components/pages/appBase/appBase.vue'
 import bodyBase from '../components/pages/bodyHeader/bodyBase.vue'
 import CarouselCards from '../components/pages/CarouselCards.vue'
+import Templates from '../components/pages/Templates.vue'
+import UsersComment from '../components/pages/UsersComment.vue'
 
 
 // Sidebar toggle
