@@ -1,15 +1,6 @@
 <template>
   <ion-page>
-     <ion-header class="sm:hidden">
-      <ion-toolbar color="brand">
-        <ion-buttons slot="start">
-          <ion-button @click="goBack">
-            <ion-icon :icon="arrowBackOutline" slot="icon-only" />
-          </ion-button>
-        </ion-buttons>
-        <ion-title>Scheduling</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <page-header :icon="arrowBackOutline" label="Scheduling" />
 
     <ion-content class="ion-padding">
 
@@ -68,17 +59,14 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { arrowBackOutline } from 'ionicons/icons'
+import pageHeader from '../pageHeader.vue'
 import {
-  IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
-  IonItem, IonLabel, IonDatetime, IonTextarea, IonButton,
+  IonPage, IonContent,  IonItem, IonLabel, IonDatetime, IonTextarea, IonButton,
   IonCard, IonCardHeader, IonCardTitle, IonCardContent
 } from '@ionic/vue'
 
 const router = useRouter()
 
-function goBack() {
-  router.back()
-}
 
 const selectedDate = ref('')
 const selectedTime = ref('')

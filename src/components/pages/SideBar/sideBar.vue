@@ -17,6 +17,7 @@
         
         <div class="border-[#90560a] border-b-[0.1px]">
           <MenuItem :icon="appsSharp" label="Scheduling" @click="navigateTo('/scheduling')" />
+          <MenuItem :icon="extensionPuzzle" label="Template" @click="navigateTo('/template')" />
           <MenuItem :icon="walletSharp" label="Mock-ups" @click="navigateTo('/mockupPage')" />
           <MenuItem :icon="logoYoutube" label="Videos" @click="navigateTo('/videosPage')" />
         </div>
@@ -30,12 +31,14 @@
           <MenuItem :icon="starHalfSharp" label="Rate App" @click="navigateTo('/rateappPage')" />
         </div>
         
+        <div>
         <SectionTitle title="Legal" />
         <MenuItem :icon="chatbubbleSharp" label="Contact Support" @click="navigateTo('/contactPage')" />
         <MenuItem :icon="readerSharp" label="Terms of Service" @click="navigateTo('/termservicePage')" />
         <MenuItem :icon="shieldHalfSharp" label="Privacy Policy" @click="navigateTo('/privacypolicyPage')" />
         <MenuItem :icon="shieldCheckmarkSharp" label="Privacy Settings" @click="navigateTo('/privacysettingPage')" />
 
+        </div>
       </ion-list>
 
     </ion-content>
@@ -49,7 +52,7 @@ import { useIonRouter } from '@ionic/vue';
 import {
   home, personCircle, readerSharp, walletSharp, logoYoutube, appsSharp,
   bagAddSharp, bulbSharp, helpCircleSharp, personAddSharp, starHalfSharp,
-  chatbubbleSharp, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline
+  chatbubbleSharp, extensionPuzzle, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline
 } from 'ionicons/icons';
 
 import MenuTitle from './MenuTitle.vue';

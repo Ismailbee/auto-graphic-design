@@ -42,21 +42,11 @@
         </div>
       </div>
     </div>
-
-    <div class="sm:mt-[50px] mt-20 px-4 flex items-center justify-center">
-      <div class="relative sm:w-[700px] w-[300px] flex items-center justify-center ">
-        <input 
-          type="text"
-          placeholder="Search..."
-          class="w-full max-w-[700px] pl-10 pr-4 py-3  text-sm border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#BA6900] focus:border-transparent transition duration-300 bg-[#eeee] sm:bg-gradient-to-t from-[#D2D3D5] via-[#F1F1F2] to-white"
-        />
-
-        <!-- Icon placed relative to input field, not absolute fixed distance -->
-        <div class="absolute text-gray-400 transform -translate-y-1/2 left-4 top-7">
-          <ion-icon :icon="searchOutline" class="text-lg"></ion-icon>
-        </div>
-      </div>
+    <div class="sm:mt-[50px] mt-[40px] px-4 flex items-center justify-center">
+      <SearchQuery />
+      
     </div>
+
 
 
   </div>
@@ -70,6 +60,7 @@ import { chevronUp, diamond, extensionPuzzle, logoAppleAppstore, notificationsOu
 import { useNotification } from '@/composables/useNotification'
 import bodyIcon from './bodyIcon.vue'
 import bodyTemplate from './bodyTemplate.vue'
+import SearchQuery from '../../SearchQuery/SearchQuery.vue'
 
 
 // register components (required in script setup)
@@ -102,6 +93,8 @@ onMounted(() => {
 onUnmounted(() => {
   clearInterval(intervalId)
 })
+
+
 </script>
 
 <style scoped>

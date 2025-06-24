@@ -4,11 +4,13 @@
     class="relative flex flex-no-wrap items-center justify-center w-full h-full mx-2 my-1"
   >
     <!-- Circle Button -->
-    <div class="flex items-center justify-center bg-gradient-to-b from-[#BA6900]/80 via-white/10 to-transparent h-[33px] w-[33px] rounded-full backdrop-blur-md shadow-md cursor-pointer transition">
-      <div class="flex items-center justify-center h-[25px] w-[25px] bg-[#ca790f] rounded-full transition">
+    
+      <div
+      @click="toggleDropdown" 
+       class="flex items-center justify-center h-[30px] w-[30px] bg-[#ca790f] rounded-full transition">
         <ion-icon :icon="icon" class="text-lg text-white" />
       </div>
-    </div>
+    
 
    <!-- Label and dropdown toggle -->
 <div 

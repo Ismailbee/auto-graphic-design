@@ -5,7 +5,7 @@
   >
     <!-- Circle Button -->
     
-      <div class="flex items-center justify-center h-[30px] w-[30px] bg-[#ca790f] rounded-full transition">
+      <div @click="toggleDropdown" class="flex items-center justify-center h-[30px] w-[30px] bg-[#ca790f] rounded-full transition cursor-pointer">
         <ion-icon :icon="icon" class="text-lg text-white" />
       </div>
     

@@ -1,9 +1,8 @@
 <template>
-  <ion-page>
-    <!-- Scrollable Main Wrapper -->
+    <!-- Main Scroll Container -->
     <div
       ref="scrollContainer"
-      class="relative h-screen overflow-y-auto"
+      class="relative min-h-screen overflow-y-auto"
       @scroll="handleScroll"
     >
       <!-- Floating Toggle Button -->
@@ -17,8 +16,6 @@
           </div>
         </div>
       </div>
-
-    
 
       <!-- Sidebar -->
       <side-bar :sidebarOpen="sidebarOpen" @toggle="toggleSidebar" />
@@ -48,15 +45,11 @@
         <body-header title="bodyHeader" @menuClick="toggleSidebar" />
 
         <!-- Page Content -->
-        <div
-          v-for="i in 4"
-          :key="i"
-          class="flex-1 p-4 mt-[220px] h-full w-full font-bold text-black"
-        >
-          Tailwind is now working! ✅
+        <div class="w-full py-10">
+          <CarouselCards />
         </div>
         
-        <div>
+        <div class="mt-[300px]">
           <body-Base title="bodyBase" />
         </div>
         <div>
@@ -64,8 +57,9 @@
         </div>
       </div>
     </div>
-  </ion-page>
+  
 </template>
+
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
@@ -77,6 +71,8 @@ import appHeader from '../components/pages/Header/appHeader.vue'
 import bodyHeader from '../components/pages/bodyHeader/bodyHeader.vue'
 import appBase from '../components/pages/appBase/appBase.vue'
 import bodyBase from '../components/pages/bodyHeader/bodyBase.vue'
+import CarouselCards from '../components/pages/CarouselCards.vue'
+
 
 // Sidebar toggle
 const sidebarOpen = ref(false)
@@ -98,11 +94,10 @@ const handleScroll = () => {
   const clientHeight = el.clientHeight
 
   const scrolledPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100
-  showHeader.value = scrolledPercentage >= 29
+  showHeader.value = scrolledPercentage >= 25
 
   lastScrollTop = scrollTop
 }
-
 
 const headerClasses = computed(() => [
   'transition-all duration-200 flex flex-shrink-0 flex-wrap z-40',
@@ -110,7 +105,7 @@ const headerClasses = computed(() => [
   showHeader.value
     ? isMobile.value
       ? 'bg-primary text-white'
-      : 'sm:bg-[#f6ebcd] text-black'
+      : 'sm:bg-[#f6ebcd] text-[#BA6900]'
     : 'transition-all duration-200 header-transition'
 ])
 
@@ -123,13 +118,14 @@ const handleResize = () => {
 
 onMounted(() => {
   window.addEventListener('resize', handleResize)
-  if (isMobile.value) showHeader.value = true // 👈 force show on mobile
+  if (isMobile.value) showHeader.value = true
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
 })
 </script>
+
 
 <style scoped>
 /* Colors */

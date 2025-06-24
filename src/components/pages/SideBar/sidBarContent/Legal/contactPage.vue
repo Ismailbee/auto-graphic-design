@@ -1,10 +1,6 @@
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar color="brand">
-        <ion-title>Contact Support</ion-title>
-      </ion-toolbar>
-    </ion-header>
+   <page-header :icon="arrowBackOutline" label="ContactPage" />
 
     <ion-content class="ion-padding">
       <ion-card>
@@ -45,8 +41,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import pageHeader from '../../pageHeader.vue'
+import { arrowBackOutline } from 'ionicons/icons'
 import {
-  IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel,
+  IonPage, IonContent, IonItem, IonLabel,
   IonInput, IonTextarea, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle
 } from '@ionic/vue'
 

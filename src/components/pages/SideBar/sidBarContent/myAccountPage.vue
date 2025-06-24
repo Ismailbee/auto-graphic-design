@@ -1,16 +1,7 @@
 <template>
   <ion-page>
-     <ion-header class="sm:hidden">
-      <ion-toolbar color="brand">
-        <ion-buttons slot="start">
-          <ion-button @click="goBack">
-            <ion-icon :icon="arrowBackOutline" slot="icon-only" />
-          </ion-button>
-        </ion-buttons>
-        <ion-title>My Account</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
+    <page-header :icon="arrowBackOutline" label="My Account" />
+    
     <ion-content class="ion-padding bg-[#f7f7f7]">
       <!-- Profile Section -->
       <div class="flex flex-col items-center my-6">
@@ -88,11 +79,12 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { arrowBackOutline } from 'ionicons/icons'
+import pageHeader from '../pageHeader.vue'
+
+
+
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonList,
   IonItem,
@@ -104,9 +96,6 @@ import {
 } from '@ionic/vue'
 
 const router = useRouter()
-function goBack() {
-  router.back()
-}
 
 const notificationsEnabled = ref(true)
 const darkMode = ref(false)
@@ -115,6 +104,9 @@ function logout() {
   console.log('Logging out...')
   // Add logout logic here (clear tokens, redirect, etc.)
 }
+
+
+
 </script>
 
 <style scoped>

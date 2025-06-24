@@ -12,6 +12,7 @@ const routes = [
   { path: '/home', component: () => import('../views/HomePage.vue') },
   { path: '/myAccountPage', component: () => import('../components/pages/SideBar/sidBarContent/myAccountPage.vue') },
   { path: '/scheduling', component: () => import('../components/pages/SideBar/sidBarContent/SchedulingPage.vue') },
+  { path: '/template', component: () => import('../components/pages/SideBar/sidBarContent/Template.vue') },
   { path: '/mockupPage', component: () => import('../components/pages/SideBar/sidBarContent/mockupPage.vue') },
   { path: '/videosPage', component: () => import('../components/pages/SideBar/sidBarContent/videosPage.vue') },
 
@@ -36,8 +37,8 @@ const routes = [
 
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;

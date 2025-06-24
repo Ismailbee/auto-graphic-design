@@ -1,15 +1,6 @@
 <template>
   <ion-page>
-    <ion-header class="sm:hidden">
-      <ion-toolbar color="brand">
-        <ion-buttons slot="start">
-          <ion-button @click="goBack">
-            <ion-icon :icon="arrowBackOutline" slot="icon-only" />
-          </ion-button>
-        </ion-buttons>
-        <ion-title>Subscription</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <page-header :icon="arrowBackOutline" label="Subscribtion" />
     
     <ion-content class="bg-gray-50">
       <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -177,6 +168,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { arrowBackOutline } from 'ionicons/icons'
+import pageHeader from '../../pageHeader.vue'
 
 const billing = ref('monthly')
 const router = useRouter()
@@ -185,7 +177,5 @@ const toggleBilling = (type) => {
   billing.value = type
 }
 
-function goBack() {
-  router.back()
-}
+
 </script>

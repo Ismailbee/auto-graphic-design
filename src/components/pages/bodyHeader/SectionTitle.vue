@@ -1,5 +1,5 @@
 <template>
-  <h5 class=" text-[#BA6900] text-xl font-semibold">{{ title }}</h5>
+  <h5 class=" sm:text-[#BA6900] text-[#a3a3a3] text-xl font-semibold m-0">{{ title }}</h5>
 </template>
 
 <script setup>
