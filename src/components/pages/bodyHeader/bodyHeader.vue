@@ -32,7 +32,7 @@
           <!-- Bottom Row -->
           <div class="flex items-end justify-end flex-1 w-full">
             <div class="bg-primary w-[450px] h-[80px] rounded-tl-full flex items-center justify-center px-12">
-              <bodyTemplate :icon="extensionPuzzle" label="Template" :label-icon="chevronUp" />
+              <bodyTemplate :icon="logoSlack" label="Template" :label-icon="chevronUp" />
               <body-icon :icon="logoAppleAppstore" label="My Edit" @click="navigateTo('/myeditPage')" />
               <body-icon :icon="server" label="Token" @click="navigateTo('/tokenPage')" />
               <body-icon :icon="diamond" label="Reward" @click="navigateTo('/rewardPage')" />
@@ -56,7 +56,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonIcon } from '@ionic/vue'
-import { chevronUp, diamond, extensionPuzzle, logoAppleAppstore, notificationsOutline, server, searchOutline } from 'ionicons/icons'
+import { chevronUp, diamond, logoSlack, logoAppleAppstore, notificationsOutline, server, searchOutline } from 'ionicons/icons'
 import { useNotification } from '@/composables/useNotification'
 import bodyIcon from './bodyIcon.vue'
 import bodyTemplate from './bodyTemplate.vue'

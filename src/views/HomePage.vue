@@ -53,13 +53,15 @@
             <UsersComment />
         </div>
         
-        <div class="mt-[300px]">
-          <body-Base title="bodyBase" />
-        </div>
-        <div>
+       <div>
           <app-Base title="appBase" />
         </div>
       </div>
+      
+       <div class="mt-[300px] z-30">
+          <body-Base title="bodyBase" />
+        </div>
+        
     </div>
   </ion-page>
 </template>
@@ -100,10 +102,17 @@ const handleScroll = () => {
   const clientHeight = el.clientHeight
 
   const scrolledPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100
-  showHeader.value = scrolledPercentage >= 25
 
-  lastScrollTop = scrollTop
-}
+    // 🎯 Set different thresholds
+    if (isMobile.value) {
+      showHeader.value = scrolledPercentage >=11
+    } else {
+      showHeader.value = scrolledPercentage >= 13
+    }
+    lastScrollTop = scrollTop
+  }
+
+
 
 const headerClasses = computed(() => [
   'transition-all duration-200 flex flex-shrink-0 flex-wrap z-40',
@@ -134,13 +143,6 @@ onUnmounted(() => {
 
 
 <style scoped>
-/* Colors */
-.bg-primary {
-  background-color: #502800;
-}
-.bg-contrast {
-  background-color: #BA6900;
-}
 
 /* Pulse Animation for Floating Button */
 .pulse-animation {

@@ -42,7 +42,7 @@ const searchQuery = ref('')
 
 const items = ref([
   { id: 1, title: 'App Header', path: '/app-header', component: 'appHeader.vue' },
-  { id: 2, title: 'My Account', path: '/my-account', component: 'myAccountPage.vue' },
+  { id: 2, title: 'My Account', path: '/my-account', component: '../components/pages/SideBar/sidBarContent/myAccountPage.vue' },
   { id: 3, title: 'Scheduling', path: '/scheduling' },
   { id: 4, title: 'Video Page', path: '/videoPage' },
 ])

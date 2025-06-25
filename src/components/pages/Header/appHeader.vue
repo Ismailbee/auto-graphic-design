@@ -1,6 +1,6 @@
 <template>
   <!-- tailwindcss-intellisense-disable-next-line -->
-  <div class="fixed top-0 left-0 z-40 justify-between flex items-center sm:justify-between w-full h-[75px] px-4 py-3 bg-[#f6ebcd]">
+  <div class="fixed top-0 left-0 z-40 justify-between flex items-center sm:justify-between w-full h-[75px] px-4 py-3 bg-[#f6ebcd] shrink-0">
     
   <div
   class="flex items-center justify-center ml-5 transition cursor-pointer sm:hidden"
@@ -18,7 +18,7 @@
 
     <!-- Left Section -->
     <div class="items-center flex-shrink-0 hidden gap-3 ml-10 sm:flex">
-      <headerTemplate :icon="extensionPuzzle" label="Template" :label-icon="chevronUp"/>
+      <headerTemplate :icon="logoSlack" label="Template" :label-icon="chevronUp"/>
       <header-icon :icon="logoAppleAppstore" label="My Edit" @click="navigateTo('/myeditPage')" />
       <header-icon :icon="server" label="Token" @click="navigateTo('/tokenPage')" />
       <header-icon :icon="diamond" label="Reward" @click="navigateTo('/rewardPage')" />
@@ -30,7 +30,7 @@
       <SearchQuery />
     </div>
 
-    <!-- Right Section -->
+   
     <!-- tailwindcss-intellisense-disable-next-line -->
    <!-- Right Section -->
     <div class="flex items-center justify-between flex-shrink-0 w-[120px] gap-4 mr-7 sm:justify-center">
@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <div class="flex items-center justify-center bg-primary w-[155px] h-[35px] rounded-[10px]">
+      <div class="flex items-center justify-center bg-primary w-[60px] h-[35px] rounded-[10px] shrink-0">
         <img :src="imageUrl" alt="Logo" class="w-[40px] h-[25px]" />
       </div>
 
@@ -69,7 +69,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router'
-import { searchOutline, reorderThree, chevronUp, diamond, extensionPuzzle, logoAppleAppstore, notificationsOutline, server, } from 'ionicons/icons'
+import { logoSlack, reorderThree, chevronUp, diamond, logoAppleAppstore, notificationsOutline, server, } from 'ionicons/icons'
 import { useNotification } from '@/composables/useNotification'
 import headerTemplate from '../Header/headerTemplate.vue'
 import headerIcon from '../Header/headerIcon.vue'
