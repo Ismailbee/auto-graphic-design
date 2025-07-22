@@ -8,16 +8,16 @@
       </div>
 
       <!-- Menu Sections -->
-      <ion-list class="h-full space-y-3 overflow-y-auto pt-[60px] bg-primary">
+      <ion-list class="h-full space-y-3 overflow-y-auto pt-[50px] bg-primary">
 
         <div class="border-[#90560a] border-b-[0.1px]">
+          <myAccountMenu :icon="personCircle" label="My Account" @click="navigateTo('/myAccountPage')" />
           <MenuTitle :icon="home" label="Home" @click="navigateTo('/home')" />
-          <MenuTitle :icon="personCircle" label="My Account" @click="navigateTo('/myAccountPage')" />
         </div>
         
         <div class="border-[#90560a] border-b-[0.1px]">
           <MenuItem :icon="appsSharp" label="Scheduling" @click="navigateTo('/scheduling')" />
-          <MenuItem :icon="extensionPuzzle" label="Template" @click="navigateTo('/template')" />
+          <MenuItem :icon="logoSlack" label="Template" @click="navigateTo('/template')" />
           <MenuItem :icon="walletSharp" label="Mock-ups" @click="navigateTo('/mockupPage')" />
           <MenuItem :icon="logoYoutube" label="Videos" @click="navigateTo('/videosPage')" />
         </div>
@@ -52,9 +52,10 @@ import { useIonRouter } from '@ionic/vue';
 import {
   home, personCircle, readerSharp, walletSharp, logoYoutube, appsSharp,
   bagAddSharp, bulbSharp, helpCircleSharp, personAddSharp, starHalfSharp,
-  chatbubbleSharp, extensionPuzzle, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline
+  chatbubbleSharp, logoSlack, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline
 } from 'ionicons/icons';
 
+import myAccountMenu from './sidBarContent/myAccount/myAccountMenu.vue';
 import MenuTitle from './MenuTitle.vue';
 import MenuItem from './MenuItem.vue';
 import SectionTitle from './SectionTitle.vue';

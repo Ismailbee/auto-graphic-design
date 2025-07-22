@@ -2,7 +2,7 @@
    <!-- Parent Grid -->
       <div class="grid gap-10 sm:py-10 py-4 mt-5 mb-[75px] sm:mb-0 bg-black sm:px-40 px-[30px] sm:grid-cols-4 sm:bg-primary">
           <!-- Column 1 -->
-          <ul class="grid grid-cols-2 gap-5 p-5 border rounded-lg border-[#a3a3a3] sm:border-none sm:block">
+          <ul class="grid grid-cols-2 gap-5 p-5 border rounded-lg border-[#545454] sm:border-none sm:block">
           <ul>
             <SectionTitle title="FAQ" />
             <li class="text-white text-[13px]">Privacy Policy</li>

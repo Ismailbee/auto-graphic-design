@@ -10,7 +10,11 @@ const routes = [
 
   // Main & Sidebar pages
   { path: '/home', component: () => import('../views/HomePage.vue') },
-  { path: '/myAccountPage', component: () => import('../components/pages/SideBar/sidBarContent/myAccountPage.vue') },
+ // myAccountPage
+  { path: '/myAccountPage', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/myAccountPage.vue') },
+  { path: '/Edit-Profile', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/Edit-profile.vue') },
+  
+  
   { path: '/scheduling', component: () => import('../components/pages/SideBar/sidBarContent/SchedulingPage.vue') },
   { path: '/template', component: () => import('../components/pages/SideBar/sidBarContent/Template.vue') },
   { path: '/mockupPage', component: () => import('../components/pages/SideBar/sidBarContent/mockupPage.vue') },

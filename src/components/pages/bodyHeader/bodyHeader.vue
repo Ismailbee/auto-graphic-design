@@ -1,12 +1,12 @@
 <template>
   <div class="items-center">
-    <div class="w-full h-[220px]  pb-2 bg-no-repeat bg-[#f6ebcd] flex items-center">
-      <!-- Parent Grid -->
+    <div class="w-full min-h-[180px] sm:h-[220px] bg-[#f6ebcd] flex items-center pb-2">
+       <!-- Parent Grid -->
       <div class="sm:grid sm:grid-cols-2 w-full  h-full sm:border-b-2 border-[#502800]">
 
         <!-- Left Logo -->
         <div class="md:pl-[100px] p-[10px] sm:pt-[30px] pt-[90px] flex justify-center items-center">
-          <img :src="imageUrl" alt="Logo" class="sm:w-[450px] w-[300px]" />
+          <img :src="imageUrl" alt="Logo" class="w-[200px] sm:w-[300px] md:w-[400px] lg:w-[450px]" />
         </div>
 
         <!-- Right Side -->
@@ -14,7 +14,11 @@
 
           <!-- Top Row -->
           <div class="flex items-center justify-end flex-1 pr-16 sm:flex-2 ">
-            <div class="relative pt-2 mr-4 cursor-pointer" @click="navigateToNotifications">
+           <div @click="navigateTo('/myAccountPage')" class="cursor-pointer rounded-full w-[45px] h-[45px] overflow-hidden border-2 border-contrast">
+              <img :src="userStore.profileImageUrl || '/default-profile.png'" alt="Profile" class="object-cover w-full h-full" />
+            </div>
+            
+            <div class="relative pt-2 ml-5 mr-4 cursor-pointer" @click="navigateToNotifications">
               <ion-icon :icon="notificationsOutline" class="mr-4 text-[35px] text-[#502800] " />
 
               <!-- Notification badge -->
@@ -31,7 +35,7 @@
 
           <!-- Bottom Row -->
           <div class="flex items-end justify-end flex-1 w-full">
-            <div class="bg-primary w-[450px] h-[80px] rounded-tl-full flex items-center justify-center px-12">
+           <div class="w-full max-w-[450px] px-4 bg-primary h-[80px] rounded-tl-full flex items-center justify-center">
               <bodyTemplate :icon="logoSlack" label="Template" :label-icon="chevronUp" />
               <body-icon :icon="logoAppleAppstore" label="My Edit" @click="navigateTo('/myeditPage')" />
               <body-icon :icon="server" label="Token" @click="navigateTo('/tokenPage')" />
@@ -53,15 +57,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonIcon } from '@ionic/vue'
+import { useUserStore } from '@/stores/user'
 import { chevronUp, diamond, logoSlack, logoAppleAppstore, notificationsOutline, server, searchOutline } from 'ionicons/icons'
 import { useNotification } from '@/composables/useNotification'
 import bodyIcon from './bodyIcon.vue'
 import bodyTemplate from './bodyTemplate.vue'
 import SearchQuery from '../../SearchQuery/SearchQuery.vue'
+import myAccountPage from '../SideBar/sidBarContent/myAccount/myAccountPage.vue'
 
+const userStore = useUserStore()
 
 // register components (required in script setup)
 defineProps()

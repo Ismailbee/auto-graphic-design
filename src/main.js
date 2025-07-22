@@ -14,6 +14,11 @@ import appBase from './components/pages/appBase/appBase.vue';
 import 'animate.css';
 import './assets/css/tailwind.css';
 
+// pinia
+import { createPinia } from 'pinia'
+import piniaPersistedState from 'pinia-plugin-persistedstate'
+
+
 // Ionic Core CSS
 import '@ionic/vue/css/core.css';
 import '@ionic/vue/css/normalize.css';
@@ -30,6 +35,10 @@ import '@ionic/vue/css/palettes/dark.system.css';
 
 const app = createApp(App);
 
+const pinia = createPinia()
+pinia.use(piniaPersistedState)
+app.use(pinia)
+
 app.use(IonicVue, {
   animated: true
 });
@@ -40,6 +49,7 @@ app.component('bodyHeader', bodyHeader);
 app.component('bodyBase', bodyBase);
 app.component('appBase', appBase);
 app.component('IonIcon', IonIcon);
+app.use(pinia);
 
 app.use(PrimeVue, {
   theme: {

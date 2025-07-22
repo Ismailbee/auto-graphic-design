@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed visible sm:hidden bottom-0 left-0 z-40 justify-between flex items-center w-full h-[75px] px-4 py-3  bg-primary">
+  <div class="fixed visible sm:hidden bottom-0 left-0 z-50 justify-between flex items-center w-full h-[75px] px-4 py-3  bg-primary">
    
     <!-- Left Section -->
       <div class="flex items-center justify-start ml-5">

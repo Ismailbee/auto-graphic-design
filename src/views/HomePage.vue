@@ -22,7 +22,7 @@
       <side-bar :sidebarOpen="sidebarOpen" @toggle="toggleSidebar" />
 
       <!-- Main Content -->
-  <div :class="[ 'transition-all duration-300 flex flex-col', sidebarOpen && !isMobile ? 'ml-[285px]' : 'ml-0' ]">
+    <div :class="contentTransitionClass">
 
       <!-- Slide-down App Header -->
      <transition name="slide-down">
@@ -81,6 +81,14 @@ import CarouselCards from '../components/pages/CarouselCards.vue'
 import Templates from '../components/pages/Templates.vue'
 import UsersComment from '../components/pages/UsersComment.vue'
 
+const contentTransitionClass = computed(() => {
+  if (isMobile.value) return 'flex flex-col ml-0'
+
+  return sidebarOpen.value
+    ? 'flex flex-col transition-all duration-300 ml-[285px]'
+    : 'flex flex-col transition-none ml-0'
+})
+
 
 // Sidebar toggle
 const sidebarOpen = ref(false)
@@ -114,15 +122,21 @@ const handleScroll = () => {
 
 
 
-const headerClasses = computed(() => [
-  'transition-all duration-200 flex flex-shrink-0 flex-wrap z-40',
-  sidebarOpen.value && !isMobile.value ? 'ml-[285px] md:max-w-[1250px]' : 'ml-0 w-full',
-  showHeader.value
+const headerClasses = computed(() => {
+  const base = 'flex flex-shrink-0 flex-wrap z-40'
+  const marginLeft = sidebarOpen.value && !isMobile.value
+    ? 'ml-[285px] md:max-w-[1250px] transition-all duration-300 flex-wrap overflow-hidden whitespace-nowrap'
+    : 'ml-0 w-full  transition-none '
+  
+  const bgColor = showHeader.value
     ? isMobile.value
       ? 'bg-primary text-white'
       : 'sm:bg-[#f6ebcd] text-[#BA6900]'
-    : 'transition-all duration-200 header-transition'
-])
+    : 'header-transition'
+
+  return `${base} ${marginLeft} ${bgColor}`
+})
+
 
 
 const isMobile = ref(window.innerWidth < 640) // sm: 640px in Tailwind
