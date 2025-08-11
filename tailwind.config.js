@@ -7,6 +7,13 @@ export default {
   ],
   theme: {
     extend: {
+       screens: {
+        sm: '640px',
+        md: '768px',
+        lg: '834px', // iPad portrait
+        xl: '1280px',
+        '2xl': '1536px',
+      },
       fontFamily: {
         sans: ['Roboto', 'sans-serif'], // overrides `font-sans`
       },

@@ -1,6 +1,6 @@
 <template>
   <!-- tailwindcss-intellisense-disable-next-line -->
-  <div class="fixed top-0 left-0 z-40 justify-between flex items-center sm:justify-between w-full h-[75px] px-4 py-3 bg-[#f6ebcd]  whitespace-nowrap">
+  <div class="fixed top-0 left-0 z-40 justify-between flex items-center sm:justify-between md:w-full  w-full h-[75px] px-4 py-3 bg-[#f6ebcd]  whitespace-nowrap">
     
   <div
   class="flex items-center justify-center ml-5 transition cursor-pointer sm:hidden"
@@ -17,7 +17,7 @@
 
 
     <!-- Left Section -->
-    <div class="items-center flex-shrink-0 hidden gap-3 ml-10 sm:flex">
+    <div class="items-center md:w-[100px] lg:w-[250px] flex-shrink-0 hidden gap-3 ml-10 md:ml-5 sm:flex">
       <headerTemplate :icon="logoSlack" label="Template" :label-icon="chevronUp"/>
       <header-icon :icon="logoAppleAppstore" label="My Edit" @click="navigateTo('/myeditPage')" />
       <header-icon :icon="server" label="Token" @click="navigateTo('/tokenPage')" />
@@ -26,7 +26,7 @@
 
     <!-- Middle Section (Search Bar) -->
     <!-- tailwindcss-intellisense-disable-next-line -->
-    <div class="relative hidden ml-10 sm:flex justify-center sm:visible flex-1 px-4 max-w-[500px] text-black">
+    <div class="relative hidden lg:flex ml-[226px] sm:flex justify-center sm:visible px-4 md:w-[250px] w-full lg:w-[600px] text-black">
       <SearchQuery />
     </div>
 
@@ -36,7 +36,7 @@
 <div
   class="flex items-center justify-end flex-shrink-0 min-w-0 gap-3 mr- sm:justify-end sm:flex-nowrap"
 >
-  <div v-if="showHeader">
+  <div v-if="showHeader" >
     <mobileSearchQuery />
   </div>
 

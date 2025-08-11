@@ -7,9 +7,6 @@
       @click="$emit('click')"
       class="flex items-center p-3 text-white transition border-b group"
     >
-        <div class="rounded-full w-[50px] h-[50px] overflow-hidden border-2 border-contrast">
-          <img :src="userStore.profileImageUrl" alt="profile" class="object-cover w-full h-full" />
-        </div>
 
         <div class="flex flex-col">
           <ion-label class="text-[15px] text-black ml-3">

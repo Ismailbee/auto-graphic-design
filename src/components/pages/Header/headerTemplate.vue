@@ -1,14 +1,14 @@
 <template>
   <div 
     ref="dropdownRef"
-    class="relative flex flex-no-wrap items-center justify-center w-full h-full mx-2 my-1"
+    class="relative flex flex-no-wrap items-center justify-center w-full h-full md:mx-0 lg:mx-2 my-1"
   >
     <!-- Circle Button -->
     
       <div
       @click="toggleDropdown" 
-       class="flex items-center justify-center h-[30px] w-[30px] bg-[#ca790f] rounded-full transition">
-        <ion-icon :icon="icon" class="text-lg text-white" />
+       class="flex items-center justify-center md:h-[25px] lg:h-[35px] h-[30px] md:w-[25px] lg:w-[35px] w-[30px] bg-[#ca790f] rounded-full transition">
+        <ion-icon :icon="icon" class="text-lg md:text-sm lg:text-[18px] text-white" />
       </div>
     
 
@@ -17,13 +17,13 @@
   @click="toggleDropdown" 
   class="flex items-center mt-1 space-x-1 cursor-pointer"
 >
-  <span class="text-[12px] font-medium text-[#502800] whitespace-nowrap ml-3">
+  <span class="text-[12px] md:text-[11px] font-medium text-[#502800] whitespace-nowrap ml-3 md:ml-1">
     {{ label }}
   </span>
 
   <ion-icon 
     :icon="labelIcon"
-    class="text-lg text-[#502800] visible transition-transform duration-200"
+    class="text-lg md:text-[15px] text-[#502800] visible transition-transform duration-200"
     :class="{ 'rotate-180': isOpen }"
   />
 </div>

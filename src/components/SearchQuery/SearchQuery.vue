@@ -1,11 +1,11 @@
 <template>
   
-    <div class="relative sm:w-[700px]  w-[300px] flex items-center justify-center">
+    <div class="relative sm:w-[700px]  w-full flex items-center justify-center">
       <input 
         v-model="searchQuery"
         type="text"
         placeholder="Search..."
-        class="w-full h-[45px] text-black max-w-[700px] pl-10 pr-4 py-3 text-sm border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2  focus:border-transparent transition duration-300 bg-[#eeee] sm:bg-gradient-to-t from-[#D2D3D5] via-[#F1F1F2] to-white"
+        class="w-full h-[45px] text-black  pl-10 pr-4 py-3 text-sm border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2  focus:border-transparent transition duration-300 bg-[#eeee] sm:bg-gradient-to-t from-[#D2D3D5] via-[#F1F1F2] to-white"
       />
 
       <!-- Search results -->

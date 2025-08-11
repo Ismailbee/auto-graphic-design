@@ -49,7 +49,7 @@ app.component('bodyHeader', bodyHeader);
 app.component('bodyBase', bodyBase);
 app.component('appBase', appBase);
 app.component('IonIcon', IonIcon);
-app.use(pinia);
+
 
 app.use(PrimeVue, {
   theme: {
