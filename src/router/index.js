@@ -37,6 +37,10 @@ const routes = [
   { path: '/myeditPage', component: () => import('../components/pages/Header/HeaderContent/MyeditPage.vue') },
   { path: '/tokenPage', component: () => import('../components/pages/Header/HeaderContent/TokenPage.vue') },
   { path: '/rewardPage', component: () => import('../components/pages/Header/HeaderContent/RewardPage.vue') },
+
+  //Pages Editor
+  { path: '/DesignEditor', component: () => import('../components/pages/PageEditor/DesignEditor.vue') },
+
 ]
 
 
