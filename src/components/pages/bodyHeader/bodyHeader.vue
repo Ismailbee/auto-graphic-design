@@ -86,7 +86,7 @@ const { notificationCount } = useNotification()
 
 
 function navigateToNotifications() {
-  router.push('/notifications')
+  router.push('/notification')
 }
 
 

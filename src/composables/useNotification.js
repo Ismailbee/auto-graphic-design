@@ -1,15 +1,34 @@
-// useNotification.js
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const notificationCount = ref(0)
+// Notifications list
+const notifications = ref([
+  { title: "System Update", desc: "Version 2.1.0 is now available.", read: false, status: null },
+  { title: "Promo Alert", desc: "Get 20% off on your next order.", read: false, status: null },
+  { title: "Security Notice", desc: "We’ve updated our privacy policy.", read: true, status: null }
+])
+
+// Count of unread notifications
+const notificationCount = ref(notifications.value.filter(n => !n.read).length)
+
 let intervalId = null
+const FETCH_INTERVAL = 5000
 
 export function useNotification() {
   const isActive = () => document.visibilityState === 'visible'
 
-  function fetchNotifications() {
-    notificationCount.value += 1
-    playNotificationSound()
+  async function fetchNotifications() {
+    try {
+      const res = await fetch('/api/notifications')
+      if (!res.ok) throw new Error("Failed to fetch")
+      const data = await res.json()
+
+      notifications.value = data
+      notificationCount.value = data.filter(n => !n.read).length
+
+      if (notificationCount.value > 0) playNotificationSound()
+    } catch (err) {
+      console.error("Notification fetch error:", err)
+    }
   }
 
   function playNotificationSound() {
@@ -22,7 +41,7 @@ export function useNotification() {
     stopFetching()
     intervalId = setInterval(() => {
       if (isActive()) fetchNotifications()
-    }, 5000)
+    }, FETCH_INTERVAL)
   }
 
   function stopFetching() {
@@ -37,6 +56,17 @@ export function useNotification() {
     else stopFetching()
   }
 
+function acceptNotification(index) {
+  notifications.value.splice(index, 1);
+  notificationCount.value = notifications.value.length;
+}
+
+function rejectNotification(index) {
+  notifications.value.splice(index, 1);
+  notificationCount.value = notifications.value.length;
+}
+
+
   onMounted(() => {
     startFetching()
     document.addEventListener('visibilitychange', handleVisibilityChange)
@@ -48,9 +78,12 @@ export function useNotification() {
   })
 
   return {
+    notifications,
     notificationCount,
     fetchNotifications,
     startFetching,
-    stopFetching
+    stopFetching,
+    acceptNotification,
+    rejectNotification
   }
 }

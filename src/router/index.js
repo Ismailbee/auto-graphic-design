@@ -13,6 +13,10 @@ const routes = [
  // myAccountPage
   { path: '/myAccountPage', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/myAccountPage.vue') },
   { path: '/Edit-Profile', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/Edit-profile.vue') },
+  { path: '/accountSet', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/accountSet.vue') },
+  { path: '/notification', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/notification.vue') },
+  { path: '/membershipPlan', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/membershipPlan.vue') },
+  { path: '/passwordSecurity', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/passwordSecurity.vue') },
   
   
   { path: '/scheduling', component: () => import('../components/pages/SideBar/sidBarContent/SchedulingPage.vue') },

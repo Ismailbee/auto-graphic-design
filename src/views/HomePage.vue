@@ -40,7 +40,7 @@
 
       
         <!-- Body Header -->
-        <body-header title="bodyHeader" @menuClick="toggleSidebar" />
+        <body-header @menuClick="toggleSidebar" />
 
         <!-- Page Content -->
         <div class="w-full ">
@@ -82,12 +82,13 @@ import Templates from '../components/pages/Templates.vue'
 import UsersComment from '../components/pages/UsersComment.vue'
 
 const contentTransitionClass = computed(() => {
-  if (isMobile.value) return 'flex flex-col ml-0'
+  if (isMobile.value) return 'flex flex-col ml-0 w-full';
 
   return sidebarOpen.value
     ? 'flex flex-col transition-all duration-300 ml-[285px]'
-    : 'flex flex-col transition-none ml-0'
-})
+    : 'flex flex-col transition-none ml-0';
+});
+
 
 
 // Sidebar toggle
@@ -123,9 +124,9 @@ const handleScroll = () => {
 
 
 const headerClasses = computed(() => {
-  const base = 'flex flex-shrink-0 flex-wrap z-40'
+  const base = 'flex flex-shrink-0 flex-wrap z-40 w-full min-w-0'
   const marginLeft = sidebarOpen.value && !isMobile.value
-    ? 'ml-[285px] md:max-w-[1250px] transition-all duration-300 flex-wrap overflow-hidden whitespace-nowrap'
+    ? 'ml-[285px] min-w-0 transition-all duration-300 flex-wrap overflow-hidden whitespace-nowrap'
     : 'ml-0 w-full  transition-none '
   
   const bgColor = showHeader.value
@@ -153,6 +154,8 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
 })
+
+
 </script>
 
 

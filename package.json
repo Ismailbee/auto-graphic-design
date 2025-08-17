@@ -23,11 +23,14 @@
     "@lottiefiles/dotlottie-web": "^0.44.0",
     "@primeuix/themes": "^1.1.1",
     "animate.css": "^4.1.1",
+    "chart.js": "^4.5.0",
+    "cropperjs": "^2.0.1",
     "ionicons": "^7.4.0",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",
     "primevue": "^4.3.4",
     "swiper": "^10.3.1",
+    "vue-cropperjs": "^5.0.0",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
@@ -37,7 +40,6 @@
     "@vue/test-utils": "^2.3.0",
     "autoprefixer": "^10.4.21",
     "cypress": "^13.5.0",
-    "esbuild": "^0.19.12",
     "eslint": "^8.35.0",
     "eslint-plugin-vue": "^9.9.0",
     "jsdom": "^22.1.0",

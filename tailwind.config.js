@@ -7,20 +7,20 @@ export default {
   ],
   theme: {
     extend: {
-       screens: {
+      screens: {
         sm: '640px',
         md: '768px',
-        lg: '834px', // iPad portrait
+        lg: '1024px', // now lg starts at 1024px
         xl: '1280px',
         '2xl': '1536px',
       },
       fontFamily: {
-        sans: ['Roboto', 'sans-serif'], // overrides `font-sans`
+        sans: ['Roboto', 'sans-serif'],
       },
       colors: {
         primary: '#502800',
+        secondary: '#f6ebcd',
         contrast: '#BA6900',
-        brown: '#BA6900', // Add this line
       },
     },
   },
