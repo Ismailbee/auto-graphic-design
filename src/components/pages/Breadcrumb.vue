@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex items-center text-sm space-x-2">
+  <nav class="sm:flex hidden items-center text-sm space-x-2">
     <!-- Previous page link -->
     <span
       v-if="prevPageName && prevPageRoute"

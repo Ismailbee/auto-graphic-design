@@ -3,20 +3,19 @@
     <ion-toolbar color="brand">
       <ion-buttons slot="start">
         <ion-button @click="goBack">
-          <ion-icon :icon="icon" slot="icon-only" />
+          <ion-icon slot="icon-only" :icon=" arrowBackOutline" class="text-white text-lg ml-9" />
         </ion-button>
       </ion-buttons>
-      <ion-title>{{ label }}</ion-title>
+      <ion-title class="text-contrast text-lg">{{ label }}</ion-title>
     </ion-toolbar>
   </ion-header>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { arrowBackOutline } from 'ionicons/icons' // ✅ Ionic's back arrow icon
 
-// Accept icon and label as props from parent
 defineProps({
-  icon: String,  // Use capital `String`
   label: String
 })
 
@@ -26,6 +25,3 @@ function goBack() {
   router.back()
 }
 </script>
-
-<style scoped>
-</style>

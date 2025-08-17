@@ -1,11 +1,11 @@
 <template>
   <ion-page>
     <!-- Header -->
-    <page-header>Membership Plan</page-header>
+    <page-header label="Membership Plan" />
 
      
     <ion-content>
-       <div class="bg-secondary h-full w-full px-[90px] py-[30px]">
+       <div class="sm:bg-secondary min-h-screen w-full sm:px-[90px] sm:py-[30px]">
           <!-- Breadcrumb -->
         <Breadcrumb
           prevPageName="My Account"
@@ -24,7 +24,7 @@
                     <ion-toggle v-model="desktopNotifications" color="brand"></ion-toggle>
                     </ion-item>
 
-                    <ion-item>
+                    <ion-item class="space-x-[150px]">
                     <ion-label>Enable Email Notifications</ion-label>
                     <ion-toggle v-model="emailNotifications" color="brand"></ion-toggle>
                     </ion-item>

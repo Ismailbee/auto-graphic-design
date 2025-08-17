@@ -1,9 +1,9 @@
 <template>
   <ion-page class="m-0">
-    <page-header>My Profile</page-header>
+    <page-header label="My Profile" />
 
   <ion-content>
-  <div class="flex flex-col lg:grid lg:grid-cols-3 bg-secondary h-full w-full px-[80px] py-8">
+  <div class="flex flex-col lg:grid lg:grid-cols-3 bg-secondary min-h-screen w-full px-6 sm:px-[80px] py-8">
 
     <!-- Breadcrumb -->
     <Breadcrumb
@@ -14,18 +14,18 @@
     />
 
     <!-- Right side profile section (comes first on md and below) -->
-    <div class="order-1 lg:order-2 col-span-2 lg:px-7 h-full w-full">
+    <div class="order-1 lg:order-2 col-span-2 lg:px-7 h-full w-full text-center sm:text-left">
       <!-- Profile header -->
-      <div class="bg-primary rounded-md shadow-2xl mb-6 grid grid-cols-3 items-center gap-4 p-6">       
-        <div class="grid-cols-2 col-span-2 grid items-center gap-4">
+      <div class="sm:bg-primary sm:rounded-md sm:shadow-2xl mb-6 sm:grid grid-cols-3 items-center gap-4 p-6">       
+        <div class="grid-cols-2 sm:col-span-2 sm:grid items-center px-5 gap-4 col-span-2 flex flex-col justify-center space-y-3">
           <!-- Profile image -->
-          <div class="w-[100px] h-[100px] rounded-full border-[4px] border-contrast overflow-hidden">
+          <div class="w-[100px] h-[100px] rounded-full  overflow-hidden">
             <img :src="userStore.profileImageUrl" />
           </div>
 
           <!-- Name & Email -->
-          <div class=" ml-[-140px] md:ml-[-80px]">
-            <h2 class="text-white m-0">{{ userStore.fullName }}</h2>
+          <div class="md:ml-[-80px]">
+            <h2 class="sm:text-white m-0">{{ userStore.fullName }}</h2>
             <p class="m-0 md:text-[14px] text-contrast">{{ userStore.email }}</p>
           </div>
         </div>
@@ -33,7 +33,7 @@
         <!-- Edit profile button -->
         <button  
           @click="goToEditProfile" 
-          class="px-6 py-2 h-[50px] w-full lg:w-[200px] rounded-full bg-contrast text-white font-semibold shadow-md hover:shadow-lg 
+          class="mt-3 sm:m-0 px-6 py-2 h-[50px] w-full lg:w-[200px] rounded-full bg-contrast text-white font-semibold shadow-md hover:shadow-lg 
                  hover:scale-105 transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-contrast"
         >
           Edit Profile
@@ -82,11 +82,11 @@
     </div>
 
     <!-- Left side menu cards (goes below on md and below) -->
-    <div class="order-2 lg:order-1 col-end-2 md:mt-4 ">
+    <div class="order-2 lg:order-1 col-end-2 mt-5 sm:m-0 md:mt-4 ">
       <div
         v-for="item in cards"
         :key="item.title"
-        class="block bg-white border border-gray-300 hover:shadow-md p-3 mb-4 rounded-md transition-all duration-200 hover:scale-105 cursor-pointer"
+        class="block bg-white border border-gray-300 hover:shadow-md p-3 mb-2 sm:mb-4 rounded-md transition-all duration-200 hover:scale-105 cursor-pointer"
         @click="navigate(item.route)"
       >
         <h5 class="text-lg m-0 font-medium hover:font-bold transition-colors duration-200">
