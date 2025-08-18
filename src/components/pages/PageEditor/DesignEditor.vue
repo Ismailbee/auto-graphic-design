@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <!-- Top App Bar -->
-    <ion-header class="bg-slate-900/60 backdrop-blur border-b border-white/10">
+    <ion-header class="bg-brown-100 backdrop-blur border-b border-white/10">
       <ion-toolbar class="min-h-[56px]">
         <ion-buttons slot="start" class="flex items-center gap-2">
           <div class="text-xl text-white">
@@ -72,7 +72,7 @@
     <ion-content class="bg-gradient-to-br from-slate-800 to-slate-600">
       <div class="flex h-full">
         <!-- Left Sidebar: Tools / Pages / Layers -->
-        <aside class="w-[300px] bg-slate-900/80 border-r border-white/10 p-3 overflow-y-auto flex flex-col">
+        <aside class="w-[300px] bg-primary border-r border-white/10 p-3 overflow-y-auto flex flex-col">
           <div class="tabs">
             <button class="tab" :class="{active: leftTab==='tools'}" @click="leftTab='tools'">Tools</button>
             <button class="tab" :class="{active: leftTab==='pages'}" @click="leftTab='pages'">Pages</button>
@@ -633,30 +633,30 @@ onMounted(async ()=>{
 
 <style scoped>
 /* utility buttons */
-.btn { @apply bg-slate-800/60 text-gray-200 rounded-md px-3 py-2 text-xs; }
-.btn-ghost { @apply bg-slate-800/40 text-gray-200 rounded-md px-2 py-1 text-xs border border-white/10; }
+.btn { @apply bg-primary text-gray-200 rounded-md px-3 py-2 text-xs; }
+.btn-ghost { @apply bg-primary text-gray-200 rounded-md px-2 py-1 text-xs border border-white/10; }
 .btn-danger { @apply bg-red-600 text-white rounded-md px-3 py-2 text-xs; }
-.chip { @apply bg-slate-800/60 text-gray-200 rounded-md px-2 py-1 text-[11px] border border-white/10; }
+.chip { @apply bg-primary text-gray-200 rounded-md px-2 py-1 text-[11px] border border-white/10; }
 .label { @apply text-[11px] text-slate-300 flex flex-col gap-1; }
 .input { @apply bg-white text-slate-900 rounded-md px-2 py-1 text-xs border border-slate-200; }
 .input-color { @apply w-8 h-8 p-0 border-0 rounded-md; }
 .input-textarea { @apply w-full bg-white text-slate-900 rounded-md px-2 py-2 text-xs border border-slate-200; }
 
 /* left tabs */
-.tabs { @apply grid grid-cols-3 bg-slate-800/60 rounded-lg p-1; }
+.tabs { @apply grid grid-cols-3 bg-primary rounded-lg p-1; }
 .tab { @apply text-xs text-slate-300 py-1 rounded-md; }
-.tab.active { @apply bg-slate-700/60 text-white; }
+.tab.active { @apply bg-primary text-white; }
 
-.tool-tile { @apply bg-slate-800/60 rounded-md p-2 text-center cursor-pointer transition-all border border-transparent hover:bg-slate-700/70 hover:border-indigo-500/50; }
+.tool-tile { @apply bg-primary rounded-md p-2 text-center cursor-pointer transition-all border border-transparent hover:bg-slate-700/70 hover:border-indigo-500/50; }
 .tool-tile.active { @apply bg-slate-700/80 border border-indigo-500; }
 
-.panel { @apply bg-slate-800/60 rounded-lg p-3 text-white; }
+.panel { @apply bg-primary rounded-lg p-3 text-white; }
 .panel-title { @apply text-xs uppercase tracking-wider text-slate-300; }
 
-.page-item { @apply bg-slate-800/60 rounded-md px-2 py-2 border border-transparent hover:border-indigo-500/50 cursor-pointer; }
+.page-item { @apply bg-primary rounded-md px-2 py-2 border border-transparent hover:border-indigo-500/50 cursor-pointer; }
 .page-item.active { @apply border-indigo-500; }
 
-.layer-row { @apply flex items-center justify-between bg-slate-800/60 rounded-md px-2 py-1 mb-2; }
+.layer-row { @apply flex items-center justify-between bg-primary rounded-md px-2 py-1 mb-2; }
 
 .view-toggle { @apply text-[11px] text-slate-300 flex items-center gap-1; }
 
