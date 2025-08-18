@@ -3,7 +3,7 @@
     <page-header>Password & Security</page-header>
 
     <ion-content>
-      <div class="bg-secondary h-full w-full px-[80px] py-8">
+      <div class="bg-secondary min-h-screen w-full px-[80px] py-8">
 
         <!-- Breadcrumb -->
         <Breadcrumb
