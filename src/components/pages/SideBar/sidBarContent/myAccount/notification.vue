@@ -1,9 +1,9 @@
 <template>
     <ion-page class="m-0">
-    <page-header>My Profile</page-header>
+    <page-header label="Notifications" />
 
     <ion-content>
-      <div class=" bg-secondary h-full w-full px-[80px] py-[50px]">
+      <div class=" bg-secondary h-full w-full sm:px-[80px] sm:py-[50px]">
 
         <!-- Breadcrumb -->
         <Breadcrumb
@@ -13,7 +13,7 @@
           class="pb-3"
         />
         
-        <div class="bg-white rounded-lg h-full w-full py-5 px-20">
+        <div class="sm:bg-white rounded-lg h-full w-full py-5 px-4 sm:px-20">
           <div class="border-b pb-4">
                   <div
                   v-for="(notif, index) in notifications"
@@ -21,13 +21,13 @@
                   
                 >
                   <div
-                    class="flex bg-white border justify-between h-full w-full border-gray-300 hover:shadow-md items-center px-10 mb-4 rounded-md transition-all duration-200 hover:scale-105"
+                    class="flex bg-white border justify-between h-full w-full border-gray-300 hover:shadow-md items-center px-2 sm:px-10 mb-4 rounded-md transition-all duration-200 hover:scale-105"
                   >
                     
-                      <h3 class="text-sm font-semibold">{{ notif.title }}</h3>
-                      <p class="text-sm text-gray-500">{{ notif.desc }}</p>
-                    
-
+                      <div class="py-2">
+                        <h3 class="text-sm m-0 font-semibold">{{ notif.title }}</h3>
+                        <p class="text-[12px] text-gray-500  truncate">{{ notif.desc }}</p>
+                      </div>
                     <div class="flex gap-2">
                       <button
                         class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-md text-sm"

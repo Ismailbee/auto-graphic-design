@@ -1,9 +1,9 @@
 <template>
   <ion-page>
-    <page-header>Password & Security</page-header>
+    <page-header label="Password & Security" />
 
     <ion-content>
-      <div class="bg-secondary min-h-screen w-full px-[80px] py-8">
+      <div class="bg-secondary min-h-screen w-full sm:px-[80px] pb-5 sm:py-8">
 
         <!-- Breadcrumb -->
         <Breadcrumb
@@ -13,10 +13,10 @@
           class="pb-3"
         />
 
-        <div class="lg:grid grid-cols-2 gap-8">
+        <div class="sm:grid grid-cols-2 gap-8">
 
           <!-- Change Password -->
-          <div class="shadow-md rounded-lg bg-white">
+          <div class="sm:shadow-md sm:rounded-lg bg-white py-2">
             <ion-card-header>
               <ion-card-title class="text-lg font-semibold">Change Password</ion-card-title>
             </ion-card-header>
