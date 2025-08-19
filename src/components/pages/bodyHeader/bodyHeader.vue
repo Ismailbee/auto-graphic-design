@@ -14,7 +14,7 @@
 
           <!-- Top Row -->
           <div class="flex items-center justify-end flex-1 pr-16 sm:flex-2 ">
-           <div @click="navigateTo('/myAccountPage')" class="cursor-pointer rounded-full w-[45px] h-[45px] overflow-hidden border-2 border-contrast">
+           <div @click="navigateTo('/myAccountPage')" class="cursor-pointer rounded-full w-[45px] h-[45px] overflow-hidden ">
               <img :src="userStore.profileImageUrl || '/default-profile.png'" alt="Profile" class="object-cover w-full h-full" />
             </div>
             

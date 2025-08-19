@@ -5,7 +5,7 @@
     @click="$emit('click')"
     class="flex items-center justify-center pt-3 pb-3 pl-4 pr-4 my-2 text-white transition group"
   >
-    <div class="rounded-full w-[50px] h-[50px] overflow-hidden border-4 border-contrast">
+    <div class="rounded-full w-[50px] h-[50px] overflow-hidden">
       <img :src="userStore.profileImageUrl" alt="profile" class="object-cover w-full h-full" />
     </div>
 

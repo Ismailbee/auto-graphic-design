@@ -3,19 +3,22 @@
     <ion-content v-if="sidebarOpen" class="relative w-full h-screen px-2 pt-6 text-white bg-primary rounded-b-3xl">
 
       <!-- Collapse Arrow -->
-      <div class="absolute z-10 flex items-center justify-center w-8 h-8 transition rounded-full cursor-pointer top-5 right-3 bg-contrast hover:scale-110" @click="toggleSidebar">
-        <ion-icon :icon="chevronBackOutline" class="text-xl text-white" />
-      </div>
+        <div 
+          class="z-10 flex items-center justify-center w-8 h-8 transition rounded-full cursor-pointer bg-contrast hover:scale-110 absolute top-4 right-4"  
+          @click="toggleSidebar">
+          <ion-icon :icon="chevronBackOutline" class="text-xl text-white" />
+        </div>
+
 
       <!-- Menu Sections -->
-      <ion-list class="h-full space-y-3 overflow-y-auto pt-[50px] bg-primary">
+      <ion-list class="h-full space-y-1 md:space-y-3 overflow-y-auto pt-[50px] bg-primary">
 
         <div class="border-[#90560a] border-b-[0.1px]">
           <myAccountMenu :icon="personCircle" label="My Account" @click="navigateTo('/myAccountPage')" />
           <MenuTitle :icon="home" label="Home" @click="navigateTo('/home')" />
         </div>
         
-        <div class="border-[#90560a] border-b-[0.1px]">
+        <div class="border-[#90560a]  border-b-[0.1px]">
           <MenuItem :icon="appsSharp" label="Scheduling" @click="navigateTo('/scheduling')" />
           <MenuItem :icon="logoSlack" label="Template" @click="navigateTo('/template')" />
           <MenuItem :icon="walletSharp" label="Mock-ups" @click="navigateTo('/mockupPage')" />
@@ -39,6 +42,19 @@
         <MenuItem :icon="shieldCheckmarkSharp" label="Privacy Settings" @click="navigateTo('/privacysettingPage')" />
 
         </div>
+
+            <!-- Logout Button -->
+    <div class="m-0 w-full px-6">
+      <button
+        @click="logout"
+        class="w-full px-4 py-2 text-left text-contrast hover:bg-contrast hover:text-primary transition flex items-center"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+        Logout
+      </button>
+    </div>
       </ion-list>
 
     </ion-content>
@@ -68,6 +84,17 @@ const toggleSidebar = () => emit('toggle');
 const navigateTo = (route) => {
   ionRouter.push(route)
   emit('toggle') // auto-close on mobile
+}
+
+async function logout() {
+  try {
+       
+    console.log("User logged out");
+    // For now, just reload the page to simulate logout
+    window.location.href = '/login';
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
 }
 </script>
 

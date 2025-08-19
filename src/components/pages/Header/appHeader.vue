@@ -18,7 +18,7 @@
 
 
     <!-- Left Section -->
-<div class="flex items-center min-w-0 flex-shrink gap-3 ml-10 md:ml-5 hidden sm:flex">
+<div class="items-center min-w-0 flex-shrink gap-3 ml-10 md:ml-5 hidden sm:flex">
   <headerTemplate :icon="logoSlack" label="Template" :label-icon="chevronUp"/>
   <header-icon :icon="logoAppleAppstore" label="My Edit" @click="navigateTo('/myeditPage')" />
   <header-icon :icon="server" label="Token" @click="navigateTo('/tokenPage')" />
@@ -47,7 +47,7 @@
   <div   class="relative ">
     <div
       @click="toggleDropdown"
-      class="cursor-pointer rounded-full w-[30px] h-[30px] overflow-hidden border-2 border-contrast"
+      class="cursor-pointer rounded-full w-[30px] h-[30px] overflow-hidden "
     >
       <img
         :src="userStore.profileImageUrl || '/default-profile.png'"
