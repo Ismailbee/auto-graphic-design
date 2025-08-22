@@ -7,8 +7,9 @@ const notifications = ref([
   { title: "Security Notice", desc: "We’ve updated our privacy policy.", read: true, status: null }
 ])
 
-// Count of unread notifications
-const notificationCount = ref(notifications.value.filter(n => !n.read).length)
+// Count of unread notificationsconst notificationCount = ref(notifications.value.length)
+const notificationCount = ref(notifications.value.length)
+
 
 let intervalId = null
 const FETCH_INTERVAL = 5000
@@ -23,7 +24,8 @@ export function useNotification() {
       const data = await res.json()
 
       notifications.value = data
-      notificationCount.value = data.filter(n => !n.read).length
+      notificationCount.value = data.length
+
 
       if (notificationCount.value > 0) playNotificationSound()
     } catch (err) {

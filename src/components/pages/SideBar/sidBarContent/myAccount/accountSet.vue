@@ -1,12 +1,11 @@
 <template>
   <ion-page>
     <!-- Header -->
-    <page-header>Membership Plan</page-header>
+    <page-header label="Account Setting" />
 
-     
     <ion-content>
-       <div class="bg-secondary h-full w-full px-[90px] py-[30px]">
-          <!-- Breadcrumb -->
+      <div class="sm:bg-secondary min-h-screen w-full px-4 sm:px-[90px] sm:py-[30px]">
+        <!-- Breadcrumb -->
         <Breadcrumb
           prevPageName="My Account"
           prevPageRoute="/myAccountPage"
@@ -14,85 +13,91 @@
           class="pb-3"
         />
 
-        <div class="bg-white shadow-md rounded-md p-3">
-                        
-                <!-- Notifications -->
-                <h3 class="font-semibold text-primary text-lg mt-4">Notifications</h3>
-                <div>
-                    <ion-item>
-                    <ion-label>Enable Desktop Notifications</ion-label>
-                    <ion-toggle v-model="desktopNotifications" color="brand"></ion-toggle>
-                    </ion-item>
+        <div class="bg-white sm:shadow-md rounded-md py-3 px-9">
+          <!-- Notifications -->
+          <h3 class="font-semibold text-primary text-lg mt-4">Notifications</h3>
+          <div>
+            <!-- Desktop -->
+            <div class="flex justify-between items-center py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Enable Desktop Notifications</ion-label>
+              <ion-toggle v-model="desktopNotifications" color="brand"></ion-toggle>
+            </div>
 
-                    <ion-item>
-                    <ion-label>Enable Email Notifications</ion-label>
-                    <ion-toggle v-model="emailNotifications" color="brand"></ion-toggle>
-                    </ion-item>
+            <!-- Email -->
+            <div class="flex justify-between items-center py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Enable Email Notifications</ion-label>
+              <ion-toggle v-model="emailNotifications" color="brand"></ion-toggle>
+            </div>
 
-                    <ion-item>
-                    <ion-label>Enable Marketing Email Notifications</ion-label>
-                    <ion-toggle v-model="marketingemailNotifications" color="brand"></ion-toggle>
-                    </ion-item>
+            <!-- Marketing -->
+            <div class="flex justify-between items-center py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Enable Marketing Email Notifications</ion-label>
+              <ion-toggle v-model="marketingemailNotifications" color="brand"></ion-toggle>
+            </div>
 
-                    <ion-item>
-                    <ion-label>Enable Poduct Updates Notifications</ion-label>
-                    <ion-toggle v-model="productUpdatesemailNotifications" color="brand"></ion-toggle>
-                    </ion-item>
+            <!-- Product Updates -->
+            <div class="flex justify-between items-center py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Enable Product Updates Notifications</ion-label>
+              <ion-toggle v-model="productUpdatesemailNotifications" color="brand"></ion-toggle>
+            </div>
 
-                    <ion-item>
-                    <ion-label>Enable SMS Alerts Notifications</ion-label>
-                    <ion-toggle v-model="SMSNotifications" color="brand"></ion-toggle>
-                    </ion-item>
+            <!-- SMS -->
+            <div class="flex justify-between items-center py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Enable SMS Alerts Notifications</ion-label>
+              <ion-toggle v-model="SMSNotifications" color="brand"></ion-toggle>
+            </div>
 
-                    <ion-item>
-                    <ion-label>Enable Unread Notification Badge</ion-label>
-                    <ion-toggle v-model="unreadBadge" color="brand"></ion-toggle>
-                    </ion-item>
+            <!-- Unread Badge -->
+            <div class="flex justify-between items-center  py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Enable Unread Notification Badge</ion-label>
+              <ion-toggle v-model="unreadBadge" color="brand"></ion-toggle>
+            </div>
 
-                    <ion-item>
-                    <ion-label>Push Notification Time-Out</ion-label>
-                    <div class="flex gap-2 items-center bg-contrast px-9 text-white rounded-xl">
-                        <ion-input
-                        type="number"
-                        min="1"
-                        v-model="timeoutValue"
-                        style="width: 80px"
-                        ></ion-input>
-                        <ion-select v-model="timeoutUnit" style="width: 120px">
-                        <ion-select-option value="minutes">Minutes</ion-select-option>
-                        <ion-select-option value="hours">Hours</ion-select-option>
-                        </ion-select>
-                    </div>
-                    </ion-item>
-                </div>
+            <!-- Timeout -->
+            <div class="sm:flex justify-between items-center py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Push Notification Time-Out</ion-label>
+              <div class="flex gap-2 items-center border-[0.10px] px-9 mt-2 rounded-xl">
+                <ion-input
+                  type="number"
+                  min="1"
+                  v-model="timeoutValue"
+                  style="width: 80px"
+                ></ion-input>
+                <ion-select v-model="timeoutUnit" style="width: 120px">
+                  <ion-select-option value="minutes">Minutes</ion-select-option>
+                  <ion-select-option value="hours">Hours</ion-select-option>
+                </ion-select>
+              </div>
+            </div>
+          </div>
 
-                <!-- Email Notifications -->
-                <h3 class="font-semibold text-primary text-lg mt-6">Email Notifications</h3>
-                <div>
-                    <ion-item>
-                    <ion-label>Communication Emails</ion-label>
-                    <ion-toggle v-model="communicationEmails" color="brand"></ion-toggle>
-                    </ion-item>
-                    <ion-item>
-                    <ion-label>Announcements & Updates</ion-label>
-                    <ion-toggle v-model="announcements" color="brand"></ion-toggle>
-                    </ion-item>
-                </div>
+          <!-- Email Notifications -->
+          <h3 class="font-semibold text-primary text-lg mt-6">Email Notifications</h3>
+          <div>
+            <div class="flex justify-between items-center py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Communication Emails</ion-label>
+              <ion-toggle v-model="communicationEmails" color="brand"></ion-toggle>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b-[0.5px] border-grey-500">
+              <ion-label class="flex-1 whitespace-nowrap">Announcements & Updates</ion-label>
+              <ion-toggle v-model="announcements" color="brand"></ion-toggle>
+            </div>
+          </div>
 
-                <!-- Sound -->
-                <h3 class="font-semibold text-primary text-lg mt-6">Sound</h3>
-                <div>
-                    <ion-item>
-                    <ion-label>Disable All Notification Sounds</ion-label>
-                    <ion-toggle v-model="disableSounds" color="brand"></ion-toggle>
-                    </ion-item>
-                </div>
-
+          <!-- Sound -->
+          <h3 class="font-semibold text-primary text-lg mt-6">Sound</h3>
+          <div>
+            <div class="flex justify-between items-center py-2">
+              <ion-label class="flex-1 whitespace-nowrap">Disable All Notification Sounds</ion-label>
+              <ion-toggle v-model="disableSounds" color="brand"></ion-toggle>
+            </div>
+          </div>
         </div>
-       </div>
+      </div>
     </ion-content>
   </ion-page>
 </template>
+
 
 <script setup>
 import pageHeader from '@/components/pages/Header/pageHeader.vue'

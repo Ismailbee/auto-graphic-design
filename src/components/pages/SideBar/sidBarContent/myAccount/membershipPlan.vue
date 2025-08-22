@@ -1,10 +1,10 @@
 <template>
   <ion-page>
-    <page-header>Membership Plan</page-header>
+    <page-header label="Membership Plan" />
 
     <ion-content>
 
-      <div class="bg-secondary min-h-screen w-full px-[80px] py-8">
+      <div class="bg-secondary min-h-screen w-full px-3 sm:px-[80px] py-8">
 
         <!-- Breadcrumb -->
         <Breadcrumb
@@ -17,7 +17,7 @@
           <div class="">
           <!-- Current Plan with Ribbon -->
           <div class="relative mb-6">
-            <div class="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">
+            <div class="absolute -top-2 -right-1 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">
               ACTIVE
             </div>
             <ion-card class="shadow-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl">

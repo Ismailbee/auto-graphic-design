@@ -9,13 +9,44 @@ ion-app {
 
 
 :root {
-  /* Existing Ionic variables */
-    --ion-color-brand: #502800;
-    --ion-color-brand-rgb: 255, 87, 34;
-    --ion-color-brand-contrast: #ffffff;
-    --ion-color-brand-contrast-rgb: 255, 255, 255;
-    --ion-color-brand-shade: #e64a19;
-    --ion-color-brand-tint: #BA6900;
+  /* Simple color variables */
+  --primary: #502800;      /* Dark brown */
+  --secondary:#ffe6c7;    /* Light background */
+  --tertiary: #f8f9fa;     /* Soft cream */
+  --contrast: #BA6900;     /* Gold/contrast */
+
+
+  /* Ionic color variables using your colors */
+  --ion-color-primary: var(--primary);
+  --ion-color-primary-rgb: 80, 40, 0;
+  --ion-color-primary-contrast: #fff;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+  --ion-color-primary-shade: #442200;
+  --ion-color-primary-tint: #6a3a0d;
+
+
+  --ion-color-secondary: var(--secondary);
+  --ion-color-secondary-rgb: 248,249,250;
+  --ion-color-secondary-contrast: #502800;
+  --ion-color-secondary-contrast-rgb: 80,40,0;
+  --ion-color-secondary-shade: #d1d5db;
+  --ion-color-secondary-tint: #f9fafb;
+
+
+  --ion-color-tertiary: var(--tertiary);
+  --ion-color-tertiary-rgb: 255,230,199;
+  --ion-color-tertiary-contrast: #502800;
+  --ion-color-tertiary-contrast-rgb: 80,40,0;
+  --ion-color-tertiary-shade: #e6cfa8;
+  --ion-color-tertiary-tint: #fff3e0;
+
+
+  --ion-color-contrast: var(--contrast);
+  --ion-color-contrast-rgb: 186,105,0;
+  --ion-color-contrast-contrast: #fff;
+  --ion-color-contrast-contrast-rgb: 255,255,255;
+  --ion-color-contrast-shade: #a85a00;
+  --ion-color-contrast-tint: #ffd54f;
 }
 
 .ion-color-brand {
@@ -25,4 +56,4 @@ ion-app {
   --ion-color-contrast-rgb: var(--ion-color-brand-contrast-rgb);
   --ion-color-shade: var(--ion-color-brand-shade);
   --ion-color-tint: var(--ion-color-brand-tint);
-}  
+}

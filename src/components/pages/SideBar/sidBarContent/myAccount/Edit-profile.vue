@@ -1,7 +1,9 @@
 <template>
   <ion-page>
+    <page-header label="Edit Profile" />
+
     <ion-content>
-      <div class="bg-secondary h-full w-full px-[80px] py-8">
+      <div class="bg-secondary min-h-screen w-full sm:px-[80px] pb-3 sm:py-8">
         <!-- Breadcrumb -->
         <Breadcrumb
           prevPageName="My Account"
@@ -274,6 +276,7 @@ import { useUserStore } from '@/stores/user'
 import Breadcrumb from '@/components/pages/Breadcrumb.vue'
 import visaLogo from '@/assets/logo/Visa.png'
 import masterCardLogo from '@/assets/logo/masterCard.png'
+import pageHeader from '@/components/pages/Header/pageHeader.vue'
 import {
   IonPage, IonHeader, IonToolbar, IonTitle,
   IonContent, IonList, IonItem, IonLabel, IonInput,

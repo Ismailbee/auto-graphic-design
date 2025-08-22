@@ -1,40 +1,63 @@
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>My Tokens</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <!-- Header -->
+    <page-header label="Token" />
 
-    <ion-content class="ion-padding">
+    <ion-content >
 
-      <!-- Token Balance -->
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Token Balance</ion-card-title>
-          <ion-card-subtitle>{{ tokens }} TOK</ion-card-subtitle>
-        </ion-card-header>
+     <div class="bg-secondary min-h-screen w-full sm:px-[80px] pb-[130px] p-5 sm:py-8">
+        <!-- Breadcrumb -->
+        <Breadcrumb
+          prevPageName="Home"
+          prevPageRoute="/home"
+          currentPageName="Token"
+          class="pb-3"
+        />
+
+       <!-- Token Balance Card -->
+      <div class="rounded-2xl text-center">
+        <div>
+          <h5 class="text-4xl font-bold text-primary">
+            {{ tokens }} TOK
+          </h5>
+          <p class="text-gray-500 text-sm">Available Balance</p>
+        </div>
+
         <ion-card-content>
-          <ion-button expand="block" color="success" @click="addTokens">
-            Add Tokens
-          </ion-button>
+          <button class="rounded-xl bg-contrast p-2 px-20 text-white shadow-md hover:scale-[1.02] transition"
+            @click="addTokens"
+          >
+            ➕ Add Tokens
+          </button>
         </ion-card-content>
-      </ion-card>
+      </div>
 
-      <!-- Token History -->
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Transaction History</ion-label>
+      <!-- Transaction History -->
+      <ion-list class="mt-6 rounded-2xl shadow-sm bg-white p-2">
+        <ion-list-header class="bg-gray-100 rounded-t-2xl">
+          <ion-label class="font-semibold text-gray-700">📜 Transaction History</ion-label>
         </ion-list-header>
 
-        <ion-item v-for="(tx, index) in transactions" :key="index">
+        <ion-item
+          v-for="(tx, index) in transactions"
+          :key="index"
+          class="hover:bg-gray-50 transition"
+        >
           <ion-label>
-            <h2>{{ tx.description }}</h2>
-            <p>{{ tx.date }}</p>
+            <h2 class="font-semibold text-gray-800">{{ tx.description }}</h2>
+            <p class="text-xs text-gray-500">{{ tx.date }}</p>
           </ion-label>
-          <ion-badge color="secondary" slot="end">{{ tx.amount }} TOK</ion-badge>
+
+          <ion-badge
+            :color="tx.amount.startsWith('+') ? 'success' : 'danger'"
+            slot="end"
+            class="text-sm px-3 py-1 rounded-lg shadow-sm"
+          >
+            {{ tx.amount }} TOK
+          </ion-badge>
         </ion-item>
       </ion-list>
+     </div>
 
     </ion-content>
   </ion-page>
@@ -42,6 +65,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import Breadcrumb from '@/components/pages/Breadcrumb.vue'
+import pageHeader from '../../Header/pageHeader.vue'
 import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
@@ -65,3 +90,9 @@ function addTokens() {
   })
 }
 </script>
+
+<style scoped>
+ion-badge {
+  font-weight: 600;
+}
+</style>

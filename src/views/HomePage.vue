@@ -53,9 +53,7 @@
             <UsersComment />
         </div>
         
-       <div>
-          <app-Base title="appBase" />
-        </div>
+      
       </div>
       
        <div class="mt-[300px] z-30">
