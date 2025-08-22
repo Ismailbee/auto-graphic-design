@@ -2,9 +2,10 @@
   <div class="flex items-center justify-center p-5">
     <div class="w-full max-w-6xl">
       <!-- Header -->
-      <div class="text-center px-3">
+      <div class="text-center px-3 mb-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">Featured Designs</h2>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Where every swipe reveals design perfection
+          Where every swipe reveals design perfection. Explore our latest and most creative works!
         </p>
       </div>
 
@@ -15,7 +16,7 @@
           :slides-per-view="3"
           :space-between="24"
           :loop="true"
-          :autoplay="{ delay: 3000, disableOnInteraction: false }"
+          :autoplay="{ delay: 3500, disableOnInteraction: false }"
           :pagination="{ clickable: true }"
           :breakpoints="{
             320: {
@@ -128,19 +129,30 @@ const items = [
 ];
 </script>
 
-<style>
+<style scoped>
+.text-primary {
+  color: #502800;
+}
 /* Custom swiper pagination styles */
 .swiper-pagination-bullet {
-  @apply w-2 h-2 bg-gray-300 opacity-70 transition-all duration-300;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #d1d5db;
+  opacity: 0.7;
+  transition: all 0.3s;
 }
 
 .swiper-pagination-bullet-active {
-  @apply bg-purple-600 opacity-100 w-6 rounded-full;
+  background-color: #7c3aed;
+  opacity: 1;
+  width: 1.5rem;
+  border-radius: 9999px;
 }
 
 /* Ionic component overrides */
 ion-card {
-  @apply shadow-none m-0;
+  box-shadow: none;
+  margin: 0;
 }
 
 /* Ensure consistent card sizing */
@@ -175,6 +187,7 @@ ion-card {
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -188,4 +201,4 @@ ion-card {
 .z-10 {
   z-index: 10;
 }
-</style>  
+</style>

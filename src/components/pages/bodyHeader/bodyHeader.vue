@@ -1,8 +1,8 @@
 <template>
   <div class="items-center">
-    <div class="w-full min-h-[180px] sm:h-[220px] bg-[#f6ebcd] flex items-center pb-2">
+    <div class="w-full min-h-[180px] sm:h-[220px] bg-gradient-to-b from-[#f6ebcd]  flex items-center pb-2">
        <!-- Parent Grid -->
-      <div class="sm:grid sm:grid-cols-2 w-full  h-full sm:border-b-2 border-[#502800]">
+      <div class="sm:grid sm:grid-cols-2 w-full  h-full ">
 
         <!-- Left Logo -->
         <div class="md:pl-[100px] p-[10px] sm:pt-[30px] pt-[90px] flex justify-center items-center">

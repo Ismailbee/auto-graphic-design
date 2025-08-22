@@ -3,7 +3,7 @@
     <page-header label="Edit Profile" />
 
     <ion-content>
-      <div class="bg-secondary min-h-screen w-full sm:px-[80px] sm:py-8">
+      <div class="bg-secondary min-h-screen w-full sm:px-[80px] pb-3 sm:py-8">
         <!-- Breadcrumb -->
         <Breadcrumb
           prevPageName="My Account"

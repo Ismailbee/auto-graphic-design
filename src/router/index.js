@@ -1,6 +1,4 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
-
-
+import { createRouter, createWebHistory } from '@ionic/vue-router'
 
 const routes = [
   { path: '/', redirect: '/welcome' },
@@ -10,15 +8,16 @@ const routes = [
 
   // Main & Sidebar pages
   { path: '/home', component: () => import('../views/HomePage.vue') },
- // myAccountPage
+
+  // My Account Pages
   { path: '/myAccountPage', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/myAccountPage.vue') },
   { path: '/Edit-Profile', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/Edit-profile.vue') },
   { path: '/accountSet', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/accountSet.vue') },
   { path: '/notification', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/notification.vue') },
   { path: '/membershipPlan', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/membershipPlan.vue') },
   { path: '/passwordSecurity', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/passwordSecurity.vue') },
-  
-  
+
+  // Other Sidebar pages
   { path: '/scheduling', component: () => import('../components/pages/SideBar/sidBarContent/SchedulingPage.vue') },
   { path: '/template', component: () => import('../components/pages/SideBar/sidBarContent/Template.vue') },
   { path: '/mockupPage', component: () => import('../components/pages/SideBar/sidBarContent/mockupPage.vue') },
@@ -26,6 +25,7 @@ const routes = [
 
   // Help Pages
   { path: '/subscriPage', component: () => import('../components/pages/SideBar/sidBarContent/Help/subscriPage.vue') },
+  { path: '/contService', component: () => import('../components/pages/SideBar/sidBarContent/Help/contService.vue') },
   { path: '/useredeemcodePage', component: () => import('../components/pages/SideBar/sidBarContent/Help/useredeemcodePage.vue') },
   { path: '/suggestfeaturePage', component: () => import('../components/pages/SideBar/sidBarContent/Help/suggestfeaturePage.vue') },
   { path: '/helpcenterPage', component: () => import('../components/pages/SideBar/sidBarContent/Help/HelpcenterPage.vue') },
@@ -42,15 +42,13 @@ const routes = [
   { path: '/tokenPage', component: () => import('../components/pages/Header/HeaderContent/TokenPage.vue') },
   { path: '/rewardPage', component: () => import('../components/pages/Header/HeaderContent/RewardPage.vue') },
 
-  //Pages Editor
+  // Page Editor
   { path: '/DesignEditor', component: () => import('../components/pages/PageEditor/DesignEditor.vue') },
-
 ]
-
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
-export default router;
+export default router

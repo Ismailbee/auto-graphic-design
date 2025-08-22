@@ -15,7 +15,6 @@
 
         <div class="border-[#90560a] border-b-[0.1px]">
           <myAccountMenu :icon="personCircle" label="My Account" @click="navigateTo('/myAccountPage')" />
-          <MenuTitle :icon="home" label="Home" @click="navigateTo('/home')" />
         </div>
         
         <div class="border-[#90560a]  border-b-[0.1px]">
@@ -72,7 +71,6 @@ import {
 } from 'ionicons/icons';
 
 import myAccountMenu from './sidBarContent/myAccount/myAccountMenu.vue';
-import MenuTitle from './MenuTitle.vue';
 import MenuItem from './MenuItem.vue';
 import SectionTitle from './SectionTitle.vue';
 
