@@ -19,15 +19,15 @@
             <ion-list class="p-5">
               <!-- Avatar Upload -->
               <div class="flex flex-col items-center mb-6">
+                <!-- Avatar Preview -->
                 <div
                   class="w-[120px] h-[120px] rounded-full border-[3px] border-contrast overflow-hidden cursor-pointer"
                   @click="triggerFileInput"
                 >
-                  <img
-                    :src="avatar || defaultAvatar"
-                    class="w-full h-full object-cover"
-                  />
+                  <img :src="avatar || defaultAvatar" class="w-full h-full object-cover" />
                 </div>
+
+                <!-- Hidden File Input -->
                 <input
                   type="file"
                   ref="fileInput"
@@ -35,6 +35,19 @@
                   accept="image/*"
                   @change="onImageChange"
                 />
+
+                <!-- Crop Modal -->
+                <div v-if="showCropper" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+                  <div class="bg-white p-4 rounded-xl shadow-lg w-[400px]">
+                    <div class="w-full h-[300px]">
+                      <img ref="cropperImage" :src="previewImage" class="max-w-full" />
+                    </div>
+                    <div class="flex justify-end gap-4 mt-4">
+                      <button @click="cancelCrop" class="px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
+                      <button @click="confirmCrop" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Crop & Save</button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Profile Fields -->
@@ -270,27 +283,31 @@
 
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
-import Breadcrumb from '@/components/pages/Breadcrumb.vue'
-import visaLogo from '@/assets/logo/Visa.png'
-import masterCardLogo from '@/assets/logo/masterCard.png'
-import pageHeader from '@/components/pages/Header/pageHeader.vue'
+import { ref, nextTick } from "vue"
+import { useRouter } from "vue-router"
+import { useUserStore } from "@/stores/user"
+import Breadcrumb from "@/components/pages/Breadcrumb.vue"
+import visaLogo from "@/assets/logo/Visa.png"
+import masterCardLogo from "@/assets/logo/masterCard.png"
+import pageHeader from "@/components/pages/Header/pageHeader.vue"
 import {
-  IonPage, IonHeader, IonToolbar, IonTitle,
-  IonContent, IonList, IonItem, IonLabel, IonInput,
-  IonTextarea, IonButton
-} from '@ionic/vue'
+  IonPage, IonContent, IonList, IonItem, IonLabel,
+  IonInput, IonTextarea, IonSelect, IonSelectOption,
+  IonCard, IonCardHeader, IonCardTitle, IonCardContent,
+  IonModal, IonButton
+} from "@ionic/vue"
+import Cropper from "cropperjs"
+import "cropperjs/dist/cropper.css"   // ✅ import styles once
 
-// store
+// -------------------------
+// Store + Router
+// -------------------------
 const user = useUserStore()
 const router = useRouter()
 
-// fallback image URL
-const defaultAvatar = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
-
-// bind local fields to store values
+// -------------------------
+// Profile Data
+// -------------------------
 const avatar = ref(user.avatar)
 const fullName = ref(user.fullName)
 const username = ref(user.username)
@@ -300,40 +317,101 @@ const bio = ref(user.bio)
 const member = ref(user.member)
 const city = ref(user.city)
 const stateProvince = ref(user.stateProvince)
+const country = ref(user.country || "")
 
-
-const country = ref(user.country || '')
+// -------------------------
+// Dropdown data
+// -------------------------
 const countries = [
-  { name: 'Nigeria', code: 'NG', flag: '🇳🇬' },
-  { name: 'United States', code: 'US', flag: '🇺🇸' },
-  { name: 'United Kingdom', code: 'GB', flag: '🇬🇧' },
-  { name: 'Canada', code: 'CA', flag: '🇨🇦' },
-  { name: 'Germany', code: 'DE', flag: '🇩🇪' }
+  { name: "Nigeria", code: "NG", flag: "🇳🇬" },
+  { name: "United States", code: "US", flag: "🇺🇸" },
+  { name: "United Kingdom", code: "GB", flag: "🇬🇧" },
+  { name: "Canada", code: "CA", flag: "🇨🇦" },
+  { name: "Germany", code: "DE", flag: "🇩🇪" },
 ]
 
+// -------------------------
+// Avatar + Cropper
+// -------------------------
+const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
 
-// file input reference
 const fileInput = ref(null)
+const previewImage = ref(null)
+const cropper = ref(null)
+const cropperImage = ref(null)
+const showCropper = ref(false)
 
-// open file picker
-const triggerFileInput = () => {
+function triggerFileInput() {
   fileInput.value.click()
 }
 
-// handle image change
-const onImageChange = (e) => {
+function onImageChange(e) {
   const file = e.target.files[0]
-  if (file) {
-    const reader = new FileReader()
-    reader.onload = () => {
-      avatar.value = reader.result
-    }
-    reader.readAsDataURL(file)
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = (event) => {
+    previewImage.value = event.target.result
+    showCropper.value = true
+    nextTick(() => {
+      cropper.value = new Cropper(cropperImage.value, {
+        aspectRatio: 1, // keep it square
+        viewMode: 1,
+        movable: true,
+        zoomable: true,
+        rotatable: true,
+        scalable: true,
+      })
+    })
+  }
+  reader.readAsDataURL(file)
+}
+
+function cancelCrop() {
+  cropper.value?.destroy()
+  cropper.value = null
+  showCropper.value = false
+}
+
+function confirmCrop() {
+  if (cropper.value) {
+    const canvas = cropper.value.getCroppedCanvas({
+      width: 300,
+      height: 300,
+    })
+    avatar.value = canvas.toDataURL("image/png") // ✅ set final avatar
+    cancelCrop()
   }
 }
 
-// save changes to store
-const saveProfile = () => {
+// -------------------------
+// Date of Birth
+// -------------------------
+const dobDay = ref("")
+const dobMonth = ref("")
+const dobYear = ref("")
+
+const months = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
+]
+const currentYear = new Date().getFullYear()
+const years = Array.from({ length: currentYear - 1900 + 1 }, (_, i) => currentYear - i)
+
+// -------------------------
+// Payment Methods
+// -------------------------
+const showPaymentForm = ref(false)
+const newCard = ref({ number: "", expiry: "", cvv: "" })
+
+function savePaymentMethod() {
+  console.log("New Card Added:", newCard.value)
+  showPaymentForm.value = false
+}
+
+// -------------------------
+// Save Profile
+// -------------------------
+function saveProfile() {
   user.updateProfile({
     avatar: avatar.value,
     fullName: fullName.value,
@@ -344,46 +422,12 @@ const saveProfile = () => {
     member: member.value,
     city: city.value,
     stateProvince: stateProvince.value,
-    country: country.value
+    country: country.value,
   })
-  router.push('/myAccountPage')
+  router.push("/myAccountPage")
 }
-
-
-const dobDay = ref('')
-const dobMonth = ref('')
-const dobYear = ref('')
-
-// Month names
-const months = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-]
-
-// Generate years dynamically (1900 → current year)
-const currentYear = new Date().getFullYear()
-const years = Array.from({ length: currentYear - 1900 + 1 }, (_, i) => currentYear - i)
-
-// Payment Method logic
-const addPaymentMethod = () => {
-  console.log('Add Payment Method clicked')
-  // Open a modal or navigate to "Add Payment" page
-}
-
-const showPaymentForm = ref(false)
-const newCard = ref({
-  number: '',
-  expiry: '',
-  cvv: ''
-})
-
-function savePaymentMethod() {
-  console.log('New Card Added:', newCard.value)
-  // Here you could push the new card to a payment list
-  showPaymentForm.value = false
-}
-
 </script>
+
 
 <style scoped>
 ion-item {

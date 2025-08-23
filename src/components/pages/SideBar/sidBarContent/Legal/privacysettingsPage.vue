@@ -43,9 +43,10 @@
             </div>
 
             <div>
-              <ion-button expand="block" color="contrast" @click.prevent="saveSettings">
+              <button  class="bg-contrast text-white p-3 w-full" @click.prevent="saveSettings">
                 Save Preferences
-              </ion-button>
+              </button>
+
             </div>
           </form>
 

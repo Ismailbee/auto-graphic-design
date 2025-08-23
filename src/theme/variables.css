@@ -57,3 +57,12 @@ ion-app {
   --ion-color-shade: var(--ion-color-brand-shade);
   --ion-color-tint: var(--ion-color-brand-tint);
 }
+
+.ion-color-contrast {
+  --ion-color-base: var(--ion-color-contrast);
+  --ion-color-base-rgb: var(--ion-color-contrast-rgb);
+  --ion-color-contrast: var(--ion-color-contrast-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-contrast-contrast-rgb);
+  --ion-color-shade: var(--ion-color-contrast-shade);
+  --ion-color-tint: var(--ion-color-contrast-tint);
+}

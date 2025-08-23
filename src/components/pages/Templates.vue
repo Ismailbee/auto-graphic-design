@@ -9,12 +9,12 @@
     </div>
 
     <!-- Filter/Search Bar -->
-    <div class="flex flex-col sm:flex-row items-center shadow-sm p-3 justify-between gap-4 mb-8">
+    <div class="flex flex-col sm:flex-row items-center border-[1.5px] border-contrast rounded-lg p-3 justify-between gap-4 mb-8">
       <div class="flex gap-2 w-full sm:w-auto">
-        <ion-input
+        <input
           v-model="search"
           placeholder="Search templates..."
-          class="w-full sm:w-64"
+          class="w-full sm:w-[484px] bg-[#f8f8f8] p-2 mr-6"
           clear-input
         />
         <ion-select v-model="selectedCategory" placeholder="Category" interface="popover" class="w-40">

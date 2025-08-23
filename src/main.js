@@ -13,6 +13,9 @@ import bodyBase from './components/pages/bodyHeader/bodyBase.vue';
 import appBase from './components/pages/appBase/appBase.vue';
 import 'animate.css';
 import './assets/css/tailwind.css';
+import 'cropperjs/dist/cropper.css';
+
+
 
 // pinia
 import { createPinia } from 'pinia'
