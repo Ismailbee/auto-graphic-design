@@ -16,7 +16,7 @@ const routes = [
   { path: '/notification', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/notification.vue') },
   { path: '/membershipPlan', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/membershipPlan.vue') },
   { path: '/passwordSecurity', component: () => import('../components/pages/SideBar/sidBarContent/myAccount/passwordSecurity.vue') },
-
+  
   // Other Sidebar pages
   { path: '/scheduling', component: () => import('../components/pages/SideBar/sidBarContent/SchedulingPage.vue') },
   { path: '/template', component: () => import('../components/pages/SideBar/sidBarContent/Template.vue') },
@@ -42,8 +42,8 @@ const routes = [
   { path: '/tokenPage', component: () => import('../components/pages/Header/HeaderContent/TokenPage.vue') },
   { path: '/rewardPage', component: () => import('../components/pages/Header/HeaderContent/RewardPage.vue') },
 
-  // Page Editor
-  { path: '/DesignEditor', component: () => import('../components/pages/PageEditor/DesignEditor.vue') },
+  // Designer View
+  { path: '/designer', component: () => import('../views/DesignerView.vue') },
 ]
 
 const router = createRouter({

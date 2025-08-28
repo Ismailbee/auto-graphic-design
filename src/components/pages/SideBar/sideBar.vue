@@ -19,7 +19,7 @@
         
         <div class="border-[#90560a]  border-b-[0.1px]">
           <MenuItem :icon="appsSharp" label="Scheduling" @click="navigateTo('/scheduling')" />
-          <MenuItem :icon="logoSlack" label="Template" @click="navigateTo('/template')" />
+          <MenuItem :icon="logoSlack" label="Template" @click="togglePanel('templates')" />
           <MenuItem :icon="walletSharp" label="Mock-ups" @click="navigateTo('/mockupPage')" />
           <MenuItem :icon="logoYoutube" label="Videos" @click="navigateTo('/videosPage')" />
         </div>

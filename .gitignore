@@ -30,3 +30,6 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+# Library-specific legacy files
+# If you kept any local backups of legacy canvas implementations, review and remove them intentionally.

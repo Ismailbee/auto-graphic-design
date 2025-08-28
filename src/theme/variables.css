@@ -6,6 +6,16 @@ ion-app {
   font-family: 'Roboto', sans-serif;
 }
 
+/* Add custom color definitions to Ionic */
+:root {
+  --ion-color-contrast: #BA6900;
+  --ion-color-contrast-rgb: 186,105,0;
+  --ion-color-contrast-contrast: #ffffff;
+  --ion-color-contrast-contrast-rgb: 255,255,255;
+  --ion-color-contrast-shade: #a85a00;
+  --ion-color-contrast-tint: #ffd54f;
+}
+
 
 
 :root {
@@ -14,6 +24,14 @@ ion-app {
   --secondary:#ffe6c7;    /* Light background */
   --tertiary: #f8f9fa;     /* Soft cream */
   --contrast: #BA6900;     /* Gold/contrast */
+
+  /* Dark mode palette (used by components via their dark-theme rules) */
+  --app-dark-bg: #0b1220;        /* app background in dark mode */
+  --app-dark-surface: #0f1724;   /* panels / surface */
+  --app-dark-muted: #111827;     /* subtle surfaces */
+  --app-dark-border: #1f2937;    /* borders in dark mode */
+  --app-dark-text: #E6EEF8;      /* primary text in dark mode */
+  --app-dark-secondary: #94A3B8; /* secondary text / muted */
 
 
   /* Ionic color variables using your colors */
@@ -26,19 +44,19 @@ ion-app {
 
 
   --ion-color-secondary: var(--secondary);
-  --ion-color-secondary-rgb: 248,249,250;
+  --ion-color-secondary-rgb: 255,230,199;
   --ion-color-secondary-contrast: #502800;
   --ion-color-secondary-contrast-rgb: 80,40,0;
-  --ion-color-secondary-shade: #d1d5db;
-  --ion-color-secondary-tint: #f9fafb;
+  --ion-color-secondary-shade: #e6cfa8;
+  --ion-color-secondary-tint: #fff3e0;
 
 
   --ion-color-tertiary: var(--tertiary);
-  --ion-color-tertiary-rgb: 255,230,199;
+  --ion-color-tertiary-rgb: 248,249,250;
   --ion-color-tertiary-contrast: #502800;
   --ion-color-tertiary-contrast-rgb: 80,40,0;
-  --ion-color-tertiary-shade: #e6cfa8;
-  --ion-color-tertiary-tint: #fff3e0;
+  --ion-color-tertiary-shade: #dfe2e6;
+  --ion-color-tertiary-tint: #f9fafb;
 
 
   --ion-color-contrast: var(--contrast);
@@ -49,20 +67,58 @@ ion-app {
   --ion-color-contrast-tint: #ffd54f;
 }
 
-.ion-color-brand {
-  --ion-color-base: var(--ion-color-brand);
-  --ion-color-base-rgb: var(--ion-color-brand-rgb);
-  --ion-color-contrast: var(--ion-color-brand-contrast);
-  --ion-color-contrast-rgb: var(--ion-color-brand-contrast-rgb);
-  --ion-color-shade: var(--ion-color-brand-shade);
-  --ion-color-tint: var(--ion-color-brand-tint);
+.ion-color-primary {
+  --ion-color-base: var(--ion-color-primary);
+  --ion-color-base-rgb: var(--ion-color-primary-rgb);
+  --ion-color-contrast: var(--ion-color-primary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-primary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-primary-shade);
+  --ion-color-tint: var(--ion-color-primary-tint);
+}
+
+.ion-color-secondary {
+  --ion-color-base: var(--ion-color-secondary);
+  --ion-color-base-rgb: var(--ion-color-secondary-rgb);
+  --ion-color-contrast: var(--ion-color-secondary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-secondary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-secondary-shade);
+  --ion-color-tint: var(--ion-color-secondary-tint);
+}
+
+.ion-color-tertiary {
+  --ion-color-base: var(--ion-color-tertiary);
+  --ion-color-base-rgb: var(--ion-color-tertiary-rgb);
+  --ion-color-contrast: var(--ion-color-tertiary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-tertiary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-tertiary-shade);
+  --ion-color-tint: var(--ion-color-tertiary-tint);
 }
 
 .ion-color-contrast {
   --ion-color-base: var(--ion-color-contrast);
   --ion-color-base-rgb: var(--ion-color-contrast-rgb);
+  /* keep --ion-color-contrast as the text color that sits on top of the base color */
   --ion-color-contrast: var(--ion-color-contrast-contrast);
   --ion-color-contrast-rgb: var(--ion-color-contrast-contrast-rgb);
   --ion-color-shade: var(--ion-color-contrast-shade);
   --ion-color-tint: var(--ion-color-contrast-tint);
+}
+
+/* Ensure ion-button and icons explicitly use the contrast color when requested.
+   Some Ionic components use more specific variables for borders/text on outline buttons.
+   These rules make outline and text variants pick the intended color. */
+ion-button[color="contrast"] {
+  color: var(--ion-color-contrast-contrast);
+}
+
+ion-button[color="contrast"][fill="outline"] {
+  --border-color: var(--ion-color-contrast);
+  color: var(--ion-color-contrast);
+  background: transparent;
+}
+
+/* Ensure icons inside contrast buttons follow the same color */
+ion-button[color="contrast"] ion-icon,
+ion-button[color="contrast"] .icon {
+  color: currentColor;
 }

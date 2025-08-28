@@ -1,111 +1,201 @@
 <template>
-  <ion-page>
-    <ion-content class="relative overflow-hidden">
-      <div class="min-h-screen flex items-center justify-center relative z-10 px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-5xl">
-          <!-- Left -->
-          <div class="text-white flex justify-center p-8">
-            <div class="leading-none text-center md:text-left">
-              <span class="text-5xl sm:text-7xl  text-[#663300] font-semibold font-roboto block mt-[-15px]">Create</span>
-              <span class="text-5xl sm:text-7xl  text-[#663300] font-semibold font-roboto block mt-[-5px] ">your</span>
-              <span class="text-5xl sm:text-7xl text-[#BA6900] font-bold  font-roboto border-b-2 border-[#BA6900]">Account</span>
-            </div>
-          </div>
-
-          <!-- Right -->
-          <div class="relative w-full flex items-center justify-center">
-            <!-- <span
-              class="font-NICKERB1 absolute text-[600px] text-[#BA6900] top-[-80px] right-[400px] pointer-events-none hidden md:block z-0"
-            ></span> -->
-
-            <div
-              class="relative flex flex-col items-center justify-center p-6 sm:p-14 bg-white w-full max-w-[400px] rounded-2xl z-10 shadow-xl"
-            >
-              <img :src="logo" class="logo mb-4 z-10" />
-              <h2 class="text-2xl font-bold text-[#663300] mb-6 z-10">Sign Up</h2>
-
-             <!-- EMAIL -->
-              <ion-input
-                v-model="email"
-                label="Email"
-                label-placement="floating"
-                type="email"
-                fill="solid"
-                class="w-full mb-4"
-                :helper-text="emailHelper"
-                :error-text="emailError"
-                :class="inputClasses"
-                @ionBlur="touched = true"
-                style="--padding-start: 0.75rem"  
-              />
-
-              <!-- PASSWORD -->
-              <ion-input
-                v-model="password"
-                placeholder="Password:"
-                type="password"
-                fill="solid"
-                class="w-full mb-6 "
-                style="--padding-start: 0.75rem">
-                <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-              </ion-input>
-
-              <ion-button
-                expand="block"
-                @click="signupUser"
-                class="w-full text-white font-semibold"
-                style="--background: #663300"
-              >
-                Sign up
-              </ion-button>
-
-              <div class="mt-4 text-[#663300] text-center">
-                Already have an account?
-                <span
-                  class="underline text-yellow-600 ml-1 cursor-pointer"
-                  @click="goToLogin"
-                >
-                  Login
-                </span>
-              </div>
-            </div>
+  <div class="auth-page">
+    <div class="auth-container">
+      <div class="auth-header">
+        <img src="/public/image/logoauto.png" alt="Logo" class="logo" />
+        <h2>Create an Account</h2>
+        <p>Start your creative journey with us.</p>
+      </div>
+      <form @submit.prevent="handleSignup" class="auth-form">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user"></i>
+            <input type="text" id="fullName" v-model="fullName" placeholder="John Doe" required />
           </div>
         </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" v-model="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" v-model="password" placeholder="Create a password" required />
+          </div>
+        </div>
+        <button type="submit" class="btn-submit" :disabled="loading">
+          <span v-if="!loading">Sign Up</span>
+          <span v-else>Creating Account...</span>
+        </button>
+      </form>
+      <div class="auth-footer">
+        <p>Already have an account? <router-link to="/login">Sign in</router-link></p>
       </div>
-    </ion-content>
-  </ion-page>
+    </div>
+    <div class="auth-illustration">
+      <img src="/public/image/design smarter.png" alt="Design Illustration" />
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useIonRouter }    from '@ionic/vue'
-import logo                from '@/assets/logo/auto-graphic-logo.png.png'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-/* ── state ───────────────────────────────────────────── */
-const email    = ref('')
-const password = ref('')
+const fullName = ref('');
+const email = ref('');
+const password = ref('');
+const loading = ref(false);
+const router = useRouter();
 
-/* ── router ──────────────────────────────────────────── */
-const ionRouter = useIonRouter()
-
-function signupUser () {
-  console.log('Signing up with', email.value, password.value)
-  ionRouter.push('/login', 'back')        // go back to Login with slide-back animation
-}
-
-function goToLogin () {
-  ionRouter.push('/login', 'back')
-}
-
-/* ── debug ───────────────────────────────────────────── */
-onMounted(() => console.log('✅ Sign-Up page mounted!'))
+const handleSignup = () => {
+  loading.value = true;
+  setTimeout(() => {
+    console.log('Signing up with:', fullName.value, email.value, password.value);
+    loading.value = false;
+    router.push('/home');
+  }, 1500);
+};
 </script>
 
-<style>
-ion-content {
-  --background: #F3E6BA;
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+.auth-page {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f7f6;
 }
+
+.auth-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 5%;
+}
+
+.auth-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 .logo {
-  width: 90px;
+  height: 40px;
+  margin-bottom: 1rem;
+}
+
+.auth-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.auth-header p {
+  color: #777;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #6a11cb;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.auth-footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #777;
+}
+
+.auth-footer a {
+  color: #6a11cb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-illustration {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  padding: 2rem;
+}
+
+.auth-illustration img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .auth-illustration {
+    display: none;
+  }
+  .auth-container {
+    padding: 2rem;
+  }
 }
 </style>

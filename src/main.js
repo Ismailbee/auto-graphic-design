@@ -1,3 +1,6 @@
+// Import Konva globally
+import 'konva';
+
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
@@ -13,7 +16,8 @@ import bodyBase from './components/pages/bodyHeader/bodyBase.vue';
 import appBase from './components/pages/appBase/appBase.vue';
 import 'animate.css';
 import './assets/css/tailwind.css';
-import 'cropperjs/dist/cropper.css';
+// Import local copy of Cropper.js styles
+import './assets/css/cropper.css';
 
 
 

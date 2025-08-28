@@ -7,8 +7,12 @@ const notifications = ref([
   { title: "Security Notice", desc: "We’ve updated our privacy policy.", read: true, status: null }
 ])
 
-// Count of unread notificationsconst notificationCount = ref(notifications.value.length)
+// Count of unread notifications
 const notificationCount = ref(notifications.value.length)
+
+// Toast notifications
+const toasts = ref([])
+let toastIdCounter = 0
 
 
 let intervalId = null
@@ -58,15 +62,53 @@ export function useNotification() {
     else stopFetching()
   }
 
-function acceptNotification(index) {
-  notifications.value.splice(index, 1);
-  notificationCount.value = notifications.value.length;
-}
+  function acceptNotification(index) {
+    notifications.value.splice(index, 1);
+    notificationCount.value = notifications.value.length;
+  }
 
-function rejectNotification(index) {
-  notifications.value.splice(index, 1);
-  notificationCount.value = notifications.value.length;
-}
+  function rejectNotification(index) {
+    notifications.value.splice(index, 1);
+    notificationCount.value = notifications.value.length;
+  }
+  
+  // Toast notification methods
+  function showToast(message, type = 'info', duration = 3000) {
+    const id = toastIdCounter++
+    const toast = { id, message, type, duration }
+    toasts.value.push(toast)
+    
+    // Auto remove after duration
+    setTimeout(() => {
+      removeToast(id)
+    }, duration)
+    
+    return id
+  }
+  
+  function removeToast(id) {
+    const index = toasts.value.findIndex(t => t.id === id)
+    if (index !== -1) {
+      toasts.value.splice(index, 1)
+    }
+  }
+  
+  // Convenience methods for different toast types
+  function showSuccess(message, duration = 3000) {
+    return showToast(message, 'success', duration)
+  }
+  
+  function showError(message, duration = 4000) {
+    return showToast(message, 'error', duration)
+  }
+  
+  function showWarning(message, duration = 3500) {
+    return showToast(message, 'warning', duration)
+  }
+  
+  function showInfo(message, duration = 3000) {
+    return showToast(message, 'info', duration)
+  }
 
 
   onMounted(() => {
@@ -82,10 +124,17 @@ function rejectNotification(index) {
   return {
     notifications,
     notificationCount,
+    toasts,
     fetchNotifications,
     startFetching,
     stopFetching,
     acceptNotification,
-    rejectNotification
+    rejectNotification,
+    showToast,
+    showSuccess,
+    showError,
+    showWarning,
+    showInfo,
+    removeToast
   }
 }

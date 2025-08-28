@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konva Image Test</title>
+  <script src="https://unpkg.com/konva@8.4.3/konva.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      overflow: hidden;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+    #container {
+      width: 800px;
+      height: 600px;
+      border: 1px solid #ccc;
+      background-color: white;
+      margin: 0 auto;
+    }
+    .controls {
+      margin: 20px auto;
+      width: 800px;
+      text-align: center;
+    }
+    button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      margin: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3730a3;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .upload-btn {
+      display: inline-block;
+      background-color: #16a34a;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  
+  <div class="controls">
+    <label class="upload-btn button" for="image-upload">
+      <button>Upload Image</button>
+    </label>
+    <input type="file" id="image-upload" accept="image/*">
+    
+    <button id="flip-h">Flip Horizontal</button>
+    <button id="flip-v">Flip Vertical</button>
+    <button id="rotate-left">Rotate Left</button>
+    <button id="rotate-right">Rotate Right</button>
+    <button id="grayscale">Grayscale</button>
+    <button id="blur">Blur</button>
+    <button id="brightness">Brighten</button>
+    <button id="reset">Reset Filters</button>
+  </div>
+
+  <script>
+    // Initialize Konva stage and layer
+    const stage = new Konva.Stage({
+      container: 'container',
+      width: 800,
+      height: 600
+    });
+
+    const layer = new Konva.Layer();
+    stage.add(layer);
+
+    // Global reference to the active image
+    let activeImage = null;
+    let tr = null;
+
+    // Create transformer
+    function createTransformer() {
+      tr = new Konva.Transformer({
+        anchorSize: 8,
+        anchorCornerRadius: 4,
+        anchorStrokeWidth: 2,
+        anchorStroke: '#4f46e5',
+        anchorFill: '#ffffff',
+        borderStroke: '#4f46e5',
+        borderStrokeWidth: 2,
+        borderDash: [],
+        rotateAnchorOffset: 20
+      });
+      layer.add(tr);
+    }
+    createTransformer();
+
+    // Add resize anchors to an image
+    function addResizeAnchors(image) {
+      const anchors = {
+        topLeft: createAnchor('topLeft'),
+        topRight: createAnchor('topRight'),
+        bottomRight: createAnchor('bottomRight'),
+        bottomLeft: createAnchor('bottomLeft')
+      };
+      
+      // Add anchors to layer
+      Object.values(anchors).forEach(anchor => {
+        layer.add(anchor);
+      });
+      
+      // Update anchor positions
+      updateAnchors(image, anchors);
+      
+      // Make anchors follow image
+      image.on('dragmove transform', () => {
+        updateAnchors(image, anchors);
+      });
+      
+      // Show/hide anchors on select/deselect
+      const showAnchors = (visible) => {
+        Object.values(anchors).forEach(anchor => {
+          anchor.visible(visible);
+        });
+        layer.draw();
+      };
+      
+      // Hide initially
+      showAnchors(false);
+      
+      // Show on select
+      image.on('mousedown touchstart', () => {
+        showAnchors(true);
+      });
+      
+      // Hide when clicking elsewhere
+      stage.on('click touchstart', (e) => {
+        if (e.target !== image && !Object.values(anchors).includes(e.target)) {
+          showAnchors(false);
+        }
+      });
+      
+      // Implement resize drag behavior
+      Object.entries(anchors).forEach(([position, anchor]) => {
+        anchor.on('dragmove', () => {
+          resizeImageWithAnchor(image, anchor, position);
+          updateAnchors(image, anchors, position);
+          layer.draw();
+        });
+      });
+      
+      return anchors;
+    }
+
+    // Create a resize anchor
+    function createAnchor(name) {
+      return new Konva.Circle({
+        name: name,
+        radius: 8,
+        fill: '#ffffff',
+        stroke: '#4f46e5',
+        strokeWidth: 2,
+        draggable: true,
+        visible: false
+      });
+    }
+
+    // Update anchor positions
+    function updateAnchors(image, anchors, exceptPosition) {
+      const imageX = image.x();
+      const imageY = image.y();
+      const imageWidth = image.width() * image.scaleX();
+      const imageHeight = image.height() * image.scaleY();
+      const offsetX = image.offsetX() * image.scaleX();
+      const offsetY = image.offsetY() * image.scaleY();
+      const rotation = image.rotation();
+      
+      // Calculate corners
+      const topLeft = {
+        x: imageX - offsetX,
+        y: imageY - offsetY
+      };
+      const topRight = {
+        x: imageX - offsetX + imageWidth,
+        y: imageY - offsetY
+      };
+      const bottomRight = {
+        x: imageX - offsetX + imageWidth,
+        y: imageY - offsetY + imageHeight
+      };
+      const bottomLeft = {
+        x: imageX - offsetX,
+        y: imageY - offsetY + imageHeight
+      };
+      
+      // Apply rotation if needed
+      const center = { x: imageX, y: imageY };
+      const positions = {
+        topLeft: rotation ? rotatePoint(topLeft, center, rotation) : topLeft,
+        topRight: rotation ? rotatePoint(topRight, center, rotation) : topRight,
+        bottomRight: rotation ? rotatePoint(bottomRight, center, rotation) : bottomRight,
+        bottomLeft: rotation ? rotatePoint(bottomLeft, center, rotation) : bottomLeft
+      };
+      
+      // Update anchors
+      Object.entries(positions).forEach(([pos, point]) => {
+        if (pos !== exceptPosition && anchors[pos]) {
+          anchors[pos].position({ x: point.x, y: point.y });
+        }
+      });
+    }
+
+    // Rotate a point around center
+    function rotatePoint(point, center, angle) {
+      const angleRad = (angle * Math.PI) / 180;
+      const cos = Math.cos(angleRad);
+      const sin = Math.sin(angleRad);
+      const x = center.x + (point.x - center.x) * cos - (point.y - center.y) * sin;
+      const y = center.y + (point.x - center.x) * sin + (point.y - center.y) * cos;
+      return { x, y };
+    }
+
+    // Resize image with anchor
+    function resizeImageWithAnchor(image, anchor, position) {
+      const imageX = image.x();
+      const imageY = image.y();
+      const width = image.width() * image.scaleX();
+      const height = image.height() * image.scaleY();
+      const offsetX = image.offsetX() * image.scaleX();
+      const offsetY = image.offsetY() * image.scaleY();
+      
+      const anchorX = anchor.x();
+      const anchorY = anchor.y();
+      
+      let newWidth = width;
+      let newHeight = height;
+      let newX = imageX;
+      let newY = imageY;
+      
+      switch (position) {
+        case 'topLeft':
+          newWidth = (imageX - offsetX + width) - anchorX;
+          newHeight = (imageY - offsetY + height) - anchorY;
+          newX = anchorX + offsetX;
+          newY = anchorY + offsetY;
+          break;
+        case 'topRight':
+          newWidth = anchorX - (imageX - offsetX);
+          newHeight = (imageY - offsetY + height) - anchorY;
+          newY = anchorY + offsetY;
+          break;
+        case 'bottomRight':
+          newWidth = anchorX - (imageX - offsetX);
+          newHeight = anchorY - (imageY - offsetY);
+          break;
+        case 'bottomLeft':
+          newWidth = (imageX - offsetX + width) - anchorX;
+          newHeight = anchorY - (imageY - offsetY);
+          newX = anchorX + offsetX;
+          break;
+      }
+      
+      // Ensure minimum size
+      if (newWidth < 20) newWidth = 20;
+      if (newHeight < 20) newHeight = 20;
+      
+      // Update image
+      image.position({ x: newX, y: newY });
+      
+      // Calculate scale
+      const scaleX = newWidth / image.width();
+      const scaleY = newHeight / image.height();
+      
+      image.scale({ x: scaleX, y: scaleY });
+    }
+
+    // Handle image upload
+    document.getElementById('image-upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      
+      reader.onload = () => {
+        const img = new Image();
+        img.src = reader.result;
+        
+        img.onload = () => {
+          // Create Konva image
+          const konvaImg = new Konva.Image({
+            x: stage.width() / 2,
+            y: stage.height() / 2,
+            image: img,
+            draggable: true
+          });
+          
+          // Center image
+          konvaImg.offsetX(img.width / 2);
+          konvaImg.offsetY(img.height / 2);
+          
+          // Scale down if too large
+          if (img.width > 300) {
+            const scale = 300 / img.width;
+            konvaImg.scale({ x: scale, y: scale });
+          }
+          
+          // Add to layer
+          layer.add(konvaImg);
+          
+          // Add resize anchors
+          addResizeAnchors(konvaImg);
+          
+          // Set as active image
+          activeImage = konvaImg;
+          
+          // Add to transformer
+          tr.nodes([konvaImg]);
+          
+          // Draw
+          layer.draw();
+          
+          // Handle selection
+          konvaImg.on('click tap', () => {
+            activeImage = konvaImg;
+            tr.nodes([konvaImg]);
+            layer.draw();
+          });
+          
+          // Cache for filters
+          konvaImg.cache();
+        };
+      };
+      
+      reader.readAsDataURL(file);
+    });
+
+    // Handle image transformation and filters
+    document.getElementById('flip-h').addEventListener('click', () => {
+      if (!activeImage) return;
+      activeImage.scaleX(activeImage.scaleX() * -1);
+      layer.draw();
+    });
+
+    document.getElementById('flip-v').addEventListener('click', () => {
+      if (!activeImage) return;
+      activeImage.scaleY(activeImage.scaleY() * -1);
+      layer.draw();
+    });
+
+    document.getElementById('rotate-left').addEventListener('click', () => {
+      if (!activeImage) return;
+      activeImage.rotate(-90);
+      layer.draw();
+    });
+
+    document.getElementById('rotate-right').addEventListener('click', () => {
+      if (!activeImage) return;
+      activeImage.rotate(90);
+      layer.draw();
+    });
+
+    document.getElementById('grayscale').addEventListener('click', () => {
+      if (!activeImage) return;
+      
+      // Add grayscale filter
+      activeImage.filters([Konva.Filters.Grayscale]);
+      activeImage.cache();
+      layer.draw();
+    });
+
+    document.getElementById('blur').addEventListener('click', () => {
+      if (!activeImage) return;
+      
+      // Add blur filter
+      activeImage.filters([Konva.Filters.Blur]);
+      activeImage.blurRadius(10);
+      activeImage.cache();
+      layer.draw();
+    });
+
+    document.getElementById('brightness').addEventListener('click', () => {
+      if (!activeImage) return;
+      
+      // Add brightness filter
+      activeImage.filters([Konva.Filters.Brighten]);
+      activeImage.brightness(0.3);
+      activeImage.cache();
+      layer.draw();
+    });
+
+    document.getElementById('reset').addEventListener('click', () => {
+      if (!activeImage) return;
+      
+      // Remove all filters
+      activeImage.filters([]);
+      activeImage.cache();
+      layer.draw();
+    });
+
+    // Handle stage click for selection/deselection
+    stage.on('click tap', (e) => {
+      if (e.target === stage) {
+        activeImage = null;
+        tr.nodes([]);
+        layer.draw();
+      }
+    });
+  </script>
+</body>
+</html>
