@@ -1,3 +1,4 @@
+
 <template>
   <div class="canvas-workspace" :class="{ 'dark-theme': canvasStore.workspaceTheme === 'dark' }">
     <!-- Canvas Workspace -->
@@ -112,6 +113,7 @@
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useCanvasStore } from '../../../stores/canvas-konva'
 import { useKonvaCanvas } from '../../../composables/useKonvaCanvas'
+import { useViewCulling } from '../../../composables/useViewCulling'
 import { Konva } from '../../../lib/konva-init'
 
 // Canvas ref
@@ -119,6 +121,7 @@ const stageContainer = ref(null)
 const artboardEl = ref(null)
 const canvasStore = useCanvasStore()
 const { initCanvas, disposeCanvas } = useKonvaCanvas()
+const { setupCullingEvents } = useViewCulling()
 
 // Local state
 const zoomLevel = ref(canvasStore.zoomLevel)
@@ -154,11 +157,19 @@ onMounted(() => {
     // Set up event handlers
     setupKeyboardShortcuts();
     
+    // Set up view culling for performance optimization
+    const cleanupCulling = setupCullingEvents();
+    
     // Show grid if enabled
     if (canvasStore.gridVisible) {
       console.log("Grid is visible, updating grid...");
       canvasStore.updateGrid();
     }
+    
+    // Add cleanup for culling to onUnmounted
+    onUnmounted(() => {
+      if (cleanupCulling) cleanupCulling();
+    });
   } else {
     console.error("Stage container element not found!");
   }
@@ -167,7 +178,7 @@ onMounted(() => {
 // Clean up when component is unmounted
 onUnmounted(() => {
   disposeCanvas()
-  document.removeEventListener('keydown', handleKeyDown)
+  // No need to manually remove keydown listener since we're using the setupKeyboardShortcuts approach
 })
 
 // Watch for canvas size changes
@@ -230,114 +241,122 @@ watch(() => canvasStore.activeTool, (newTool) => {
 
 // Set up keyboard shortcuts
 function setupKeyboardShortcuts() {
-  document.addEventListener('keydown', handleKeyDown)
+  // Debounce keyboard events to avoid performance issues
+  const keyHandlers = {
+    'v': () => canvasStore.setActiveTool('Select'),
+    'h': () => canvasStore.setActiveTool('Hand'),
+    'delete': () => canvasStore.deleteSelectedObject(),
+    'backspace': () => canvasStore.deleteSelectedObject(),
+    '+': () => zoomIn(),
+    '-': () => zoomOut()
+  };
+  
+  const ctrlKeyHandlers = {
+    'z': (e) => {
+      if (e.shiftKey) {
+        canvasStore.redo();
+      } else {
+        canvasStore.undo();
+      }
+      e.preventDefault();
+    },
+    'd': (e) => {
+      canvasStore.duplicateSelectedObject();
+      e.preventDefault();
+    },
+    'g': (e) => {
+      if (e.shiftKey) {
+        canvasStore.ungroupSelectedObjects();
+      } else {
+        canvasStore.groupSelectedObjects();
+      }
+      e.preventDefault();
+    },
+    'a': (e) => {
+      if (canvasStore.stageInstance && canvasStore.layerInstance) {
+        // Select all objects (except transformers)
+        const objects = canvasStore.layerInstance.children.filter(
+          node => node.getClassName() !== 'Transformer'
+        );
+        
+        if (objects.length > 0) {
+          // For multi-select, we should create a selection mechanism
+          // For now, select the most recently added object
+          const lastObject = objects[objects.length - 1];
+          canvasStore.setActiveObject(lastObject);
+          // Force draw to ensure selection is visible
+          canvasStore.layerInstance.draw();
+        }
+      }
+      e.preventDefault();
+    },
+    '0': (e) => {
+      zoomLevel.value = 100;
+      updateZoomWithPoint();
+      e.preventDefault();
+    },
+    '+': (e) => {
+      zoomIn();
+      e.preventDefault();
+    },
+    '-': (e) => {
+      zoomOut();
+      e.preventDefault();
+    },
+    's': (e) => {
+      canvasStore.saveToFile();
+      e.preventDefault();
+    }
+  };
+  
+  // Throttle keydown events
+  let lastKeyTime = 0;
+  const KEY_THROTTLE = 50; // ms
+  
+  document.addEventListener('keydown', (e) => {
+    // Only handle shortcuts when canvas is focused
+    if (!canvasStore.stageInstance) return;
+    
+    // Don't handle shortcuts if user is typing in an input
+    const target = e.target;
+    if (target.tagName === 'INPUT' || 
+        target.tagName === 'TEXTAREA' || 
+        target.isContentEditable) {
+      return;
+    }
+    
+    // Throttle events
+    const now = Date.now();
+    if (now - lastKeyTime < KEY_THROTTLE) return;
+    lastKeyTime = now;
+    
+    // Handle key combinations
+    const key = e.key.toLowerCase();
+    
+    if (e.ctrlKey || e.metaKey) {
+      const handler = ctrlKeyHandlers[key];
+      if (handler) handler(e);
+    } else if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+      const handler = keyHandlers[key];
+      if (handler) handler();
+    }
+  });
 }
 
-function handleKeyDown(e) {
-  // Only handle shortcuts when canvas is focused
-  if (!canvasStore.stageInstance) return
-  
-  // Don't handle shortcuts if user is typing in an input
-  const target = e.target
-  if (target.tagName === 'INPUT' || 
-      target.tagName === 'TEXTAREA' || 
-      target.isContentEditable) {
-    return
-  }
-  
-  // Shortcut keys (without modifiers)
-  if (!e.ctrlKey && !e.metaKey && !e.altKey) {
-    switch(e.key.toLowerCase()) {
-      case 'v': 
-        canvasStore.setActiveTool('Select'); 
-        break
-      case 'h': 
-        canvasStore.setActiveTool('Hand'); 
-        break
-      case 'delete':
-      case 'backspace':
-        canvasStore.deleteSelectedObject();
-        break
-      case '+':
-        zoomIn();
-        break
-      case '-':
-        zoomOut();
-        break
-    }
-  }
-  
-  // Ctrl/Cmd shortcuts
-  if (e.ctrlKey || e.metaKey) {
-    switch(e.key.toLowerCase()) {
-      case 'z':
-        if (e.shiftKey) {
-          canvasStore.redo();
-        } else {
-          canvasStore.undo();
-        }
-        e.preventDefault();
-        break
-      case 'c':
-        // Copy is handled by Konva
-        break
-      case 'v':
-        // Paste is handled by Konva
-        break
-      case 'd':
-        canvasStore.duplicateSelectedObject();
-        e.preventDefault();
-        break
-      case 'g':
-        if (e.shiftKey) {
-          canvasStore.ungroupSelectedObjects();
-        } else {
-          canvasStore.groupSelectedObjects();
-        }
-        e.preventDefault();
-        break
-      case 'a':
-        if (canvasStore.stageInstance && canvasStore.layerInstance) {
-          // Select all objects (except transformers)
-          const objects = canvasStore.layerInstance.children.filter(
-            node => node.getClassName() !== 'Transformer'
-          );
-          
-          if (objects.length > 0) {
-            // For Konva, we need to handle multi-select differently
-            // For now, just select the first object
-            canvasStore.setActiveObject(objects[0]);
-          }
-        }
-        e.preventDefault();
-        break
-      case '0':
-        zoomLevel.value = 100
-        updateZoomWithPoint()
-        e.preventDefault();
-        break
-      case '+':
-        zoomIn();
-        e.preventDefault();
-        break
-      case '-':
-        zoomOut();
-        e.preventDefault();
-        break
-      case 's':
-        canvasStore.saveToFile();
-        e.preventDefault();
-        break
-    }
-  }
-}
+// Mouse wheel zoom with throttling
+const lastWheelTime = ref(0);
+const WHEEL_THROTTLE = 50; // ms
 
-// Mouse wheel zoom
 function handleZoomWheel(e) {
   if (e.ctrlKey || e.metaKey) {
     e.preventDefault();
     
     if (!canvasStore.stageInstance) return;
+    
+    // Throttle wheel events
+    const now = Date.now();
+    if (now - lastWheelTime.value < WHEEL_THROTTLE) return;
+    lastWheelTime.value = now;
     
     // Get mouse position relative to stage
     const stage = canvasStore.stageInstance;
@@ -393,15 +412,16 @@ function updateZoomWithPoint(point) {
     // Apply new scale and position
     stage.scale({ x: newScale, y: newScale });
     stage.position(newPos);
-    stage.batchDraw();
+  // stage draws are batched in the store scheduler as well
+  stage.batchDraw();
   } else {
     // Just apply new scale
     stage.scale({ x: newScale, y: newScale });
-    stage.batchDraw();
+  stage.batchDraw();
   }
 }
 
-// Canvas drag (hand tool)
+// Canvas drag (hand tool) with performance optimization
 function handleCanvasDrag(e) {
   if (canvasStore.activeTool !== 'Hand') return;
   
@@ -417,8 +437,30 @@ function handleCanvasDrag(e) {
   // Change cursor to grabbing
   stage.container().style.cursor = 'grabbing';
   
+  // Throttle move events for better performance
+  let lastMoveTime = Date.now();
+  const MOVE_THROTTLE = 16; // ~60fps
+  let rafId = null;
+  let lastDx = 0;
+  let lastDy = 0;
+  
   const moveHandler = (moveEvent) => {
     if (!isDragging.value) return;
+    
+    // Throttle moves
+    const now = Date.now();
+    if (now - lastMoveTime < MOVE_THROTTLE) {
+      // Queue update via RAF instead of skipping completely
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          updatePosition(lastDx, lastDy);
+          rafId = null;
+        });
+      }
+      return;
+    }
+    
+    lastMoveTime = now;
     
     const currentPointer = stage.getPointerPosition();
     
@@ -426,17 +468,31 @@ function handleCanvasDrag(e) {
     const dx = currentPointer.x - startPointer.x;
     const dy = currentPointer.y - startPointer.y;
     
+    lastDx = dx;
+    lastDy = dy;
+    
+    updatePosition(dx, dy);
+  };
+  
+  const updatePosition = (dx, dy) => {
     // Set new position
     stage.position({
       x: startPos.x + dx,
       y: startPos.y + dy
     });
     
-    stage.batchDraw();
+    // Use scheduleDraw for better performance
+    canvasStore.scheduleDraw();
   };
   
   const upHandler = () => {
     isDragging.value = false;
+    
+    // Cancel any pending RAF
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
     
     // Reset cursor
     if (canvasStore.activeTool === 'Hand') {
@@ -500,10 +556,18 @@ function handleDrop(e) {
 
 // Handle dropped files (images)
 function handleDroppedFiles(files, x, y) {
-  Array.from(files).forEach((file, index) => {
-    if (file.type.startsWith('image/')) {
+  Array.from(files).forEach(async (file, index) => {
+    if (!file.type.startsWith('image/')) return;
+    try {
+      const dataUrl = await compressImageFile(file, { maxDim: 2048, quality: 0.85 });
+      canvasStore.addElement('image', {
+        src: dataUrl,
+        left: x + (index * 20),
+        top: y + (index * 20)
+      });
+    } catch (err) {
+      console.warn('Image compression failed, using original', err);
       const reader = new FileReader();
-      
       reader.onload = (e) => {
         canvasStore.addElement('image', {
           src: e.target.result,
@@ -511,7 +575,6 @@ function handleDroppedFiles(files, x, y) {
           top: y + (index * 20)
         });
       };
-      
       reader.readAsDataURL(file);
     }
   });
@@ -526,10 +589,65 @@ function handleDroppedElement(data, x, y) {
     top: y
   });
 }
+
+// Util: client-side compress and resize images to reduce GPU memory
+async function compressImageFile(file, { maxDim = 2048, quality = 0.85 } = {}) {
+  // Use offscreen canvas if available for better performance
+  const useOffscreen = typeof OffscreenCanvas !== 'undefined';
+  
+  const dataUrl = await new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result);
+    fr.onerror = reject;
+    fr.readAsDataURL(file);
+  });
+  
+  const img = await new Promise((resolve, reject) => {
+    const im = new Image();
+    im.onload = () => resolve(im);
+    im.onerror = reject;
+    im.src = dataUrl;
+  });
+  
+  const { width, height } = img;
+  const scale = Math.min(1, maxDim / Math.max(width, height));
+  const targetW = Math.round(width * scale);
+  const targetH = Math.round(height * scale);
+  
+  let canvas, ctx;
+  
+  if (useOffscreen) {
+    canvas = new OffscreenCanvas(targetW, targetH);
+    ctx = canvas.getContext('2d', { alpha: file.type === 'image/png' });
+  } else {
+    canvas = document.createElement('canvas');
+    canvas.width = targetW;
+    canvas.height = targetH;
+    ctx = canvas.getContext('2d');
+  }
+  
+  // Use low quality interpolation for speed; browsers may support imageSmoothingQuality
+  if (ctx.imageSmoothingEnabled !== undefined) {
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'medium'; // Balance between quality and performance
+  }
+  
+  ctx.drawImage(img, 0, 0, targetW, targetH);
+  
+  if (useOffscreen) {
+    const blob = await canvas.convertToBlob({
+      type: file.type === 'image/png' ? 'image/png' : 'image/jpeg',
+      quality: quality
+    });
+    return URL.createObjectURL(blob);
+  } else {
+    return canvas.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', quality);
+  }
+}
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+/* Fonts: moved to index.html with preconnect + display=swap for non-blocking load */
 
 :root {
   --canvas-bg-light: #e6eef6; /* slightly deeper, subtle blue-gray */
@@ -688,6 +806,19 @@ function handleDroppedElement(data, x, y) {
   width: 100%;
   height: 100%;
   position: relative;
+}
+
+/* Selection styles - for konva objects */
+.konva-stage .konva-shape-selected {
+  box-shadow: 0 0 0 2px #4f46e5, 0 0 10px rgba(79, 70, 229, 0.5);
+}
+
+/* Make transformer anchors more visible */
+.konva-stage .anchor {
+  stroke: #4f46e5 !important;
+  fill: white !important;
+  stroke-width: 2px !important;
+  filter: drop-shadow(0 0 3px rgba(79, 70, 229, 0.5));
 }
 
 /* === FLOATING CONTROLS STYLES === */
@@ -864,3 +995,4 @@ function handleDroppedElement(data, x, y) {
   font-size: 20px;
 }
 </style>
+    

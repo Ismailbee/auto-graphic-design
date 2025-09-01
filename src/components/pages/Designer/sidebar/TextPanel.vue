@@ -103,41 +103,50 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useCanvasStore } from '../../../../stores/canvas-konva';
-import { createEditableText, addTextEditingControls } from '../../../../composables/useKonvaText';
+import { useCanvasStore } from '../../../../stores/canvas-fabric';
+import { useFabricCanvas } from '../../../../composables/useFabricCanvas';
 import { useNotification } from '../../../../composables/useNotification';
+import { fabric } from 'fabric';
 
 const canvasStore = useCanvasStore();
 const { showSuccess } = useNotification();
 
 // Quick add text function
 const quickAddText = () => {
-  if (!canvasStore.stageInstance || !canvasStore.layerInstance) return;
+  if (!canvasStore.fabricCanvas) {
+    console.error('Canvas not initialized');
+    return;
+  }
   
-  const textNode = createEditableText(canvasStore.stageInstance, canvasStore.layerInstance, {
-    text: '',  // Empty text to show just the cursor
-    fontSize: 48,
+  // Get center position of canvas
+  const center = canvasStore.fabricCanvas.getCenter();
+  
+  const textObj = new fabric.IText('Type here...', {
+    left: center.left,
+    top: center.top,
     fontFamily: 'Arial',
+    fontSize: 48,
     fill: '#1e293b',
-    align: 'center',
-    draggable: true,
-    // Minimum width for the empty text
-    width: 150,
+    textAlign: 'center',
+    editable: true,
+    selectable: true,
+    evented: true
   });
   
-  // Add editing controls
-  addTextEditingControls(textNode, canvasStore.stageInstance, canvasStore.layerInstance);
-  
-  // Select the new text
-  canvasStore.setActiveObject(textNode);
+  canvasStore.fabricCanvas.add(textObj);
+  canvasStore.fabricCanvas.setActiveObject(textObj);
+  canvasStore.fabricCanvas.renderAll();
   
   // Save state
   canvasStore.saveState();
   
-  // Trigger text editing immediately
-  textNode.fire('dblclick');
+  // Enter edit mode with proper timing
+  setTimeout(() => {
+    textObj.enterEditing();
+    textObj.selectAll();
+  }, 100);
   
-  showSuccess('Text added! Start typing now');
+  showSuccess('Text added! Click to start typing');
 };
 
 // Text presets
@@ -196,66 +205,89 @@ const toggleItalic = () => {
 
 // Add text based on preset
 const addText = (preset) => {
-  if (!canvasStore.stageInstance || !canvasStore.layerInstance) return;
+  if (!canvasStore.fabricCanvas) {
+    console.error('Canvas not initialized');
+    return;
+  }
   
-  const textNode = createEditableText(canvasStore.stageInstance, canvasStore.layerInstance, {
-    text: preset.sample,
-    fontSize: preset.fontSize,
-    fontFamily: preset.fontFamily,
-    fontStyle: preset.fontStyle,
-    fill: preset.color,
-    align: 'center',
-    draggable: true,
-    shadowColor: 'rgba(0,0,0,0.2)',
-    shadowBlur: 10,
-    shadowOffset: { x: 5, y: 5 },
-    shadowOpacity: 0.5
+  // Get center position of canvas
+  const center = canvasStore.fabricCanvas.getCenter();
+  
+  const textObj = new fabric.IText(preset.sample, {
+    left: center.left,
+    top: center.top,
+    fontFamily: preset.fontFamily || 'Arial',
+    fontSize: preset.fontSize || 48,
+    fontWeight: preset.fontStyle?.includes('bold') ? 'bold' : 'normal',
+    fontStyle: preset.fontStyle?.includes('italic') ? 'italic' : 'normal',
+    fill: preset.color || '#1e293b',
+    textAlign: 'center',
+    editable: true,
+    shadow: preset.background ? null : {
+      color: 'rgba(0,0,0,0.2)',
+      blur: 10,
+      offsetX: 3,
+      offsetY: 3
+    }
   });
   
-  // Add editing controls
-  addTextEditingControls(textNode, canvasStore.stageInstance, canvasStore.layerInstance);
+  // Add background if specified
+  if (preset.background) {
+    textObj.set('backgroundColor', preset.background);
+  }
   
-  // Select the new text
-  canvasStore.setActiveObject(textNode);
+  canvasStore.fabricCanvas.add(textObj);
+  canvasStore.fabricCanvas.setActiveObject(textObj);
+  canvasStore.fabricCanvas.renderAll();
   
   // Save state
   canvasStore.saveState();
   
-  // Trigger text editing immediately
-  textNode.fire('dblclick');
+  // Enter edit mode immediately
+  textObj.enterEditing();
+  textObj.selectAll();
   
   showSuccess(`${preset.name} text added! Start typing now`);
 };
 
 // Add custom text
 const addCustomText = () => {
-  if (!canvasStore.stageInstance || !canvasStore.layerInstance) return;
+  if (!canvasStore.fabricCanvas) {
+    console.error('Canvas not initialized');
+    return;
+  }
   
-  const textNode = createEditableText(canvasStore.stageInstance, canvasStore.layerInstance, {
-    text: customText.value,
-    fontSize: fontSize.value,
+  // Get center position of canvas
+  const center = canvasStore.fabricCanvas.getCenter();
+  
+  const textObj = new fabric.IText(customText.value, {
+    left: center.left,
+    top: center.top,
     fontFamily: fontFamily.value,
-    fontStyle: fontStyle.value,
+    fontSize: fontSize.value,
+    fontWeight: fontStyle.value.includes('bold') ? 'bold' : 'normal',
+    fontStyle: fontStyle.value.includes('italic') ? 'italic' : 'normal',
     fill: textColor.value,
-    align: textAlign.value,
-    draggable: true,
-    shadowColor: 'rgba(0,0,0,0.2)',
-    shadowBlur: 10,
-    shadowOffset: { x: 5, y: 5 },
-    shadowOpacity: 0.5
+    textAlign: textAlign.value,
+    editable: true,
+    shadow: {
+      color: 'rgba(0,0,0,0.2)',
+      blur: 10,
+      offsetX: 3,
+      offsetY: 3
+    }
   });
   
-  // Add editing controls
-  addTextEditingControls(textNode, canvasStore.stageInstance, canvasStore.layerInstance);
-  
-  // Select the new text
-  canvasStore.setActiveObject(textNode);
+  canvasStore.fabricCanvas.add(textObj);
+  canvasStore.fabricCanvas.setActiveObject(textObj);
+  canvasStore.fabricCanvas.renderAll();
   
   // Save state
   canvasStore.saveState();
   
-  // Trigger text editing immediately
-  textNode.fire('dblclick');
+  // Enter edit mode immediately
+  textObj.enterEditing();
+  textObj.selectAll();
   
   showSuccess('Custom text added! Start typing now');
 };

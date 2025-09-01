@@ -79,7 +79,7 @@ function setActiveLayer(index) {
         canvasStore.setActiveObject(objects[0]);
       }
       
-      layer.draw();
+  layer.batchDraw();
     }
   }
 }

@@ -1,3 +1,12 @@
+<!-- 
+Copilot Setup: 
+This sidebar manages layers & object properties.
+- Show a list of Fabric.js objects (with names).
+- Allow reorder, lock/unlock, delete.
+- Properties: size, position, rotation, opacity.
+- Live sync with CanvasArea.
+-->
+
 <template>
   <aside class="app-sidebar" :class="{ 'dark-theme': canvasStore.workspaceTheme === 'dark', 'panel-visible': activePanel }">
     <div class="sidebar-main">
@@ -57,7 +66,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { useCanvasStore } from '../../../stores/canvas-konva';
+import { useCanvasStore } from '../../../stores/canvas-fabric';
 import { useNotification } from '../../../composables/useNotification';
 import TemplatesPanel from './sidebar/TemplatesPanel.vue';
 import ElementsPanel from './sidebar/ElementsPanel.vue';

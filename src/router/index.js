@@ -21,7 +21,7 @@ const routes = [
   { path: '/scheduling', component: () => import('../components/pages/SideBar/sidBarContent/SchedulingPage.vue') },
   { path: '/template', component: () => import('../components/pages/SideBar/sidBarContent/Template.vue') },
   { path: '/mockupPage', component: () => import('../components/pages/SideBar/sidBarContent/mockupPage.vue') },
-  { path: '/videosPage', component: () => import('../components/pages/SideBar/sidBarContent/videosPage.vue') },
+  { path: '/videos', component: () => import('../components/pages/SideBar/sidBarContent/Videos.vue') },
 
   // Help Pages
   { path: '/subscriPage', component: () => import('../components/pages/SideBar/sidBarContent/Help/subscriPage.vue') },
@@ -52,3 +52,6 @@ const router = createRouter({
 })
 
 export default router
+// NOTE for Copilot/GPT-5:
+// Keep all designer canvas work under '/designer' -> DesignerView.vue
+// Do not create '/designer-fabric' or new routes

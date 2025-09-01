@@ -34,6 +34,14 @@ export function createEnhancedImage(stage, layer, options = {}) {
         ...mergedOptions,
         image: imageObj
       });
+  // Cache for faster transforms/filters with optimized settings
+  try {
+    konvaImg.cache({
+      pixelRatio: 1, // Lower ratio for better performance
+      imageSmoothingEnabled: true,
+      imageSmoothingQuality: 'medium' // Balance between quality and performance
+    });
+  } catch (_) {}
       
       // Center image
       konvaImg.offsetX(imageObj.width / 2);
@@ -64,7 +72,7 @@ export function createEnhancedImage(stage, layer, options = {}) {
         // Resolve the created Konva.Image without adding it to the layer. The caller
         // (canvas store) will add the image to the proper layer so selection/undo
         // logic remains centralized.
-        resolve(konvaImg);
+  resolve(konvaImg);
     };
     
     imageObj.onerror = (e) => {
@@ -108,7 +116,7 @@ export function addResizeAnchors(image, stage, layer) {
     Object.values(anchors).forEach(anchor => {
       anchor.visible(visible);
     });
-    layer.draw();
+  layer.batchDraw();
   };
   
   // Hide anchors initially
@@ -155,7 +163,7 @@ export function addResizeAnchors(image, stage, layer) {
     anchor.on('dragmove', () => {
       resizeImageWithAnchor(image, anchor, position);
       updateAnchors(image, anchors, position);
-      layer.draw();
+  layer.batchDraw();
     });
   });
 }
@@ -337,7 +345,7 @@ export function applyImageFilter(image, filterType, options = {}) {
   // Reset filters if type is 'none'
   if (filterType === 'none') {
     image.filters([]);
-    image.cache();
+  try { image.cache(); } catch(_) {}
     return;
   }
   
@@ -418,5 +426,5 @@ export function applyImageFilter(image, filterType, options = {}) {
   }
   
   // Cache the image to apply filters
-  image.cache();
+  try { image.cache(); } catch(_) {}
 }

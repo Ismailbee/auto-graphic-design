@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import { Konva } from '../lib/konva-init.js'
+import { enhanceSelectionFeedback } from '../utils/selectionEnhancer.js'
 
 export const useCanvasStore = defineStore('canvas', () => {
   // Canvas references
   const stageInstance = ref(null)
   const layerInstance = ref(null)
+  const gridLayerInstance = ref(null)
   const activeObject = ref(null)
   const transformer = ref(null)
   const activeTool = ref('Select')
@@ -63,19 +65,58 @@ export const useCanvasStore = defineStore('canvas', () => {
   const isObjectSelected = computed(() => !!activeObject.value)
   const activeLayer = computed(() => activeLayerIndex.value >= 0 ? layers.value[activeLayerIndex.value] : null)
   const totalObjects = computed(() => layerInstance.value ? layerInstance.value.children.length : 0)
+  const objects = computed(() => {
+    // Return all objects from all layers
+    return layers.value.reduce((allObjects, layer) => {
+      return allObjects.concat(layer.objects || []);
+    }, []);
+  })
   const canvasAspectRatio = computed(() => canvasSize.value.width / canvasSize.value.height)
   const isPortrait = computed(() => canvasAspectRatio.value < 1)
   const isLandscape = computed(() => canvasAspectRatio.value > 1)
-  const isSquare = computed(() => canvasAspectRatio.value === 1)
+  const isSquare = computed(() => Math.abs(canvasAspectRatio.value - 1) < 0.01)
   const visibleLayers = computed(() => layers.value.filter(layer => layer.visible))
   const totalPages = computed(() => pages.value.length)
 
   // --- METHODS ---
 
+  // Batch canvas redraws on the next animation frame
+  let _rafDraw = null
+  function scheduleDraw() {
+    if (_rafDraw) return
+    _rafDraw = requestAnimationFrame(() => {
+      _rafDraw = null
+      if (layerInstance.value) layerInstance.value.batchDraw()
+      if (gridLayerInstance.value) gridLayerInstance.value.batchDraw()
+    })
+  }
+
   // Canvas setup
   function setCanvas(instance) {
     stageInstance.value = instance.stage
     layerInstance.value = instance.layer
+    
+    // Initialize default layer if no layers exist
+    if (layers.value.length === 0) {
+      layers.value.push({
+        id: `layer-${Date.now()}`,
+        name: 'Layer 1',
+        visible: true,
+        locked: false,
+        opacity: 100,
+        blendMode: 'normal',
+        objects: [],
+        editing: false
+      });
+      activeLayerIndex.value = 0;
+    }
+    
+    // Create a dedicated grid layer below main content
+    if (!gridLayerInstance.value && stageInstance.value) {
+      gridLayerInstance.value = new Konva.Layer({ listening: false })
+      stageInstance.value.add(gridLayerInstance.value)
+      gridLayerInstance.value.moveToBottom()
+    }
     
     // Create a transformer for selections
     transformer.value = new Konva.Transformer({
@@ -100,8 +141,10 @@ export const useCanvasStore = defineStore('canvas', () => {
     stageInstance.value.width(canvasSize.value.width)
     stageInstance.value.height(canvasSize.value.height)
     
-    // Initialize layers
+  // Initialize layers
     initializeLayers()
+  // Draw initial grid if enabled
+  updateGrid()
     
     // Load first page if it has content
     if (pages.value[currentPageIndex.value]?.data) {
@@ -148,11 +191,33 @@ export const useCanvasStore = defineStore('canvas', () => {
   }
 
   function setActiveObject(obj) {
+    // Skip redundant updates (already selected)
+    if (activeObject.value === obj) return;
+    
+    // Clear previous selection shadow if any
+    if (activeObject.value) {
+      if (typeof activeObject.value.hideSelection === 'function') {
+        activeObject.value.hideSelection();
+      } else {
+        // Fallback if the selection enhancer wasn't applied
+        activeObject.value.shadowEnabled(false);
+        activeObject.value.shadowBlur(0);
+      }
+    }
+    
     activeObject.value = obj
     
     if (!transformer.value) return;
     
     if (obj) {
+      // Temporarily disable draw to batch updates
+      const layer = obj.getLayer();
+      if (layer) layer.listening(false);
+      
+      // Enhance the object with selection feedback
+      enhanceSelectionFeedback(obj);
+      obj.showSelection();
+      
       // Update transformer nodes
       transformer.value.nodes([obj]);
       transformer.value.moveToTop();
@@ -166,16 +231,22 @@ export const useCanvasStore = defineStore('canvas', () => {
         window.dispatchEvent(event);
       }
       
-      layerInstance.value.draw();
+      // Re-enable listening and schedule a single draw
+      if (layer) {
+        layer.listening(true);
+        // Force immediate draw for responsive UI
+        layer.draw();
+      }
     } else {
       // Clear selection
+      transformer.value.nodes([]);
       transformer.value.nodes([]);
       
       // Trigger deselect event
       const event = new CustomEvent('konva:deselect');
       window.dispatchEvent(event);
       
-      layerInstance.value.draw();
+      scheduleDraw();
     }
     
     selectedObjects.value = obj ? [obj] : [];
@@ -211,7 +282,7 @@ export const useCanvasStore = defineStore('canvas', () => {
         })
       }
       
-      layerInstance.value.draw()
+  scheduleDraw()
       saveState()
       
       // Keep page meta in sync
@@ -252,7 +323,7 @@ export const useCanvasStore = defineStore('canvas', () => {
   
   function setZoomLevel(level) {
     // Ensure zoom level is within reasonable bounds
-    const newZoom = Math.max(10, Math.min(200, level));
+  const newZoom = Math.max(10, Math.min(400, level));
     zoomLevel.value = newZoom;
     
     if (stageInstance.value) {
@@ -260,8 +331,8 @@ export const useCanvasStore = defineStore('canvas', () => {
       const zoom = newZoom / 100;
       
       // Apply zoom transformation to stage
-      stageInstance.value.scale({ x: zoom, y: zoom });
-      stageInstance.value.draw();
+  stageInstance.value.scale({ x: zoom, y: zoom });
+  scheduleDraw();
       
       console.log(`Zoom applied: ${zoom}x (${newZoom}%)`);
     }
@@ -358,7 +429,7 @@ export const useCanvasStore = defineStore('canvas', () => {
       initializeLayers();
       
       // Redraw
-      layerInstance.value.draw();
+  scheduleDraw();
     } catch (e) {
       console.error('Error loading state:', e);
     }
@@ -505,7 +576,7 @@ export const useCanvasStore = defineStore('canvas', () => {
     setActiveObject(konvaObject);
     
     // Draw the layer
-    layerInstance.value.draw();
+  scheduleDraw();
     
     // Save state
     saveState();
@@ -668,7 +739,7 @@ export const useCanvasStore = defineStore('canvas', () => {
     setActiveObject(null);
     
     // Redraw layer
-    layerInstance.value.draw();
+  scheduleDraw();
     
     // Save state
     saveState();
@@ -711,52 +782,68 @@ export const useCanvasStore = defineStore('canvas', () => {
   }
 
   // Grid management
+  let cachedGridWidth = 0;
+  let cachedGridHeight = 0;
+  let cachedGridSize = 0;
+  
   function updateGrid() {
-    if (!layerInstance.value) return
-    
-    // Remove existing grid
-    const existingGrid = layerInstance.value.children.filter(child => child.attrs && child.attrs.isGrid);
-    existingGrid.forEach(obj => obj.destroy());
-    
+    if (!stageInstance.value) return
+    if (!gridLayerInstance.value) return
+
+    gridLayerInstance.value.destroyChildren()
+
     if (!gridVisible.value) {
-      layerInstance.value.draw();
+      scheduleDraw()
+      return
+    }
+
+    const width = canvasSize.value.width
+    const height = canvasSize.value.height
+    const size = gridSize.value
+    
+    // Skip redrawing if grid dimensions haven't changed
+    if (width === cachedGridWidth && height === cachedGridHeight && size === cachedGridSize) {
       return;
     }
     
-    // Create new grid
-    const width = canvasSize.value.width;
-    const height = canvasSize.value.height;
-    const size = gridSize.value;
-    
-    // Horizontal lines
-    for (let i = 0; i <= height; i += size) {
-      const line = new Konva.Line({
-        points: [0, i, width, i],
-        stroke: '#e5e7eb',
-        strokeWidth: 0.5,
-        opacity: 0.5,
-        listening: false,
-        isGrid: true
-      });
-      layerInstance.value.add(line);
-      line.moveToBottom();
-    }
-    
-    // Vertical lines
-    for (let i = 0; i <= width; i += size) {
-      const line = new Konva.Line({
-        points: [i, 0, i, height],
-        stroke: '#e5e7eb',
-        strokeWidth: 0.5,
-        opacity: 0.5,
-        listening: false,
-        isGrid: true
-      });
-      layerInstance.value.add(line);
-      line.moveToBottom();
-    }
-    
-    layerInstance.value.draw();
+    // Update cached values
+    cachedGridWidth = width;
+    cachedGridHeight = height;
+    cachedGridSize = size;
+
+    // Draw grid with one Shape for performance
+    const gridShape = new Konva.Shape({
+      listening: false,
+      perfectDrawEnabled: false,
+      sceneFunc: (ctx, shape) => {
+        ctx.save()
+        ctx.strokeStyle = '#e5e7eb'
+        ctx.globalAlpha = 0.5
+        ctx.lineWidth = 0.5
+        
+        // Use path batching for better performance
+        ctx.beginPath()
+        
+        // horizontal lines
+        for (let y = 0; y <= height; y += size) {
+          ctx.moveTo(0, y)
+          ctx.lineTo(width, y)
+        }
+        
+        // vertical lines
+        for (let x = 0; x <= width; x += size) {
+          ctx.moveTo(x, 0)
+          ctx.lineTo(x, height)
+        }
+        
+        ctx.stroke()
+        ctx.restore()
+      }
+    })
+
+    gridLayerInstance.value.add(gridShape)
+    try { gridShape.cache({ pixelRatio: 1 }) } catch (_) {}
+    scheduleDraw()
   }
   
   function toggleGrid() {
@@ -796,7 +883,7 @@ export const useCanvasStore = defineStore('canvas', () => {
     
     layerInstance.value.add(group);
     setActiveObject(group);
-    layerInstance.value.draw();
+  scheduleDraw();
     saveState();
   }
   
@@ -834,7 +921,7 @@ export const useCanvasStore = defineStore('canvas', () => {
     // Update transformer
     setActiveObject(null);
     
-    layerInstance.value.draw();
+  scheduleDraw();
     saveState();
   }
   
@@ -854,8 +941,8 @@ export const useCanvasStore = defineStore('canvas', () => {
     // Update background color
     stageInstance.value.container().style.backgroundColor = backgroundColor.value;
     
-    // Redraw
-    layerInstance.value.draw();
+  // Redraw
+  scheduleDraw();
     
     // Initialize layers
     initializeLayers();
@@ -1036,7 +1123,7 @@ export const useCanvasStore = defineStore('canvas', () => {
     pages, currentPageIndex,
     
     // Getters
-    canUndo, canRedo, isObjectSelected, activeLayer, totalObjects,
+    canUndo, canRedo, isObjectSelected, activeLayer, totalObjects, objects,
     canvasAspectRatio, isPortrait, isLandscape, isSquare, visibleLayers,
     totalPages,
     
@@ -1047,12 +1134,55 @@ export const useCanvasStore = defineStore('canvas', () => {
     addObjectToCanvas, addElement, deleteSelectedObject, duplicateSelectedObject,
     initializeLayers, clearCanvas, saveToFile,
     exportCanvas,
-    updateGrid, toggleGrid, toggleSnapToGrid, toggleRulers,
+  updateGrid, toggleGrid, toggleSnapToGrid, toggleRulers,
     groupSelectedObjects, ungroupSelectedObjects,
+  scheduleDraw,
     // Pages
     addPage, duplicatePage, deletePage, nextPage, prevPage, goToPage, loadPage,
     nextPageFast, prevPageFast,
     // Local projects
-    saveToLocalStorage, loadFromLocalStorage, listLocalProjects, deleteLocalProject, exportProjectJson
+    saveToLocalStorage, loadFromLocalStorage, listLocalProjects, deleteLocalProject, exportProjectJson,
+    
+    // Added for performance optimization: batch update object properties
+    updateObjectProperties: (object, properties) => {
+      if (!object || !properties || Object.keys(properties).length === 0) return;
+      
+      // Disable drawing temporarily
+      const layer = object.getLayer();
+      if (layer) {
+        layer.listening(false);
+      }
+      
+      // Batch set all properties
+      Object.entries(properties).forEach(([key, value]) => {
+        // Handle special case properties
+        if (typeof object[key] === 'function') {
+          object[key](value);
+        } else {
+          object.setAttr(key, value);
+        }
+      });
+      
+      // Re-enable listening and schedule a single draw
+      if (layer) {
+        layer.listening(true);
+      }
+      
+      // Update transformer if object is selected
+      if (activeObject.value === object && transformerInstance.value) {
+        transformerInstance.value.forceUpdate();
+      }
+      
+      // Recache if needed
+      if (properties.width || properties.height || properties.scaleX || properties.scaleY) {
+        try { object.cache(); } catch (_) {}
+      }
+      
+      // Schedule a single draw
+      scheduleDraw();
+      
+      // Save state after batch update
+      saveState();
+    }
   }
 })

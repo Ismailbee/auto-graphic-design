@@ -1,3 +1,11 @@
+<!-- 
+Copilot Setup: 
+This toolbar gives user controls to add objects.
+- Buttons: Add Text, Add Shape (rect/circle), Upload Image, Draw Line.
+- Trigger actions → update Fabric.js canvas.
+- Keep code modular & reusable.
+-->
+
 <template>
   <div class="toolbar-group">
     <button
@@ -91,7 +99,7 @@ function addText(type) {
   
   const layer = canvasStore.stageInstance.findOne('Layer');
   layer.add(textNode);
-  layer.draw();
+  layer.batchDraw();
   
   // Select the new text node
   canvasStore.setActiveObject(textNode);

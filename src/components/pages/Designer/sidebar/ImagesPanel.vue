@@ -72,19 +72,21 @@
 
 <script setup>
 import { ref, computed, defineProps } from 'vue';
-import { useCanvasStore } from '../../../../stores/canvas-konva';
-import { applyImageFilter as applyKonvaImageFilter, transformImage } from '../../../../composables/useKonvaImage';
+import { useCanvasStore } from '../../../../stores/canvas-fabric';
+import { useNotification } from '../../../../composables/useNotification';
+import { fabric } from 'fabric';
 
 const props = defineProps({
   activeTab: String,
 });
 
 const canvasStore = useCanvasStore();
+const { showSuccess, showError } = useNotification();
 
 // Check if the selected object is an image
 const isImageSelected = computed(() => {
   return canvasStore.activeObject && 
-         canvasStore.activeObject.className === 'Image';
+         canvasStore.activeObject.type === 'image';
 });
 
 // Image filters configuration
@@ -114,10 +116,39 @@ function handleImageUpload(event) {
   const file = event.target.files[0];
   if (!file || !file.type.startsWith('image/')) return;
   
+  if (!canvasStore.fabricCanvas) {
+    showError('Canvas not initialized');
+    return;
+  }
+  
   const reader = new FileReader();
   reader.onload = (e) => {
-    canvasStore.addElement('image', { 
-      src: e.target.result 
+    fabric.Image.fromURL(e.target.result, (img) => {
+      // Get center position of canvas
+      const center = canvasStore.fabricCanvas.getCenter();
+      
+      // Scale image to fit reasonably on canvas
+      const maxWidth = 400;
+      const maxHeight = 400;
+      const scale = Math.min(maxWidth / img.width, maxHeight / img.height, 1);
+      
+      img.set({
+        left: center.left,
+        top: center.top,
+        scaleX: scale,
+        scaleY: scale,
+        originX: 'center',
+        originY: 'center'
+      });
+      
+      canvasStore.fabricCanvas.add(img);
+      canvasStore.fabricCanvas.setActiveObject(img);
+      canvasStore.fabricCanvas.renderAll();
+      canvasStore.saveState();
+      
+      showSuccess('Image added to canvas');
+    }, {
+      crossOrigin: 'anonymous'
     });
     
     // Reset the file input so the same file can be selected again
@@ -130,38 +161,111 @@ function handleImageUpload(event) {
 function handleImageFilter(filterType, options = {}) {
   if (!canvasStore.activeObject || !isImageSelected.value) return;
   
-  // Apply filter to the selected image
-  applyKonvaImageFilter(canvasStore.activeObject, filterType, options);
+  const activeImg = canvasStore.activeObject;
   
-  // Update canvas
-  canvasStore.layerInstance.draw();
-  canvasStore.saveState();
+  try {
+    // Create filter based on type
+    let filter = null;
+    
+    switch (filterType) {
+      case 'grayscale':
+        filter = new fabric.Image.filters.Grayscale();
+        break;
+      case 'sepia':
+        filter = new fabric.Image.filters.Sepia();
+        break;
+      case 'invert':
+        filter = new fabric.Image.filters.Invert();
+        break;
+      case 'brightness':
+        filter = new fabric.Image.filters.Brightness({ brightness: options.brightness || 0.3 });
+        break;
+      case 'contrast':
+        filter = new fabric.Image.filters.Contrast({ contrast: options.contrast || 0.3 });
+        break;
+      case 'blur':
+        filter = new fabric.Image.filters.Blur({ blur: options.blur || 0.1 });
+        break;
+      default:
+        showError('Filter not supported');
+        return;
+    }
+    
+    if (filter) {
+      // Add filter to image
+      activeImg.filters = activeImg.filters || [];
+      activeImg.filters.push(filter);
+      activeImg.applyFilters();
+      canvasStore.fabricCanvas.renderAll();
+      canvasStore.saveState();
+      
+      showSuccess(`${filterType} filter applied`);
+    }
+  } catch (error) {
+    console.error('Error applying filter:', error);
+    showError('Failed to apply filter');
+  }
 }
 
   // Apply image adjustment
   function applyImageAdjustment(adjustmentType, value) {
     if (!canvasStore.activeObject || !isImageSelected.value) return;
     
+    const activeImg = canvasStore.activeObject;
     const adjustment = imageAdjustments.value.find(adj => adj.type === adjustmentType);
     if (!adjustment) return;
     
-    // Create options object for the filter
-    const options = {};
-    
-    // If adjustment has a specific property to set (like hue, saturation)
-    if (adjustment.property) {
-      options[adjustment.property] = parseFloat(value);
-    } else {
-      options.value = parseFloat(value);
+    try {
+      let filter = null;
+      
+      switch (adjustmentType) {
+        case 'brightness':
+          filter = new fabric.Image.filters.Brightness({ brightness: parseFloat(value) });
+          break;
+        case 'contrast':
+          filter = new fabric.Image.filters.Contrast({ contrast: parseFloat(value) });
+          break;
+        case 'saturation':
+          filter = new fabric.Image.filters.Saturation({ saturation: parseFloat(value) });
+          break;
+        case 'hue':
+          filter = new fabric.Image.filters.HueRotation({ rotation: parseFloat(value) });
+          break;
+        case 'vibrance':
+          filter = new fabric.Image.filters.Vibrance({ vibrance: parseFloat(value) });
+          break;
+        case 'blur':
+          filter = new fabric.Image.filters.Blur({ blur: parseFloat(value) });
+          break;
+        case 'sharpen':
+          // Fabric.js doesn't have a built-in sharpen filter, use a custom convolution
+          filter = new fabric.Image.filters.Convolute({
+            matrix: [0, -1, 0, -1, 5, -1, 0, -1, 0]
+          });
+          break;
+        default:
+          showError('Adjustment not supported');
+          return;
+      }
+      
+      if (filter) {
+        // Remove existing filters of the same type
+        activeImg.filters = activeImg.filters || [];
+        activeImg.filters = activeImg.filters.filter(f => f.type !== adjustmentType);
+        
+        // Add new filter
+        activeImg.filters.push(filter);
+        activeImg.applyFilters();
+        canvasStore.fabricCanvas.renderAll();
+        canvasStore.saveState();
+      }
+    } catch (error) {
+      console.error('Error applying adjustment:', error);
+      showError('Failed to apply adjustment');
     }
-    
-    // Apply filter
-    applyKonvaImageFilter(canvasStore.activeObject, adjustmentType, options);
-    
-    // Update canvas
-    canvasStore.layerInstance.draw();
-    canvasStore.saveState();
-  }// Reset an image adjustment
+  }
+
+// Reset an image adjustment
 function resetImageAdjustment(adjustmentType) {
   const adjustment = imageAdjustments.value.find(adj => adj.type === adjustmentType);
   if (!adjustment) return;
@@ -181,39 +285,48 @@ function resetImageAdjustment(adjustmentType) {
 function flipImageHorizontal() {
   if (!canvasStore.activeObject || !isImageSelected.value) return;
   
-  // Get current scaleX
-  const currentScaleX = canvasStore.activeObject.scaleX();
+  const activeImg = canvasStore.activeObject;
   
-  // Flip by inverting the scale
-  transformImage(canvasStore.activeObject, { flipX: true });
+  // Get current scaleX and flip it
+  const currentScaleX = activeImg.scaleX || 1;
+  activeImg.set('scaleX', currentScaleX * -1);
   
-  // Update canvas
-  canvasStore.layerInstance.draw();
+  canvasStore.fabricCanvas.renderAll();
   canvasStore.saveState();
+  
+  showSuccess('Image flipped horizontally');
 }
 
 // Flip image vertically
 function flipImageVertical() {
   if (!canvasStore.activeObject || !isImageSelected.value) return;
   
-  // Flip by inverting the scale
-  transformImage(canvasStore.activeObject, { flipY: true });
+  const activeImg = canvasStore.activeObject;
   
-  // Update canvas
-  canvasStore.layerInstance.draw();
+  // Get current scaleY and flip it
+  const currentScaleY = activeImg.scaleY || 1;
+  activeImg.set('scaleY', currentScaleY * -1);
+  
+  canvasStore.fabricCanvas.renderAll();
   canvasStore.saveState();
+  
+  showSuccess('Image flipped vertically');
 }
 
 // Rotate image
 function rotateImage(degrees) {
   if (!canvasStore.activeObject || !isImageSelected.value) return;
   
-  // Apply rotation
-  transformImage(canvasStore.activeObject, { rotate: degrees });
+  const activeImg = canvasStore.activeObject;
   
-  // Update canvas
-  canvasStore.layerInstance.draw();
+  // Get current rotation and add the new rotation
+  const currentAngle = activeImg.angle || 0;
+  activeImg.set('angle', currentAngle + degrees);
+  
+  canvasStore.fabricCanvas.renderAll();
   canvasStore.saveState();
+  
+  showSuccess(`Image rotated ${degrees}°`);
 }
 </script>
 

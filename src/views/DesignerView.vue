@@ -5,7 +5,7 @@
     <main class="designer-content">
       <CanvaArea />
     </main>
-    <PropertyPanel />
+    <RightPanel />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ import { useCanvasStore } from '../stores/canvas-konva'
 import AppHeader from '../components/pages/Designer/AppHeader.vue'
 import AppSidebar from '../components/pages/Designer/AppSidebar.vue'
 import CanvaArea from '../components/pages/Designer/CanvaArea.vue'
-import PropertyPanel from '../components/pages/Designer/PropertyPanel.vue'
+import RightPanel from '../components/pages/Designer/RightPanel.vue'
 
 // Access the canvas store
 const canvasStore = useCanvasStore()
@@ -43,11 +43,11 @@ onMounted(() => {
 .designer-view {
   height: 100vh;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto; /* minmax prevents content from growing beyond available space */
+  grid-template-columns: auto minmax(0, 1fr) var(--right-panel-width, 320px);
   grid-template-rows: auto 1fr;
   grid-template-areas:
     "header header header"
-    "sidebar content properties";
+    "sidebar content rightpanel";
   overflow: hidden;
   background-color: #f0f2f5;
   box-sizing: border-box;
@@ -68,18 +68,11 @@ onMounted(() => {
   height: 100%;
   overflow-y: auto;
 }
-.designer-view > :deep(.property-panel) {
-  grid-area: properties;
-  position: relative;
-  z-index: 10;
-  height: 100%;
-  overflow-y: auto;
-}
 
 .designer-content {
   grid-area: content;
   position: relative;
-  overflow: hidden; /* Changed back to hidden to prevent content overflow */
+  overflow: hidden;
   display: flex;
   flex: 1;
   min-height: 500px;

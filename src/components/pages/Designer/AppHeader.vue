@@ -80,7 +80,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useCanvasStore } from '../../../stores/canvas-konva'
+import { useCanvasStore } from '../../../stores/canvas-fabric'
 import UserMenu from './header/UserMenu.vue'
 import ShareModal from './header/ShareModal.vue'
 import ProjectsModal from './header/ProjectsModal.vue'

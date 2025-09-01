@@ -1,6 +1,34 @@
+<!-- 
+Copilot Setup: 
+This is the Tiptap-based text editor panel.
+- Use Tiptap for Vue 3 (headless editor).
+- Provide formatting (bold, italic, underline, font size, alignment, color).
+- On change → update selected Fabric.js text object.
+- Should integrate smoothly with Fabric.js.
+-->
+
+
 <template>
   <div class="property-section" v-if="isText">
     <div class="section-title">Text</div>
+    
+    <!-- Text Content Editor with Tiptap -->
+    <div class="property-row full-width" v-if="textContent">
+      <label>Content</label>
+      <div class="text-editor-container">
+        <TiptapEditor
+          ref="tiptapEditor"
+          v-model="textContent"
+          :is-compact="true"
+          :show-toolbar="true"
+          placeholder="Edit your text..."
+          @update:modelValue="updateTextContent"
+          @focus="onEditorFocus"
+          @blur="onEditorBlur"
+        />
+      </div>
+    </div>
+    
     <div class="property-grid">
       <div class="property-row full-width">
         <label>Font</label>
@@ -119,13 +147,16 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, defineProps, defineEmits } from 'vue';
+import { ref, computed, watch, defineProps, defineEmits, nextTick } from 'vue';
+import TiptapEditor from '../../../common/TiptapEditor.vue';
 
 const props = defineProps({
   object: Object,
 });
 
 const emit = defineEmits(['update-property', 'toggle-text-style']);
+
+const tiptapEditor = ref(null);
 
 const textProps = ref({ 
   fontFamily: 'Arial', 
@@ -147,6 +178,8 @@ const textProps = ref({
   strokeWidth: 0
 });
 
+const textContent = ref('');
+
 const fontFamilies = [
   'Arial', 'Helvetica', 'Verdana', 'Georgia', 'Times New Roman', 
   'Courier New', 'Impact', 'Comic Sans MS', 'Tahoma', 'Trebuchet MS', 
@@ -157,6 +190,8 @@ const isText = computed(() => props.object && (props.object.type === 'text' || p
 
 watch(() => props.object, (obj) => {
   if (!isText.value) return;
+  
+  // Update text properties
   textProps.value.fontFamily = obj.fontFamily;
   textProps.value.fontSize = obj.fontSize;
   textProps.value.fontWeight = obj.fontWeight;
@@ -171,9 +206,15 @@ watch(() => props.object, (obj) => {
   textProps.value.hasTextBackground = !!obj.backgroundColor;
   textProps.value.hasShadow = !!obj.shadow;
   textProps.value.textDecoration = obj.textDecoration || '';
-  textProps.value.textCase = 'none'; // This is a UI state, not stored in the object
+  textProps.value.textCase = 'none';
   textProps.value.stroke = obj.stroke || '#000000';
   textProps.value.strokeWidth = obj.strokeWidth || 0;
+  
+  // Update text content for Tiptap editor
+  const objText = obj.text || '';
+  if (textContent.value !== objText) {
+    textContent.value = objText;
+  }
 }, { immediate: true, deep: true });
 
 function updateProperty(prop, value) {
@@ -212,8 +253,47 @@ function transformTextCase() {
     emit('update-property', 'text', newText);
   }
 }
+
+// Tiptap editor event handlers
+function updateTextContent(html) {
+  // Convert HTML to plain text for Fabric.js
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  const plainText = tempDiv.textContent || tempDiv.innerText || '';
+  
+  if (plainText !== textContent.value) {
+    textContent.value = plainText;
+    emit('update-property', 'text', plainText);
+  }
+}
+
+function onEditorFocus() {
+  // Focus handling if needed
+}
+
+function onEditorBlur() {
+  // Blur handling if needed
+}
 </script>
 
 <style scoped>
 @import './propertyPanelStyles.css';
+
+.text-editor-container {
+  margin-top: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  background: white;
+}
+
+.text-editor-container :deep(.tiptap-editor) {
+  border: none;
+}
+
+.text-editor-container :deep(.ProseMirror) {
+  min-height: 80px;
+  max-height: 200px;
+  overflow-y: auto;
+}
 </style>

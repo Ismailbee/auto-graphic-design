@@ -23,13 +23,16 @@ export function useNotification() {
 
   async function fetchNotifications() {
     try {
-      const res = await fetch('/api/notifications')
-      if (!res.ok) throw new Error("Failed to fetch")
-      const data = await res.json()
+      // Skip API call for now - using local demo data
+      // const res = await fetch('/api/notifications')
+      // if (!res.ok) throw new Error("Failed to fetch")
+      // const data = await res.json()
 
-      notifications.value = data
-      notificationCount.value = data.length
+      // notifications.value = data
+      // notificationCount.value = data.length
 
+      // Use existing demo data instead
+      notificationCount.value = notifications.value.filter(n => !n.read).length
 
       if (notificationCount.value > 0) playNotificationSound()
     } catch (err) {

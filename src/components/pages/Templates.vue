@@ -27,7 +27,7 @@
         @click="createTemplate"
         class="relative overflow-hidden rounded-xl bg-gradient-to-r from-[#f6ebcd] to-[#e2c98f] text-black font-semibold px-6 py-3 flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95"
       >
-        <ion-icon name="start" :icon="addOutline" class="animate-pulse" />
+        <ion-icon :icon="addOutline" class="animate-pulse" />
         <span class="relative z-10">Create New Template</span>
 
         <!-- Animated glow overlay -->
@@ -63,10 +63,10 @@
           </ion-card-subtitle>
           <div class="mt-auto flex gap-2">
             <ion-button size="small" color="primary" @click="previewTemplate(template)">
-              <ion-icon name="start" :icon="eyeOutline" /> Preview
+              <ion-icon slot="start" :icon="eyeOutline" /> Preview
             </ion-button>
             <button class="py-2 px-4 border-[1.5px] border-contrast"  @click="useTemplate(template)">
-              <ion-icon name="start" :icon="createOutline" /> Use
+              <ion-icon :icon="createOutline" /> Use
             </button>
           </div>
         </ion-card-header>
@@ -91,7 +91,7 @@
     <!-- See more -->
     <div class="text-center mt-10">
       <button @click="templates" class="px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-transform duration-300">
-        See More Templates
+        ...See More
       </button>
     </div>
   </div>
@@ -101,6 +101,7 @@
 import { ref, computed } from 'vue'
 import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonButton, IonInput, IonSelect, IonSelectOption, IonIcon, IonModal } from '@ionic/vue'
 import { addOutline, eyeOutline, createOutline, sadOutline } from 'ionicons/icons'
+import UsersComment from './UsersComment.vue'
 
 // Example categories
 const categories = [

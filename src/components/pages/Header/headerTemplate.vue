@@ -43,7 +43,7 @@
         <div class="grid grid-cols-4 gap-4">
           <!-- Column 1 -->
           <ul class="w-[80px]">
-            <li @click="navigateTo('/stickers')" class="cursor-pointer text-[#b8b8b8] hover:text-black">Stickers</li>
+            <li @click="navigateTo('/stickers')" class="cursor-pointer text-[#b8b8b8] hover:text-black text-[13px]">Stickers</li>
             <li @click="navigateTo('/receipt')" class="cursor-pointer text-[#b8b8b8] hover:text-black">Receipt</li>
             <li @click="navigateTo('/invoice')" class="cursor-pointer text-[#b8b8b8] hover:text-black">Invoice</li>
             <li @click="navigateTo('/letter-head')" class="cursor-pointer text-[#b8b8b8] hover:text-black">Letter Head</li>

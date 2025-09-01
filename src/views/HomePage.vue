@@ -56,7 +56,7 @@
       
       </div>
       
-       <div class="mt-[300px] z-30">
+       <div class=" z-30">
           <body-Base title="bodyBase" />
         </div>
         

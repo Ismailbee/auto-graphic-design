@@ -18,8 +18,11 @@ import 'animate.css';
 import './assets/css/tailwind.css';
 // Import local copy of Cropper.js styles
 import './assets/css/cropper.css';
+// Import progressive image styles
+import './assets/css/progressive-image.css';
 
-
+// Import progressive image directive
+import { createProgressiveImageDirective } from './utils/progressiveImage';
 
 // pinia
 import { createPinia } from 'pinia'
@@ -57,6 +60,8 @@ app.component('bodyBase', bodyBase);
 app.component('appBase', appBase);
 app.component('IonIcon', IonIcon);
 
+// Register progressive image directive
+app.directive('progressive-image', createProgressiveImageDirective());
 
 app.use(PrimeVue, {
   theme: {

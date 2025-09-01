@@ -1,5 +1,14 @@
 import { Konva } from '../lib/konva-init.js';
 
+// Utility function for debouncing
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
 /**
  * Create an editable and draggable Konva Text object
  * This enhances the standard Konva.Text with double-click-to-edit functionality
@@ -53,6 +62,9 @@ export function createEditableText(stage, layer, options = {}) {
   // Add to layer
   layer.add(textNode);
   
+  // Cache text for faster rendering when transformed
+  try { textNode.cache(); } catch (_) {}
+
   // Setup double-click to edit
   textNode.on('dblclick dbltap', () => {
     // Create a textarea over the text node
@@ -105,37 +117,7 @@ export function createEditableText(stage, layer, options = {}) {
     const textLength = textarea.value.length;
     textarea.setSelectionRange(textLength, textLength);
 
-    // --- Create a Konva blinking cursor on the canvas so users see a straight-line caret ---
-    // We'll render a 2px-wide rect and toggle its opacity to blink.
-    let cursorRect = null;
-    let blinkInterval = null;
-
-    // Helper: compute left (stage coords) of the text node
-    const textPos = textNode.absolutePosition();
-    const leftStage = textPos.x - textNode.offsetX();
-    const topStage = textPos.y - textNode.offsetY();
-
-    // Create cursor rect in stage coordinates
-    cursorRect = new Konva.Rect({
-      x: leftStage + 4,
-      y: topStage + 4,
-      width: 2,
-      height: Math.max(16, textNode.fontSize()),
-      fill: textNode.fill() || '#000',
-      listening: false,
-      name: 'text-cursor'
-    });
-    layer.add(cursorRect);
-    layer.batchDraw();
-
-    // Blink animation (toggle opacity)
-    blinkInterval = setInterval(() => {
-      if (!cursorRect || cursorRect._destroyed) return;
-      cursorRect.opacity(cursorRect.opacity() === 1 ? 0 : 1);
-      layer.batchDraw();
-    }, 530);
-
-    // Create a hidden DOM measurer to compute text width in pixels
+  // Create a hidden DOM measurer to compute text width in pixels
     const measurer = document.createElement('span');
     measurer.style.position = 'absolute';
     measurer.style.top = '-9999px';
@@ -146,23 +128,7 @@ export function createEditableText(stage, layer, options = {}) {
     measurer.style.fontStyle = textNode.fontStyle() || 'normal';
     document.body.appendChild(measurer);
 
-    // Position cursor based on textarea content
-    function updateCursorPositionFromText() {
-      const content = textarea.value || '';
-      measurer.textContent = content || ' '; // ensure width for empty
-      const pxWidth = measurer.offsetWidth;
-      // Convert page pixels to stage coords by dividing by stage scale
-      const stageScale = stage.scaleX() || 1;
-      const offsetX = pxWidth / stageScale;
-      cursorRect.x(leftStage + offsetX + 2);
-      // vertical position: align roughly to text baseline
-      cursorRect.y(topStage + 4);
-      cursorRect.height(Math.max(16, textNode.fontSize()));
-      layer.batchDraw();
-    }
-
-    // Initialize cursor position
-    updateCursorPositionFromText();
+  // No on-canvas blinking cursor to avoid continuous draws
 
   function removeTextarea() {
       if (textarea.parentNode) document.body.removeChild(textarea);
@@ -183,12 +149,12 @@ export function createEditableText(stage, layer, options = {}) {
         textNode.visible(false);
       }
 
-      // Recenter and redraw
+  // Recenter and redraw
       textNode.offsetX(textNode.width() / 2);
       textNode.offsetY(textNode.height() / 2);
-      layer.batchDraw();
-  // cleanup cursor and measurer
-  cleanupCursor();
+  layer.batchDraw();
+  // cleanup measurer
+  try { if (measurer && measurer.parentNode) measurer.parentNode.removeChild(measurer); } catch(_) {}
     }
 
     // Handle outside click
@@ -224,32 +190,25 @@ export function createEditableText(stage, layer, options = {}) {
 
     // Add event listeners
     textarea.addEventListener('keydown', handleEnter);
-    textarea.addEventListener('input', () => {
+    textarea.addEventListener('input', debounce(() => {
       // Auto resize the textarea based on content (in page pixels)
       textarea.style.height = 'auto';
       textarea.style.height = `${textarea.scrollHeight}px`;
-      // update cursor position to follow typing
-      updateCursorPositionFromText();
-    });
+      // Avoid drawing canvas on every keystroke; we'll update only on commit
+    }, 100));
 
     setTimeout(() => {
       window.addEventListener('click', handleOutsideClick);
       window.addEventListener('keydown', handleEnter);
     });
 
-    // Cleanup helper to remove cursor and measurer
-    function cleanupCursor() {
-      try {
-        if (blinkInterval) clearInterval(blinkInterval);
-        if (cursorRect && !cursorRect._destroyed) {
-          cursorRect.destroy();
-        }
-        if (measurer && measurer.parentNode) measurer.parentNode.removeChild(measurer);
-        layer.batchDraw();
-      } catch (e) {
-        // ignore
-      }
-    }
+  // No-op
+  });
+  
+  // Add cleanup handler to prevent memory leaks
+  textNode.on('destroy', () => {
+    // Clean up event listeners when text node is destroyed
+    textNode.off('dblclick dbltap');
   });
   
   return textNode;
