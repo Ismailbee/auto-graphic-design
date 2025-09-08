@@ -1114,6 +1114,82 @@ export const useCanvasStore = defineStore('canvas', () => {
     return payload;
   }
 
+  function loadTemplate(template = []) {
+  if (!layerInstance.value) return;
+
+  clearCanvas(); // start fresh
+
+  template.forEach(item => {
+    addElement(item.type, item.config || {});
+  });
+
+  saveState();
+}
+
+function addText({ text = 'Edit me', x = 50, y = 50, fontSize = 20, fill = '#000', draggable = true }) {
+  const textNode = new Konva.Text({
+    text,
+    x,
+    y,
+    fontSize,
+    fill,
+    draggable
+  });
+
+  layerInstance.value.add(textNode);
+  layerInstance.value.draw();
+
+  saveState();
+}
+
+
+function addPlaceholder({ x, y, width, height, draggable = true }) {
+  const rect = new Konva.Rect({
+    x, y, width, height,
+    fill: '#e5e7eb',
+    stroke: '#9ca3af',
+    dash: [4, 4],
+    draggable
+  });
+
+  const label = new Konva.Text({
+    text: 'Upload Image',
+    x: x + 10,
+    y: y + height / 2 - 10,
+    fontSize: 14,
+    fill: '#555'
+  });
+
+  layerInstance.value.add(rect);
+  layerInstance.value.add(label);
+  layerInstance.value.draw();
+
+  saveState();
+}
+
+
+addPlaceholder({ x, y, width, height, draggable }) {
+  const rect = new Konva.Rect({
+    x, y, width, height,
+    fill: '#e5e7eb',
+    stroke: '#9ca3af',
+    dash: [4, 4],
+    draggable
+  });
+
+  const label = new Konva.Text({
+    text: 'Upload Image',
+    x: x + 10,
+    y: y + height / 2 - 10,
+    fontSize: 14,
+    fill: '#555'
+  });
+
+  this.layer.add(rect);
+  this.layer.add(label);
+  this.layer.draw();
+}
+
   return {
     // State
     stageInstance, layerInstance, activeObject, activeTool, isDarkTheme, workspaceTheme, canvasSize, 
@@ -1142,7 +1218,13 @@ export const useCanvasStore = defineStore('canvas', () => {
     nextPageFast, prevPageFast,
     // Local projects
     saveToLocalStorage, loadFromLocalStorage, listLocalProjects, deleteLocalProject, exportProjectJson,
+
+    // ...
+  loadTemplate,
     
+}
+
+
     // Added for performance optimization: batch update object properties
     updateObjectProperties: (object, properties) => {
       if (!object || !properties || Object.keys(properties).length === 0) return;

@@ -46,7 +46,7 @@
     <div class="m-0 w-full px-6">
       <button
         @click="logout"
-        class="w-full px-4 py-2 text-left text-contrast hover:bg-contrast hover:text-primary transition flex items-center"
+        class="menu-item w-full px-4 py-2 text-left text-contrast hover:bg-contrast hover:text-primary transition flex items-center"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -99,4 +99,23 @@ async function logout() {
 <style scoped>
 .bg-primary { background-color: #502800; }
 .bg-contrast { background-color: #BA6900; }
+.menu-item {
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s,
+    transform 0.18s cubic-bezier(0.4,0.2,0.2,1);
+  will-change: transform, box-shadow;
+}
+.menu-item:hover,
+.menu-item:focus {
+  background: #BA6900;
+  color: #502800;
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: 0 4px 18px 0 rgba(186,105,0,0.10), 0 1.5px 6px 0 rgba(80,40,0,0.08);
+}
+.menu-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px 0 rgba(186,105,0,0.10);
+}
 </style>

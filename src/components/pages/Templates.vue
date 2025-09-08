@@ -55,12 +55,7 @@
           </div>
         </div>
         <ion-card-header class="p-4 flex flex-col flex-1">
-          <ion-card-title class="text-lg font-semibold text-gray-800 mb-1 line-clamp-2">
-            {{ template.title }}
-          </ion-card-title>
-          <ion-card-subtitle class="text-sm text-gray-500 mb-2">
-            {{ template.description }}
-          </ion-card-subtitle>
+          
           <div class="mt-auto flex gap-2">
             <ion-button size="small" color="primary" @click="previewTemplate(template)">
               <ion-icon slot="start" :icon="eyeOutline" /> Preview
@@ -117,43 +112,31 @@ const categories = [
 const templates = ref([
   {
     id: 1,
-    title: 'Elegant Wedding Invitation',
-    description: 'A classic invitation template for weddings.',
     category: 'Invitation',
     image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 2,
-    title: 'Modern Business Flyer',
-    description: 'Perfect for promoting your business or event.',
     category: 'Flyer',
     image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 3,
-    title: 'Minimalist Business Card',
-    description: 'A clean and professional business card design.',
     category: 'Business Card',
     image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 4,
-    title: 'Event Poster',
-    description: 'Bold and eye-catching poster for any event.',
     category: 'Poster',
     image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 5,
-    title: 'Instagram Story Template',
-    description: 'Stylish template for your social media stories.',
     category: 'Social Media',
     image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80'
   },
   {
     id: 6,
-    title: 'Certificate of Achievement',
-    description: 'Formal certificate template for awards.',
     category: 'Certificate',
     image: 'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=600&q=80'
   }
