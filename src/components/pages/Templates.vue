@@ -149,12 +149,18 @@ const previewedTemplate = ref(null)
 
 const filteredTemplates = computed(() => {
   return templates.value.filter(t => {
-    const matchesCategory = selectedCategory.value ? t.category === selectedCategory.value : true
-    const matchesSearch = t.title.toLowerCase().includes(search.value.toLowerCase()) ||
-      t.description.toLowerCase().includes(search.value.toLowerCase())
+    const matchesCategory = selectedCategory.value
+      ? t.category === selectedCategory.value
+      : true
+
+    const matchesSearch = t.category
+      .toLowerCase()
+      .includes(search.value.toLowerCase())
+
     return matchesCategory && matchesSearch
   })
 })
+
 
 function previewTemplate(template) {
   previewedTemplate.value = template

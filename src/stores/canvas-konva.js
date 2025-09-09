@@ -1142,7 +1142,6 @@ function addText({ text = 'Edit me', x = 50, y = 50, fontSize = 20, fill = '#000
   saveState();
 }
 
-
 function addPlaceholder({ x, y, width, height, draggable = true }) {
   const rect = new Konva.Rect({
     x, y, width, height,
@@ -1166,6 +1165,7 @@ function addPlaceholder({ x, y, width, height, draggable = true }) {
 
   saveState();
 }
+
 
 
 addPlaceholder({ x, y, width, height, draggable }) {
@@ -1221,50 +1221,9 @@ addPlaceholder({ x, y, width, height, draggable }) {
 
     // ...
   loadTemplate,
+
+  addText,
+  addPlaceholder,
+  loadTemplate,
     
 }
-
-
-    // Added for performance optimization: batch update object properties
-    updateObjectProperties: (object, properties) => {
-      if (!object || !properties || Object.keys(properties).length === 0) return;
-      
-      // Disable drawing temporarily
-      const layer = object.getLayer();
-      if (layer) {
-        layer.listening(false);
-      }
-      
-      // Batch set all properties
-      Object.entries(properties).forEach(([key, value]) => {
-        // Handle special case properties
-        if (typeof object[key] === 'function') {
-          object[key](value);
-        } else {
-          object.setAttr(key, value);
-        }
-      });
-      
-      // Re-enable listening and schedule a single draw
-      if (layer) {
-        layer.listening(true);
-      }
-      
-      // Update transformer if object is selected
-      if (activeObject.value === object && transformerInstance.value) {
-        transformerInstance.value.forceUpdate();
-      }
-      
-      // Recache if needed
-      if (properties.width || properties.height || properties.scaleX || properties.scaleY) {
-        try { object.cache(); } catch (_) {}
-      }
-      
-      // Schedule a single draw
-      scheduleDraw();
-      
-      // Save state after batch update
-      saveState();
-    }
-  }
-})

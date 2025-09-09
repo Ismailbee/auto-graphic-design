@@ -12,7 +12,7 @@
 
 <script setup>
 defineProps({
-  icon: String,
+  icon: [Object, String],
   label: String
 })
 defineEmits(['click'])

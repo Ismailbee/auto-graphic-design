@@ -87,9 +87,9 @@ const dropdownRef = ref(null)
 
 // Props & Emits
 defineProps({
-  icon: Object,
+  icon: [Object, String],
   label: String,
-  labelIcon: Object
+  labelIcon: [Object, String]
 })
 defineEmits(['click'])
 

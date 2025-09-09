@@ -116,8 +116,11 @@
           </div>
         </div>
 
-        <!-- Custom Calendar -->
-        <div class=" w-full max-w-md p-4 rounded-lg shadow-md">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-9 pb-12 h-full">
+
+       <div class="h-full">
+           <!-- Custom Calendar -->
+        <div class=" w-full p-4 rounded-lg shadow-md bg-gray-100">
           <!-- Header -->
           <div class="flex justify-between items-center mb-4">
             <button @click="prevMonth" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">‹</button>
@@ -168,10 +171,10 @@
             </ion-button>
           </div>
 
-          <ion-item>
+          <div class="hidden">
             <ion-label position="stacked">Select Time</ion-label>
             <ion-datetime v-model="selectedTime" presentation="time" :show-default-buttons="true"/>
-          </ion-item>
+          </div>
 
           <ion-card v-if="scheduledTask">
             <ion-card-header>
@@ -192,6 +195,49 @@
             </ion-card-content>
           </ion-card>
         </div>
+        
+       </div>
+
+ <div class="bg-yellow-50 col-span-2 p-4 rounded-lg ">
+<div>
+    <div class="h-[40px] mb-2 grid grid-cols-2 gap-4">
+    <div class="bg-yellow-500 h-full rounded-md flex items-center justify-center">
+      <p class="font-semibold text-white">Template</p>
+    </div>
+    <div class="bg-yellow-500 h-full rounded-md flex items-center justify-center">
+      <p class="font-semibold text-white">Holiday</p>
+    </div>
+  </div>
+
+ <!-- Grid Section -->
+<div class="grid grid-cols-2 gap-4 h-full items-stretch">
+  <!-- Left Side Grid -->
+  <div class="grid grid-cols-2 gap-4 h-full">
+    <div class="bg-red-500  h-20 rounded-md"></div>
+    <div class="bg-red-500 h-20 rounded-md"></div>
+    <div class="bg-red-500 h-20 rounded-md"></div>
+    <div class="bg-red-500 h-20 rounded-md"></div>
+     <div class="bg-red-500 h-20 rounded-md"></div>
+    <div class="bg-red-500 h-20 rounded-md"></div>
+    <div class="bg-red-500 h-20 rounded-md"></div>
+    <div class="bg-red-500 h-20 rounded-md"></div>
+   <div class="bg-red-500 h-20 rounded-md"></div>
+    <div class="bg-red-500 h-20 rounded-md"></div>
+  
+  </div>
+
+  <!-- Right Side Placeholder -->
+  <div class="bg-gray-200 rounded-md flex items-center justify-center">
+    <span class="text-gray-600">Right Side</span>
+  </div>
+</div>
+
+</div>
+</div>
+
+
+</div>
+        
       </div>
     </ion-content>
   </ion-page>
@@ -319,6 +365,7 @@ function shareToSocial(platform) {
   }
 }
 
+
 // Calendar State
 const today = new Date()
 const currentMonth = ref(today.getMonth())
@@ -365,6 +412,7 @@ function selectDate(day) {
   if (!day) return
   selectedDate.value = `${currentYear.value}-${String(currentMonth.value + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
 }
+
 
 function isSelected(day) {
   if (!selectedDate.value || !day) return false
