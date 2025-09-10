@@ -112,7 +112,7 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const goToEditProfile = () => {
-  router.push('/Edit-Profile')
+  router.push('/edit-profile')
 }
 
 const navigate = (path) => {
