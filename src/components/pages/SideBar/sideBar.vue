@@ -23,6 +23,12 @@
           <MenuItem :icon="walletSharp" label="Mock-ups" @click="navigateTo('/mockupPage')" />
           <MenuItem :icon="logoYoutube" label="Videos" @click="navigateTo('/videos')" />
         </div>
+
+        <div class="border-[#90560a] border-b-[0.1px]">
+          <SectionTitle title="Community" />
+          <MenuItem :icon="peopleSharp" label="Social Feed" @click="navigateTo('/feed')" />
+          <MenuItem :icon="personSharp" label="My Profile" @click="navigateTo('/profile')" />
+        </div>
    
         <div class="border-[#90560a] border-b-[0.1px]">
           <SectionTitle title="Help" />
@@ -67,7 +73,8 @@ import { useIonRouter } from '@ionic/vue';
 import {
   home, personCircle, readerSharp, walletSharp, logoYoutube, appsSharp,
   bagAddSharp, bulbSharp, helpCircleSharp, personAddSharp, starHalfSharp,
-  chatbubbleSharp, logoSlack, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline
+  chatbubbleSharp, logoSlack, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline,
+  peopleSharp, personSharp
 } from 'ionicons/icons';
 
 import myAccountMenu from './sidBarContent/myAccount/myAccountMenu.vue';
