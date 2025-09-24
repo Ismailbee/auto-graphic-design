@@ -1168,7 +1168,7 @@ function addPlaceholder({ x, y, width, height, draggable = true }) {
 
 
 
-addPlaceholder({ x, y, width, height, draggable }) {
+    addPlaceholder({ x, y, width, height, draggable }) {
   const rect = new Konva.Rect({
     x, y, width, height,
     fill: '#e5e7eb',
