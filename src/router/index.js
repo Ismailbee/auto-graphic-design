@@ -4,7 +4,7 @@ const routes = [
   { path: '/', redirect: '/welcome' },
   { path: '/welcome', component: () => import('../components/pages/auth/WelcomePage.vue') },
   { path: '/login', component: () => import('../components/pages/auth/LoginPage.vue') },
-  { path: '/signup', component: () => import('../components/pages/auth/SignUpPage.vue') },
+  { path: '/signup', component: () => import('../components/pages/auth/SignupPage.vue') },
 
   // Main & Sidebar pages
   { path: '/home', component: () => import('../views/HomePage.vue') },
@@ -44,6 +44,10 @@ const routes = [
 
   // Designer View
   { path: '/designer', component: () => import('../views/DesignerView.vue') },
+
+  // Social Feed Routes
+  { path: '/feed', component: () => import('../views/FeedView.vue') },
+  { path: '/profile/:userId?', component: () => import('../views/ProfileView.vue'), props: true },
 ]
 
 const router = createRouter({
