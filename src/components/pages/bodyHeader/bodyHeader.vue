@@ -35,9 +35,14 @@
 
           <!-- Bottom Row -->
           <div class="flex items-end justify-end flex-1 w-full">
-           <div class="w-full max-w-[450px] px-4 bg-primary h-[80px] rounded-tl-full flex items-center justify-center">
+           <div class="w-full max-w-[600px] px-4 bg-primary h-[80px] rounded-tl-full flex items-center justify-center gap-2">
               <bodyTemplate :icon="logoSlack" label="Template" :label-icon="chevronUp" />
               <body-icon :icon="logoAppleAppstore" label="My Edit" @click="navigateTo('/myeditPage')" />
+              <body-icon :icon="newspaperOutline" label="News" @click="navigateTo('/news')" />
+              <body-icon :icon="peopleOutline" label="Social" @click="navigateTo('/social')" />
+              <body-icon :icon="gameControllerOutline" label="Games" @click="navigateTo('/games')" />
+              <body-icon :icon="phonePortraitOutline" label="Recharge" @click="navigateTo('/recharge')" />
+              <body-icon :icon="filmOutline" label="Movies" @click="navigateTo('/movies')" />
               <body-icon :icon="server" label="Token" @click="navigateTo('/tokenPage')" />
               <body-icon :icon="diamond" label="Reward" @click="navigateTo('/rewardPage')" />
             </div>
@@ -61,7 +66,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonIcon } from '@ionic/vue'
 import { useUserStore } from '@/stores/user'
-import { chevronUp, diamond, logoSlack, logoAppleAppstore, notificationsOutline, server, searchOutline } from 'ionicons/icons'
+import { chevronUp, diamond, logoSlack, logoAppleAppstore, notificationsOutline, server, searchOutline, newspaperOutline, peopleOutline, gameControllerOutline, phonePortraitOutline, filmOutline } from 'ionicons/icons'
 import { useNotification } from '@/composables/useNotification'
 import bodyIcon from './bodyIcon.vue'
 import bodyTemplate from './bodyTemplate.vue'
