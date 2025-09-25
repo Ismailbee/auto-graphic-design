@@ -44,6 +44,30 @@ const routes = [
 
   // Designer View
   { path: '/designer', component: () => import('../views/DesignerView.vue') },
+
+  // Newsline MVP Routes
+  { path: '/news', component: () => import('../views/NewsHome.vue') },
+  { path: '/nigeria-news', component: () => import('../views/NigeriaNews.vue') },
+  { path: '/international-news', component: () => import('../views/InternationalNews.vue') },
+  { path: '/news/:id', component: () => import('../views/NewsArticle.vue') },
+  { path: '/news/category/:category', component: () => import('../views/CategoryNews.vue') },
+
+  // Social Media Feed
+  { path: '/social', component: () => import('../views/SocialFeed.vue') },
+  { path: '/profile/:userId?', component: () => import('../views/ProfilePage.vue') },
+
+  // Games Section
+  { path: '/games', component: () => import('../views/GamesHub.vue') },
+
+  // Recharge Section
+  { path: '/recharge', component: () => import('../views/RechargePage.vue') },
+  { path: '/payment', component: () => import('../views/PaymentPage.vue') },
+  { path: '/payment/success', component: () => import('../views/PaymentSuccess.vue') },
+  { path: '/payment/failure', component: () => import('../views/PaymentFailure.vue') },
+
+  // Movies & Series
+  { path: '/movies', component: () => import('../views/MoviesPage.vue') },
+  { path: '/movies/:id', component: () => import('../views/MovieDetails.vue') },
 ]
 
 const router = createRouter({
