@@ -4,7 +4,7 @@ const routes = [
   { path: '/', redirect: '/welcome' },
   { path: '/welcome', component: () => import('../components/pages/auth/WelcomePage.vue') },
   { path: '/login', component: () => import('../components/pages/auth/LoginPage.vue') },
-  { path: '/signup', component: () => import('../components/pages/auth/SignUpPage.vue') },
+  { path: '/signup', component: () => import('../components/pages/auth/SignupPage.vue') },
 
   // Main & Sidebar pages
   { path: '/home', component: () => import('../views/HomePage.vue') },
@@ -49,12 +49,9 @@ const routes = [
   { path: '/news', component: () => import('../views/NewsHome.vue') },
   { path: '/nigeria-news', component: () => import('../views/NigeriaNews.vue') },
   { path: '/international-news', component: () => import('../views/InternationalNews.vue') },
-  { path: '/news/:id', component: () => import('../views/NewsArticle.vue') },
-  { path: '/news/category/:category', component: () => import('../views/CategoryNews.vue') },
 
   // Social Media Feed
   { path: '/social', component: () => import('../views/SocialFeed.vue') },
-  { path: '/profile/:userId?', component: () => import('../views/ProfilePage.vue') },
 
   // Games Section
   { path: '/games', component: () => import('../views/GamesHub.vue') },
@@ -67,7 +64,6 @@ const routes = [
 
   // Movies & Series
   { path: '/movies', component: () => import('../views/MoviesPage.vue') },
-  { path: '/movies/:id', component: () => import('../views/MovieDetails.vue') },
 ]
 
 const router = createRouter({
