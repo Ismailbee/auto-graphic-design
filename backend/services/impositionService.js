@@ -1,4 +1,4 @@
-﻿import { PDFDocument } from 'pdf-lib';
+import { PDFDocument } from 'pdf-lib';
 import sharp from 'sharp';
 
 class ImpositionService {
@@ -12,8 +12,18 @@ class ImpositionService {
     };
   }
 
-  getPageSize(size) {
-    return this.pageSizes[size] || this.pageSizes.A4;
+  getPageSize(size, orientation = 'portrait') {
+    const baseSize = this.pageSizes[size] || this.pageSizes.A4;
+    
+    // If landscape, swap width and height
+    if (orientation === 'landscape') {
+      return {
+        width: baseSize.height,
+        height: baseSize.width
+      };
+    }
+    
+    return baseSize;
   }
 
   async convertImageToPdf(imageBuffer) {
@@ -72,6 +82,53 @@ class ImpositionService {
     }
   }
 
+  async mergeFiles(filesArray, impositionType, options) {
+    console.log('Merging', filesArray.length, 'files');
+    
+    try {
+      // First, merge all files into one PDF
+      const mergedPdf = await PDFDocument.create();
+      
+      for (const fileData of filesArray) {
+        console.log('Adding file:', fileData.name);
+        
+        let pdfBuffer = fileData.buffer;
+        
+        // Convert image to PDF if needed
+        if (fileData.name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|tiff)$/)) {
+          pdfBuffer = await this.convertImageToPdf(fileData.buffer);
+        }
+        
+        const sourcePdf = await PDFDocument.load(pdfBuffer);
+        const pageCount = sourcePdf.getPageCount();
+        const pageIndices = Array.from({ length: pageCount }, (_, i) => i);
+        
+        // Copy all pages from this file
+        const copiedPages = await mergedPdf.copyPages(sourcePdf, pageIndices);
+        copiedPages.forEach(page => mergedPdf.addPage(page));
+        
+        console.log(`Added ${pageCount} pages from ${fileData.name}`);
+      }
+      
+      console.log('Total pages after merge:', mergedPdf.getPageCount());
+      
+      // Now apply imposition to the merged PDF
+      switch (impositionType) {
+        case 'booklet':
+          return await this.createBooklet(mergedPdf, options);
+        case '2up':
+          return await this.create2Up(mergedPdf, options);
+        case '4up':
+          return await this.create4Up(mergedPdf, options);
+        default:
+          return await mergedPdf.save();
+      }
+    } catch (error) {
+      console.error('Error merging files:', error);
+      throw new Error('Failed to merge files: ' + error.message);
+    }
+  }
+
   async simplePassthrough(sourcePdf) {
     const targetPdf = await PDFDocument.create();
     const totalPages = sourcePdf.getPageCount();
@@ -86,12 +143,30 @@ class ImpositionService {
   }
 
   async createBooklet(sourcePdf, options) {
-    console.log('Creating booklet imposition');
+    console.log('Creating booklet imposition with orientation:', options.orientation);
     
     try {
       const targetPdf = await PDFDocument.create();
       const totalPages = sourcePdf.getPageCount();
-      const sheetSize = this.getPageSize(options.pageSize || 'A4');
+      
+      // Get the first page to determine source dimensions
+      const firstPage = sourcePdf.getPage(0);
+      const sourceSize = firstPage.getSize();
+      console.log('Source page size:', sourceSize);
+      
+      // Use source page size as the basis, or use specified paper size
+      let sheetSize;
+      if (options.pageSize === 'auto' || !options.pageSize) {
+        // Use double the source page width for booklet (two pages side by side)
+        sheetSize = {
+          width: sourceSize.width * 2,
+          height: sourceSize.height
+        };
+        console.log('Using auto size based on source:', sheetSize);
+      } else {
+        sheetSize = this.getPageSize(options.pageSize, options.orientation);
+        console.log('Using specified sheet size:', sheetSize, 'Orientation:', options.orientation);
+      }
       
       // Pad to multiple of 4 for booklet
       const paddedCount = totalPages % 4 === 0 ? totalPages : totalPages + (4 - (totalPages % 4));
@@ -157,12 +232,26 @@ class ImpositionService {
   }
 
   async create2Up(sourcePdf, options) {
-    console.log('Creating 2-up imposition');
+    console.log('Creating 2-up imposition with orientation:', options.orientation);
     
     try {
       const targetPdf = await PDFDocument.create();
       const totalPages = sourcePdf.getPageCount();
-      const sheetSize = this.getPageSize(options.pageSize || 'A4');
+      
+      // Get the first page to determine source dimensions
+      const firstPage = sourcePdf.getPage(0);
+      const sourceSize = firstPage.getSize();
+      
+      // Use source page size as the basis
+      let sheetSize;
+      if (options.pageSize === 'auto' || !options.pageSize) {
+        sheetSize = {
+          width: sourceSize.width * 2,
+          height: sourceSize.height
+        };
+      } else {
+        sheetSize = this.getPageSize(options.pageSize, options.orientation);
+      }
       
       const pageIndices = Array.from({ length: totalPages }, (_, i) => i);
       const copiedPages = await targetPdf.copyPages(sourcePdf, pageIndices);
@@ -198,12 +287,26 @@ class ImpositionService {
   }
 
   async create4Up(sourcePdf, options) {
-    console.log('Creating 4-up imposition');
+    console.log('Creating 4-up imposition with orientation:', options.orientation);
     
     try {
       const targetPdf = await PDFDocument.create();
       const totalPages = sourcePdf.getPageCount();
-      const sheetSize = this.getPageSize(options.pageSize || 'A4');
+      
+      // Get the first page to determine source dimensions
+      const firstPage = sourcePdf.getPage(0);
+      const sourceSize = firstPage.getSize();
+      
+      // Use source page size as the basis
+      let sheetSize;
+      if (options.pageSize === 'auto' || !options.pageSize) {
+        sheetSize = {
+          width: sourceSize.width * 2,
+          height: sourceSize.height * 2
+        };
+      } else {
+        sheetSize = this.getPageSize(options.pageSize, options.orientation);
+      }
       
       const pageIndices = Array.from({ length: totalPages }, (_, i) => i);
       const copiedPages = await targetPdf.copyPages(sourcePdf, pageIndices);

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { readJSON, writeJSON } from './jsonFileService.js';
+import { readJson, writeJson } from './jsonFileService.js';
 import path from 'path';
 
 const USERS_FILE = path.join(process.cwd(), 'storage', 'users.json');
@@ -12,7 +12,7 @@ const REFRESH_TOKEN_EXPIRES_IN = '30d';
  * Register a new user
  */
 export async function register(userData) {
-  const users = await readJSON(USERS_FILE);
+  const users = await readJson(USERS_FILE);
   
   // Check if user already exists
   const existingUser = users.find(u => u.email === userData.email);
@@ -42,7 +42,7 @@ export async function register(userData) {
   };
 
   users.push(newUser);
-  await writeJSON(USERS_FILE, users);
+  await writeJson(USERS_FILE, users);
 
   // Generate tokens
   const accessToken = generateAccessToken(newUser);
@@ -62,7 +62,7 @@ export async function register(userData) {
  * Login user
  */
 export async function login(email, password) {
-  const users = await readJSON(USERS_FILE);
+  const users = await readJson(USERS_FILE);
   
   // Find user by email
   const user = users.find(u => u.email === email);
@@ -86,7 +86,7 @@ export async function login(email, password) {
 
   // Update last login
   user.lastLogin = new Date().toISOString();
-  await writeJSON(USERS_FILE, users);
+  await writeJson(USERS_FILE, users);
 
   // Return user without password
   const { password: _, ...userWithoutPassword } = user;
@@ -104,7 +104,7 @@ export async function login(email, password) {
 export async function refreshAccessToken(refreshToken) {
   try {
     const decoded = jwt.verify(refreshToken, JWT_SECRET);
-    const users = await readJSON(USERS_FILE);
+    const users = await readJson(USERS_FILE);
     const user = users.find(u => u.id === decoded.id);
 
     if (!user) {
@@ -131,7 +131,7 @@ export async function refreshAccessToken(refreshToken) {
  * Get current user by ID
  */
 export async function getCurrentUser(userId) {
-  const users = await readJSON(USERS_FILE);
+  const users = await readJson(USERS_FILE);
   const user = users.find(u => u.id === userId);
 
   if (!user) {
@@ -148,7 +148,7 @@ export async function getCurrentUser(userId) {
  * Update user profile
  */
 export async function updateProfile(userId, updates) {
-  const users = await readJSON(USERS_FILE);
+  const users = await readJson(USERS_FILE);
   const userIndex = users.findIndex(u => u.id === userId);
 
   if (userIndex === -1) {
@@ -169,7 +169,7 @@ export async function updateProfile(userId, updates) {
     updatedAt: new Date().toISOString()
   };
 
-  await writeJSON(USERS_FILE, users);
+  await writeJson(USERS_FILE, users);
 
   const { password, ...userWithoutPassword } = users[userIndex];
   return userWithoutPassword;
@@ -179,7 +179,7 @@ export async function updateProfile(userId, updates) {
  * Change password
  */
 export async function changePassword(userId, currentPassword, newPassword) {
-  const users = await readJSON(USERS_FILE);
+  const users = await readJson(USERS_FILE);
   const userIndex = users.findIndex(u => u.id === userId);
 
   if (userIndex === -1) {
@@ -202,7 +202,7 @@ export async function changePassword(userId, currentPassword, newPassword) {
   user.password = await bcrypt.hash(newPassword, 10);
   user.updatedAt = new Date().toISOString();
 
-  await writeJSON(USERS_FILE, users);
+  await writeJson(USERS_FILE, users);
 
   return { message: 'Password changed successfully' };
 }

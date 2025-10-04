@@ -1,4 +1,4 @@
-import { readJSON, writeJSON } from './jsonFileService.js';
+import { readJson, writeJson } from './jsonFileService.js';
 import path from 'path';
 
 const COMMENTS_FILE = path.join(process.cwd(), 'storage', 'comments.json');
@@ -7,7 +7,7 @@ const COMMENTS_FILE = path.join(process.cwd(), 'storage', 'comments.json');
  * List all comments or filter by template/design ID
  */
 export async function listComments(filters = {}) {
-  const comments = await readJSON(COMMENTS_FILE);
+  const comments = await readJson(COMMENTS_FILE);
   
   let filtered = comments;
 
@@ -33,7 +33,7 @@ export async function listComments(filters = {}) {
  * Get a single comment by ID
  */
 export async function getComment(id) {
-  const comments = await readJSON(COMMENTS_FILE);
+  const comments = await readJson(COMMENTS_FILE);
   const comment = comments.find(c => c.id === id);
 
   if (!comment) {
@@ -49,7 +49,7 @@ export async function getComment(id) {
  * Create a new comment
  */
 export async function createComment(commentData, userId) {
-  const comments = await readJSON(COMMENTS_FILE);
+  const comments = await readJson(COMMENTS_FILE);
 
   const newComment = {
     id: `comment_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -66,7 +66,7 @@ export async function createComment(commentData, userId) {
   };
 
   comments.push(newComment);
-  await writeJSON(COMMENTS_FILE, comments);
+  await writeJson(COMMENTS_FILE, comments);
 
   return newComment;
 }
@@ -75,7 +75,7 @@ export async function createComment(commentData, userId) {
  * Update a comment
  */
 export async function updateComment(id, updates, userId) {
-  const comments = await readJSON(COMMENTS_FILE);
+  const comments = await readJson(COMMENTS_FILE);
   const commentIndex = comments.findIndex(c => c.id === id);
 
   if (commentIndex === -1) {
@@ -106,7 +106,7 @@ export async function updateComment(id, updates, userId) {
     ...allowedUpdates
   };
 
-  await writeJSON(COMMENTS_FILE, comments);
+  await writeJson(COMMENTS_FILE, comments);
 
   return comments[commentIndex];
 }
@@ -115,7 +115,7 @@ export async function updateComment(id, updates, userId) {
  * Delete a comment
  */
 export async function deleteComment(id, userId, userRole) {
-  const comments = await readJSON(COMMENTS_FILE);
+  const comments = await readJson(COMMENTS_FILE);
   const commentIndex = comments.findIndex(c => c.id === id);
 
   if (commentIndex === -1) {
@@ -134,7 +134,7 @@ export async function deleteComment(id, userId, userRole) {
   }
 
   const deleted = comments.splice(commentIndex, 1)[0];
-  await writeJSON(COMMENTS_FILE, comments);
+  await writeJson(COMMENTS_FILE, comments);
 
   return deleted;
 }
@@ -143,7 +143,7 @@ export async function deleteComment(id, userId, userRole) {
  * Like/Unlike a comment
  */
 export async function toggleCommentLike(id, userId) {
-  const comments = await readJSON(COMMENTS_FILE);
+  const comments = await readJson(COMMENTS_FILE);
   const commentIndex = comments.findIndex(c => c.id === id);
 
   if (commentIndex === -1) {
@@ -172,7 +172,7 @@ export async function toggleCommentLike(id, userId) {
   }
 
   comments[commentIndex] = comment;
-  await writeJSON(COMMENTS_FILE, comments);
+  await writeJson(COMMENTS_FILE, comments);
 
   return {
     ...comment,
@@ -184,7 +184,7 @@ export async function toggleCommentLike(id, userId) {
  * Get comment statistics for a template/design
  */
 export async function getCommentStats(templateId = null, designId = null) {
-  const comments = await readJSON(COMMENTS_FILE);
+  const comments = await readJson(COMMENTS_FILE);
   
   let filtered = comments;
   

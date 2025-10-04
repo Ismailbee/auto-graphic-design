@@ -29,21 +29,34 @@
               <ion-card-content>
                 <div
                   class="drop-zone"
-                  :class="{ dragging: isDragging, ready: Boolean(file) }"
+                  :class="{ dragging: isDragging, ready: files.length > 0 }"
                   @dragover.prevent="onDragOver"
                   @dragleave.prevent="onDragLeave"
                   @drop.prevent="onDrop"
                   @click="openFilePicker"
                 >
-                  <ion-icon :icon="file ? documentOutline : cloudUploadOutline"></ion-icon>
-                  <template v-if="file">
-                    <h3>{{ file.name }}</h3>
-                    <p>{{ formattedFileSize }}</p>
-                    <ion-chip color="medium" v-if="fileTypeLabel">{{ fileTypeLabel }}</ion-chip>
+                  <ion-icon :icon="files.length > 0 ? documentOutline : cloudUploadOutline"></ion-icon>
+                  <template v-if="files.length > 0">
+                    <h3>{{ files.length }} file{{ files.length > 1 ? 's' : '' }} selected</h3>
+                    <div class="file-list">
+                      <ion-chip 
+                        v-for="(file, index) in files" 
+                        :key="index" 
+                        color="primary"
+                        @click.stop="removeFile(index)"
+                      >
+                        <ion-label>{{ file.name }} ({{ formatFileSize(file.size) }})</ion-label>
+                        <ion-icon :icon="closeCircleOutline"></ion-icon>
+                      </ion-chip>
+                    </div>
+                    <ion-button expand="block" size="small" fill="outline" @click.stop="openFilePicker">
+                      Add more files
+                    </ion-button>
                   </template>
                   <template v-else>
                     <h3>Drag & drop or browse</h3>
-                    <p>Accepted formats: PDF, PNG, JPG (max 50&nbsp;MB)</p>
+                    <p>Accepted formats: PDF, PNG, JPG (max 50&nbsp;MB each)</p>
+                    <p><strong>Select multiple files to merge them together</strong></p>
                     <ion-button expand="block" size="small" fill="outline">Browse files</ion-button>
                   </template>
                 </div>
@@ -53,6 +66,7 @@
                   class="sr-only"
                   accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp"
                   @change="onFileChange"
+                  multiple
                 />
                 <ion-note color="danger" v-if="fileError" class="message note">{{ fileError }}</ion-note>
                 <ion-note color="success" v-if="successMessage" class="message note">{{ successMessage }}</ion-note>
@@ -90,6 +104,33 @@
                       </ion-select-option>
                     </ion-select>
                   </ion-item>
+
+                  <ion-item lines="full">
+                    <ion-label>Orientation</ion-label>
+                    <ion-select 
+                      interface="popover" 
+                      :value="orientation"
+                      @ion-change="(e) => { console.log('Select changed:', e.detail.value); orientation = e.detail.value; }"
+                      :disabled="autoDetectOrientation"
+                      placeholder="Select orientation"
+                    >
+                      <ion-select-option value="portrait">Portrait</ion-select-option>
+                      <ion-select-option value="landscape">Landscape</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+
+                  <ion-item lines="full">
+                    <ion-label>Auto-detect orientation</ion-label>
+                    <ion-toggle 
+                      color="primary" 
+                      :checked="autoDetectOrientation"
+                      @ion-change="(e) => autoDetectOrientation = e.detail.checked"
+                    ></ion-toggle>
+                  </ion-item>
+                  
+                  <ion-note color="success" v-if="orientation" class="orientation-note">
+                    ✓ Current: <strong>{{ orientation === 'portrait' ? 'Portrait' : 'Landscape' }}</strong>
+                  </ion-note>
 
                   <ion-item lines="full">
                     <ion-label>Duplex</ion-label>
@@ -208,6 +249,37 @@
 
 <script setup>
 import { onBeforeUnmount, ref, computed, watch } from 'vue';
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonButton,
+  IonButtons,
+  IonIcon,
+  IonChip,
+  IonLabel,
+  IonNote,
+  IonSegment,
+  IonSegmentButton,
+  IonItem,
+  IonSelect,
+  IonSelectOption,
+  IonToggle,
+  IonInput,
+  IonAccordionGroup,
+  IonAccordion,
+  IonSpinner,
+} from '@ionic/vue';
 import { backendApi } from '@/services/backendApi.js';
 import {
   cloudUploadOutline,
@@ -216,6 +288,7 @@ import {
   refreshOutline,
   checkmarkCircleOutline,
   warningOutline,
+  closeCircleOutline,
 } from 'ionicons/icons';
 
 const impositionTypes = [
@@ -237,6 +310,7 @@ const impositionTypes = [
 ];
 
 const pageSizes = [
+  { value: 'auto', label: 'Auto (fit to content)' },
   { value: 'A4', label: 'A4 (210 × 297 mm)' },
   { value: 'A3', label: 'A3 (297 × 420 mm)' },
   { value: 'Letter', label: 'US Letter (8.5 × 11 in)' },
@@ -245,7 +319,8 @@ const pageSizes = [
 ];
 
 const fileInput = ref(null);
-const file = ref(null);
+const file = ref(null); // Keep for backward compatibility
+const files = ref([]); // New: array of files
 const isDragging = ref(false);
 const fileError = ref('');
 const successMessage = ref('');
@@ -256,7 +331,9 @@ const downloadUrl = ref('');
 const processingTime = ref(0);
 
 const selectedType = ref('booklet');
-const pageSizeValue = ref('A4');
+const pageSizeValue = ref('auto');
+const orientation = ref('portrait');
+const autoDetectOrientation = ref(false);
 const duplex = ref('long-edge');
 const addBlankPages = ref(true);
 const addCropMarks = ref(false);
@@ -266,18 +343,29 @@ const customHeight = ref('');
 
 const validationWarning = ref('');
 
-const canSubmit = computed(() => Boolean(file.value) && !isSubmitting.value && !validationWarning.value);
-const canReset = computed(() => Boolean(file.value || previewUrl.value || downloadUrl.value || successMessage.value || errorMessage.value));
+const canSubmit = computed(() => files.value.length > 0 && !isSubmitting.value && !validationWarning.value);
+const canReset = computed(() => files.value.length > 0 || previewUrl.value || downloadUrl.value || successMessage.value || errorMessage.value);
 const fileTypeLabel = computed(() => {
-  if (!file.value) return '';
-  if (file.value.type.includes('pdf')) return 'PDF';
-  if (file.value.type.startsWith('image/')) return 'Image';
-  return file.value.type || 'Document';
+  if (files.value.length === 0) return '';
+  if (files.value.length === 1) {
+    const file = files.value[0];
+    if (file.type.includes('pdf')) return 'PDF';
+    if (file.type.startsWith('image/')) return 'Image';
+    return file.type || 'Document';
+  }
+  return `${files.value.length} files`;
 });
 
 const formattedFileSize = computed(() => {
-  if (!file.value) return '';
-  const size = file.value.size;
+  if (files.value.length === 0) return '';
+  if (files.value.length === 1) {
+    return formatFileSize(files.value[0].size);
+  }
+  const totalSize = files.value.reduce((sum, file) => sum + file.size, 0);
+  return `Total: ${formatFileSize(totalSize)}`;
+});
+
+function formatFileSize(size) {
   if (size >= 1024 * 1024) {
     return `${(size / (1024 * 1024)).toFixed(2)} MB`;
   }
@@ -285,7 +373,7 @@ const formattedFileSize = computed(() => {
     return `${(size / 1024).toFixed(1)} KB`;
   }
   return `${size} bytes`;
-});
+}
 
 const formattedProcessingTime = computed(() => {
   if (!processingTime.value) return '';
@@ -311,6 +399,16 @@ watch([customWidth, customHeight], () => {
   }
 });
 
+watch(autoDetectOrientation, (enabled) => {
+  if (enabled && file.value) {
+    detectOrientation(file.value);
+  }
+});
+
+watch(orientation, (newVal, oldVal) => {
+  console.log('Orientation changed from', oldVal, 'to', newVal);
+});
+
 function openFilePicker() {
   fileInput.value?.click();
 }
@@ -326,42 +424,117 @@ function onDragLeave() {
 function onDrop(event) {
   isDragging.value = false;
   if (event.dataTransfer?.files?.length) {
-    updateFile(event.dataTransfer.files[0]);
+    const droppedFiles = Array.from(event.dataTransfer.files);
+    addFiles(droppedFiles);
   }
 }
 
 function onFileChange(event) {
   const target = event.target;
   if (target?.files?.length) {
-    updateFile(target.files[0]);
+    const selectedFiles = Array.from(target.files);
+    addFiles(selectedFiles);
     target.value = '';
   }
 }
 
-function updateFile(selectedFile) {
+function addFiles(newFiles) {
   fileError.value = '';
   successMessage.value = '';
   errorMessage.value = '';
 
-  if (!selectedFile) {
-    file.value = null;
-    return;
+  const validFiles = [];
+  const errors = [];
+
+  for (const selectedFile of newFiles) {
+    // Check file size
+    if (selectedFile.size > 50 * 1024 * 1024) {
+      errors.push(`${selectedFile.name}: exceeds 50 MB limit`);
+      continue;
+    }
+
+    // Check file type
+    const allowed = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/tiff', 'image/bmp'];
+    if (!allowed.includes(selectedFile.type.toLowerCase())) {
+      errors.push(`${selectedFile.name}: unsupported file type`);
+      continue;
+    }
+
+    validFiles.push(selectedFile);
   }
 
-  if (selectedFile.size > 50 * 1024 * 1024) {
-    fileError.value = 'File exceeds the 50 MB limit. Please upload a smaller document.';
-    file.value = null;
-    return;
+  if (errors.length > 0) {
+    fileError.value = errors.join(', ');
   }
 
-  const allowed = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/tiff', 'image/bmp'];
-  if (!allowed.includes(selectedFile.type.toLowerCase())) {
-    fileError.value = 'Unsupported file type. Upload PDF or high-resolution image formats.';
-    file.value = null;
-    return;
-  }
+  if (validFiles.length > 0) {
+    files.value.push(...validFiles);
+    file.value = files.value[0]; // Set first file for backward compatibility
+    successMessage.value = `${validFiles.length} file(s) added successfully. Total: ${files.value.length} file(s)`;
 
-  file.value = selectedFile;
+    // Auto-detect orientation from first file if enabled
+    if (autoDetectOrientation.value && files.value.length > 0) {
+      detectOrientation(files.value[0]);
+    }
+  }
+}
+
+function removeFile(index) {
+  files.value.splice(index, 1);
+  file.value = files.value.length > 0 ? files.value[0] : null;
+  
+  if (files.value.length === 0) {
+    successMessage.value = '';
+    fileError.value = '';
+  } else {
+    successMessage.value = `${files.value.length} file(s) remaining`;
+  }
+}
+
+async function detectOrientation(selectedFile) {
+  try {
+    if (selectedFile.type.startsWith('image/')) {
+      // For images, create an Image element to get dimensions
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(selectedFile);
+      
+      img.onload = () => {
+        const width = img.naturalWidth;
+        const height = img.naturalHeight;
+        
+        console.log('Image dimensions detected:', width, 'x', height);
+        
+        if (width > height) {
+          orientation.value = 'landscape';
+          console.log('Set orientation to landscape');
+        } else {
+          orientation.value = 'portrait';
+          console.log('Set orientation to portrait');
+        }
+        
+        URL.revokeObjectURL(objectUrl);
+        successMessage.value = `Detected ${orientation.value} orientation (${width}×${height}px)`;
+      };
+      
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        console.error('Could not detect image dimensions');
+        fileError.value = 'Could not read image dimensions';
+      };
+      
+      img.src = objectUrl;
+    } else if (selectedFile.type === 'application/pdf') {
+      // For PDFs, we'll use a basic heuristic
+      // In a production app, you'd use pdf.js or similar library
+      // For now, we'll default to portrait for PDFs
+      console.log('PDF detected, setting to portrait');
+      orientation.value = 'portrait';
+      successMessage.value = 'PDF detected - orientation set to portrait (can be changed manually)';
+    }
+  } catch (error) {
+    console.error('Could not auto-detect orientation:', error);
+    fileError.value = 'Orientation detection failed';
+  }
 }
 
 function validateCustomSize() {
@@ -376,7 +549,7 @@ function validateCustomSize() {
 }
 
 async function submitImposition() {
-  if (!file.value || !canSubmit.value) return;
+  if (files.value.length === 0 || !canSubmit.value) return;
 
   const customSizeError = validateCustomSize();
   if (customSizeError) {
@@ -384,12 +557,35 @@ async function submitImposition() {
     return;
   }
 
+  console.log('=== SUBMITTING IMPOSITION ===');
+  console.log('Number of files:', files.value.length);
+  console.log('Orientation:', orientation.value);
+  console.log('Page Size:', pageSizeValue.value);
+  console.log('Type:', selectedType.value);
+
   const formData = new FormData();
-  formData.append('file', file.value);
+  
+  // Append all files
+  files.value.forEach((file, index) => {
+    formData.append('files', file); // Use 'files' for multiple, backend needs to handle this
+  });
+  
   formData.append('type', selectedType.value);
+  formData.append('orientation', orientation.value);
   formData.append('duplex', duplex.value);
   formData.append('addBlankPages', addBlankPages.value ? 'true' : 'false');
   formData.append('addCropMarks', addCropMarks.value ? 'true' : 'false');
+  formData.append('mergeFiles', files.value.length > 1 ? 'true' : 'false');
+
+  // Log all form data
+  console.log('FormData contents:');
+  for (let [key, value] of formData.entries()) {
+    if (value instanceof File) {
+      console.log(`  ${key}:`, value.name);
+    } else {
+      console.log(`  ${key}:`, value);
+    }
+  }
 
   if (customSizeEnabled.value) {
     formData.append('pageSize', 'custom');
@@ -428,6 +624,7 @@ async function submitImposition() {
 
 function resetForm() {
   file.value = null;
+  files.value = [];
   fileError.value = '';
   successMessage.value = '';
   errorMessage.value = '';
@@ -436,7 +633,9 @@ function resetForm() {
   customWidth.value = '';
   customHeight.value = '';
   selectedType.value = 'booklet';
-  pageSizeValue.value = 'A4';
+  pageSizeValue.value = 'auto';
+  orientation.value = 'portrait';
+  autoDetectOrientation.value = false;
   duplex.value = 'long-edge';
   addBlankPages.value = true;
   addCropMarks.value = false;
@@ -551,6 +750,26 @@ onBeforeUnmount(() => {
   border-color: rgba(27, 197, 189, 0.6);
 }
 
+.file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  max-width: 100%;
+  margin: 0.5rem 0;
+}
+
+.file-list ion-chip {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.file-list ion-chip:hover {
+  transform: scale(1.05);
+  --background: #ff4444;
+  --color: white;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -634,6 +853,14 @@ ion-segment-button small {
 
 .message.note {
   margin-top: 0.75rem;
+}
+
+.orientation-note {
+  display: block;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  font-size: 0.875rem;
 }
 
 .preview-card {

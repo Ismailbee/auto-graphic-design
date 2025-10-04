@@ -511,53 +511,82 @@ app.delete('/api/templates/:id', async (req, res, next) => {
 });
 
 // Main imposition endpoint
-app.post('/api/impose', upload.single('file'), async (req, res) => {
+app.post('/api/impose', upload.array('files', 20), async (req, res) => {
   console.log('📄 Imposition request received');
   console.log('Body:', req.body);
-  console.log('File:', req.file ? { name: req.file.originalname, size: req.file.size, type: req.file.mimetype } : 'No file');
+  console.log('Files:', req.files ? req.files.map(f => ({ name: f.originalname, size: f.size, type: f.mimetype })) : 'No files');
 
   try {
-    if (!req.file) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({
-        error: 'No file uploaded',
-        details: 'Please upload a PDF or image file'
+        error: 'No files uploaded',
+        details: 'Please upload at least one PDF or image file'
       });
     }
 
     const {
       type = 'booklet',
       pageSize = 'A4',
+      orientation = 'portrait',
       customWidth,
       customHeight,
       duplex = 'long-edge',
       addBlankPages = 'true',
-      addCropMarks = 'false'
+      addCropMarks = 'false',
+      mergeFiles = 'false'
     } = req.body;
 
     console.log('🔧 Processing with options:', {
-      type, pageSize, customWidth, customHeight, duplex, addBlankPages, addCropMarks
+      type, pageSize, orientation, customWidth, customHeight, duplex, addBlankPages, addCropMarks, mergeFiles,
+      fileCount: req.files.length
     });
 
-    // Process the imposition
-    const resultBuffer = await impositionService.processFile(
-      req.file.buffer,
-      req.file.originalname,
-      type,
-      {
-        pageSize,
-        customWidth,
-        customHeight,
-        duplex,
-        addBlankPages,
-        addCropMarks
-      }
-    );
+    let resultBuffer;
+
+    // If multiple files, merge them first
+    if (req.files.length > 1 && mergeFiles === 'true') {
+      console.log('📚 Merging', req.files.length, 'files...');
+      resultBuffer = await impositionService.mergeFiles(
+        req.files.map(f => ({ buffer: f.buffer, name: f.originalname })),
+        type,
+        {
+          pageSize,
+          orientation,
+          customWidth,
+          customHeight,
+          duplex,
+          addBlankPages,
+          addCropMarks
+        }
+      );
+    } else {
+      // Process single file (use first file if multiple)
+      const fileToProcess = req.files[0];
+      resultBuffer = await impositionService.processFile(
+        fileToProcess.buffer,
+        fileToProcess.originalname,
+        type,
+        {
+          pageSize,
+          orientation,
+          customWidth,
+          customHeight,
+          duplex,
+          addBlankPages,
+          addCropMarks
+        }
+      );
+    }
 
     console.log('✅ Imposition completed successfully');
 
     // Set headers for PDF download
+    const filename = req.files.length > 1 
+      ? `merged-imposed-${type}.pdf` 
+      : `imposed-${type}-${req.files[0].originalname}.pdf`;
+      
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="imposed-${type}-${req.file.originalname}.pdf"`);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.setHeader('Content-Length', resultBuffer.length);
 
     res.send(Buffer.from(resultBuffer));
