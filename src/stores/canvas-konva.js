@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
-import { Konva } from '../lib/konva-init.js'
+import Konva from 'konva'
 import { enhanceSelectionFeedback } from '../utils/selectionEnhancer.js'
 
 export const useCanvasStore = defineStore('canvas', () => {
@@ -1142,6 +1142,8 @@ function addText({ text = 'Edit me', x = 50, y = 50, fontSize = 20, fill = '#000
   saveState();
 }
 
+
+
 function addPlaceholder({ x, y, width, height, draggable = true }) {
   const rect = new Konva.Rect({
     x, y, width, height,
@@ -1167,30 +1169,7 @@ function addPlaceholder({ x, y, width, height, draggable = true }) {
 }
 
 
-
-addPlaceholder({ x, y, width, height, draggable }) {
-  const rect = new Konva.Rect({
-    x, y, width, height,
-    fill: '#e5e7eb',
-    stroke: '#9ca3af',
-    dash: [4, 4],
-    draggable
-  });
-
-  const label = new Konva.Text({
-    text: 'Upload Image',
-    x: x + 10,
-    y: y + height / 2 - 10,
-    fontSize: 14,
-    fill: '#555'
-  });
-
-  this.layer.add(rect);
-  this.layer.add(label);
-  this.layer.draw();
-}
-
-  return {
+   return {
     // State
     stageInstance, layerInstance, activeObject, activeTool, isDarkTheme, workspaceTheme, canvasSize, 
     backgroundColor, zoomLevel, gridVisible, snapToGrid, gridSize, rulers,
@@ -1210,20 +1189,20 @@ addPlaceholder({ x, y, width, height, draggable }) {
     addObjectToCanvas, addElement, deleteSelectedObject, duplicateSelectedObject,
     initializeLayers, clearCanvas, saveToFile,
     exportCanvas,
-  updateGrid, toggleGrid, toggleSnapToGrid, toggleRulers,
+    updateGrid, toggleGrid, toggleSnapToGrid, toggleRulers,
     groupSelectedObjects, ungroupSelectedObjects,
-  scheduleDraw,
+    scheduleDraw,
+
     // Pages
     addPage, duplicatePage, deletePage, nextPage, prevPage, goToPage, loadPage,
     nextPageFast, prevPageFast,
+
     // Local projects
     saveToLocalStorage, loadFromLocalStorage, listLocalProjects, deleteLocalProject, exportProjectJson,
 
-    // ...
-  loadTemplate,
-
-  addText,
-  addPlaceholder,
-  loadTemplate,
-    
-}
+    // Extra
+    loadTemplate,
+    addText,
+    addPlaceholder,
+  }
+})

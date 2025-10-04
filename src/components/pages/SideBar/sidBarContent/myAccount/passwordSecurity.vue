@@ -141,6 +141,7 @@
 import { ref } from 'vue'
 import pageHeader from '@/components/pages/Header/pageHeader.vue'
 import Breadcrumb from '@/components/pages/Breadcrumb.vue'
+import { appsOutline, keyOutline } from 'ionicons/icons'
 import {
   IonPage,
   IonContent,

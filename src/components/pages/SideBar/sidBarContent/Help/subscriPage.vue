@@ -3,7 +3,7 @@
     <page-header label="Subscription" />
 
     <ion-content>
-      <div class="bg-secondary min-h-screen w-full px-6 pb-[150px] sm:pb-0 sm:px-[80px] py-8">
+      <div class="bg-secondary min-h-screen w-full px-6 pb-[150px] sm:pb-0 sm:pt-[80px] sm:px-[80px] py-8">
         <!-- Breadcrumb -->
         <Breadcrumb
           prevPageName="Home"
@@ -59,14 +59,13 @@
               <div :class="['p-6', plan.featured ? 'bg-primary text-white' : '']">
                 <div class="flex items-center justify-between">
                   <h2 class="text-2xl font-bold">{{ plan.name }}</h2>
-                  <span v-if="plan.icon" class="text-3xl">{{ plan.icon }}</span>
                 </div>
                 <p class="mt-2 text-gray-500" :class="plan.featured ? 'text-white/80' : ''">{{ plan.desc }}</p>
                 <div class="mt-4 flex items-end gap-2">
                   <span class="text-4xl font-extrabold">
                     {{ plan.price[billing] }}
                   </span>
-                  <span class="text-md text-gray-500" :class="plan.featured ? 'text-white/80' : ''">
+                  <span class="text-md text-gray-500 " :class="plan.featured ? 'text-white/80' : ''">
                     /{{ billing === 'monthly' ? 'mo' : 'yr' }}
                   </span>
                 </div>
@@ -83,7 +82,7 @@
                 <ion-button
                   expand="block"
                   class="mt-6"
-                  :color="plan.featured ? 'contrast' : 'primary'"
+                  :color="plan.featured ? 'primary' : 'primary'"
                   @click="selectPlan(plan)"
                 >
                   {{ plan.cta }}
@@ -112,7 +111,7 @@
           <div class="mt-16 flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg p-8">
             <h3 class="text-lg font-semibold mb-2">Need help choosing a plan?</h3>
             <p class="text-gray-500 mb-4">Contact our support team for personalized recommendations.</p>
-            <ion-button color="contrast" @click="goToContact">Contact Support</ion-button>
+            <ion-button color="primary" @click="goToContact">Contact Support</ion-button>
           </div>
         </div>
       </div>
@@ -138,7 +137,7 @@ const plans = [
     features: ['10 projects', '5GB storage', 'Basic analytics'],
     featured: false,
     cta: 'Get Started',
-    icon: '🌱'
+    
   },
   {
     name: 'Pro',
@@ -147,7 +146,7 @@ const plans = [
     features: ['Unlimited projects', '50GB storage', 'Advanced analytics', 'Priority support'],
     featured: true,
     cta: 'Get Started',
-    icon: '🚀'
+    
   },
   {
     name: 'Enterprise',
@@ -156,7 +155,7 @@ const plans = [
     features: ['Unlimited projects', '500GB storage', 'Advanced analytics', '24/7 support', 'Custom integrations'],
     featured: false,
     cta: 'Contact Sales',
-    icon: '🏢'
+
   }
 ]
 

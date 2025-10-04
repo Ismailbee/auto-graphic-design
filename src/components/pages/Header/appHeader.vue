@@ -4,15 +4,16 @@
     class="fixed top-0 left-0 z-40 flex items-center justify-between w-full h-[75px] px-4 py-3 bg-[#f6ebcd] whitespace-nowrap min-w-0 flex-shrink overflow-visible"
   >
     <!-- Mobile Toggle -->
-    <div
+    <button
       class="flex items-center justify-center ml-5 transition cursor-pointer sm:hidden"
-      @click="$emit('toggle')"
+      @click.stop="handleMobileToggle"
+      type="button"
     >
       <ion-icon
         :icon="reorderThree"
         class="text-[30px] transition-colors duration-200"
       />
-    </div>
+    </button>
 
     <!-- Left Section -->
     <div class="items-center min-w-0 flex-shrink gap-3 ml-10 md:ml-5 hidden sm:flex">
@@ -82,6 +83,7 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import { useNotification } from "@/composables/useNotification";
+import { IonIcon } from '@ionic/vue';
 import {
   logoSlack,
   reorderThree,
@@ -132,6 +134,12 @@ function handleClickOutside(event) {
   if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
     closeDropdown();
   }
+}
+
+// ✅ Mobile toggle handler
+const emit = defineEmits(['toggle'])
+function handleMobileToggle() {
+  emit('toggle')
 }
 
 onMounted(() => {

@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <page-header label="Membership Plan" />
+    <PageHeader label="Membership Plan" />
 
     <ion-content>
 
@@ -139,7 +139,7 @@
         </div>
 
         <!-- Plan Details Modal -->
-        <ion-modal :is-open="showPlanModal" @didDismiss="showPlanModal = false">
+        <IonModal :isOpen="showPlanModal" @didDismiss="showPlanModal = false">
           <ion-header>
             <ion-toolbar>
               <ion-title>Plan Details</ion-title>
@@ -177,7 +177,7 @@
               </ion-button>
             </div>
           </ion-content>
-        </ion-modal>
+        </ionModal>
 
         <!-- Cancel Subscription Modal -->
         <ion-modal :is-open="showCancelModal" @didDismiss="showCancelModal = false">
@@ -336,7 +336,8 @@ const cancelSubscription = () => {
 onMounted(() => {
   setTimeout(() => {
     const ctx = document.getElementById('usageChart')
-    new Chart(ctx, {
+    if (ctx) {
+  new Chart(ctx, {
       type: 'line',
       data: {
         labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
@@ -386,6 +387,7 @@ onMounted(() => {
         }
       }
     })
+}
     loadingChart.value = false
   }, 1000)
 })

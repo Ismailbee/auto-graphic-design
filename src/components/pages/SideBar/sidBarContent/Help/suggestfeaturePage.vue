@@ -3,15 +3,15 @@
     <page-header label="Suggest a Feature" />
 
     <ion-content class="ion-padding">
-      <div class="max-w-2xl mx-auto">
-        
-        <Breadcrumb
+      <div class="min-h-screen w-full px-6 pb-[150px] sm:pb-0 sm:pt-[50px] sm:px-[80px] py-8">
+          <Breadcrumb
           prevPageName="Home"
           prevPageRoute="/home"
           currentPageName="Suggest a Feature"
           class="pb-6"
         />
 
+        <div class="max-w-2xl mx-auto">
         <div class="bg-white p-8 rounded-xl shadow-lg text-center">
           
           <ion-icon :icon="bulbOutline" class="text-5xl text-primary mb-4"></ion-icon>
@@ -53,6 +53,7 @@
             </ion-button>
           </form>
         </div>
+      </div>
       </div>
     </ion-content>
     <ion-toast

@@ -2,7 +2,7 @@
   <div class="auth-page">
     <div class="auth-container">
       <div class="auth-header">
-        <img src="/public/image/logoauto.png" alt="Logo" class="logo" />
+        <img src="/image/logoauto.png" alt="Logo" class="logo" />
         <h2>Welcome Back</h2>
         <p>Sign in to continue to Audio Graphic Design</p>
       </div>

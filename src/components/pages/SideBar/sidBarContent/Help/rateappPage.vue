@@ -3,7 +3,15 @@
     <page-header label="Rate Our App" />
 
     <ion-content class="ion-padding">
-      <div class="flex flex-col items-center justify-center h-full text-center">
+      <div class="p-8">
+        <Breadcrumb
+         prevPageName="Home"
+         prevPageRoute="/home"
+         currentPageName="Rate Us"
+         class="pb-6"
+       />
+        <div class="flex flex-col items-center justify-center h-full text-center">
+
         <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg">
           
           <ion-icon :icon="starHalfOutline" class="text-5xl text-yellow-400 mb-4"></ion-icon>
@@ -50,6 +58,7 @@
 
         </div>
       </div>
+      </div>
     </ion-content>
     <ion-toast
         :is-open="toast.isOpen"
@@ -66,6 +75,7 @@ import { useRouter } from 'vue-router';
 import { IonPage, IonContent, IonIcon, IonTextarea, IonButton, IonLabel, IonItem, IonToast } from '@ionic/vue';
 import { star as starIcon, starOutline as starOutlineIcon, starHalfOutline } from 'ionicons/icons';
 import pageHeader from '../../../Header/pageHeader.vue';
+import Breadcrumb from '../../../Breadcrumb.vue';
 
 const router = useRouter();
 

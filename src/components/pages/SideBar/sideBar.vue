@@ -19,10 +19,11 @@
         
         <div class="border-[#90560a]  border-b-[0.1px]">
           <MenuItem :icon="appsSharp" label="Scheduling" @click="navigateTo('/scheduling')" />
-          <MenuItem :icon="logoSlack" label="Template" @click="togglePanel('templates')" />
+          <MenuItem :icon="logoSlack" label="Template" @click="scrollToTemplates" />
           <MenuItem :icon="walletSharp" label="Mock-ups" @click="navigateTo('/mockupPage')" />
           <MenuItem :icon="logoYoutube" label="Videos" @click="navigateTo('/videos')" />
-        </div>
+          <MenuItem :icon="documentTextSharp" label="Imposition" @click="navigateTo('/imposition')" />
+       </div>
    
         <div class="border-[#90560a] border-b-[0.1px]">
           <SectionTitle title="Help" />
@@ -67,7 +68,8 @@ import { useIonRouter } from '@ionic/vue';
 import {
   home, personCircle, readerSharp, walletSharp, logoYoutube, appsSharp,
   bagAddSharp, bulbSharp, helpCircleSharp, personAddSharp, starHalfSharp,
-  chatbubbleSharp, logoSlack, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline
+  chatbubbleSharp, logoSlack, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline,
+  documentTextSharp
 } from 'ionicons/icons';
 
 import myAccountMenu from './sidBarContent/myAccount/myAccountMenu.vue';
@@ -75,13 +77,18 @@ import MenuItem from './MenuItem.vue';
 import SectionTitle from './SectionTitle.vue';
 
 const props = defineProps({ sidebarOpen: Boolean });
-const emit = defineEmits(['toggle']);
+const emit = defineEmits(['toggle', 'scroll-to-templates']);
 const ionRouter = useIonRouter();
 
 const toggleSidebar = () => emit('toggle');
 const navigateTo = (route) => {
   ionRouter.push(route)
   emit('toggle') // auto-close on mobile
+}
+
+const scrollToTemplates = () => {
+  emit('scroll-to-templates')  // 🔥 tell HomePage to scroll
+  emit('toggle')               // close sidebar afterwards
 }
 
 async function logout() {

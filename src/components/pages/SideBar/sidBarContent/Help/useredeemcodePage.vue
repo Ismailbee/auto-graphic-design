@@ -3,7 +3,16 @@
     <page-header label="Redeem a Code" />
 
     <ion-content class="ion-padding">
-      <div class="flex items-center justify-center h-full">
+     <div class="px-6 pb-[150px]  py-8">
+        <!-- Breadcrumb -->
+       <Breadcrumb
+          prevPageName="Home"
+          prevPageRoute="/home"
+          currentPageName="Redeem Code"
+          class="pb-3"
+        />
+      <div class="flex items-center justify-center min-h-screen w-full ">
+        
         <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg text-center">
           
           <ion-icon :icon="giftOutline" class="text-5xl text-primary mb-4"></ion-icon>
@@ -34,7 +43,9 @@
             </ion-button>
           </form>
         </div>
+        
       </div>
+     </div>
     </ion-content>
     <ion-toast
       :is-open="toast.isOpen"
@@ -49,6 +60,7 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import Breadcrumb from '../../../Breadcrumb.vue';
 import { 
   IonPage, 
   IonContent, 

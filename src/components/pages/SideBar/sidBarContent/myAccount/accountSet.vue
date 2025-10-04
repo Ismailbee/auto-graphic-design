@@ -3,7 +3,7 @@
     <page-header label="Account Settings" />
 
     <ion-content class="ion-padding">
-      <div class="max-w-4xl mx-auto">
+      <div class="max-w-4xl mx-auto py-9 ">
         <Breadcrumb
           prevPageName="My Account"
           prevPageRoute="/myAccountPage"

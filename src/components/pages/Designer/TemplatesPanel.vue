@@ -7,8 +7,14 @@
           <i class="fas fa-plus"></i>
           Create
         </button>
-        <button @click="refreshTemplates" class="btn-icon">
-          <i class="fas fa-sync-alt"></i>
+        <button
+          @click="handleRefreshTemplates"
+          class="btn-icon"
+          :disabled="isLoadingTemplates"
+          :aria-busy="isLoadingTemplates"
+          :title="isLoadingTemplates ? 'Refreshing templates…' : 'Refresh templates'"
+        >
+          <i class="fas fa-sync-alt" :class="{ 'fa-spin': isLoadingTemplates }"></i>
         </button>
       </div>
     </div>
@@ -27,7 +33,7 @@
       
       <div class="category-filters">
         <button 
-          v-for="category in categories" 
+          v-for="category in allCategories" 
           :key="category.id"
           @click="selectedCategory = category.id"
           :class="['category-btn', { active: selectedCategory === category.id }]"
@@ -82,6 +88,15 @@
             <i class="fas fa-list"></i>
           </button>
         </div>
+      </div>
+
+      <div v-if="templatesError" class="status-message error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ templatesError }}</span>
+      </div>
+      <div v-else-if="isLoadingTemplates" class="status-message loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>Loading templates...</span>
       </div>
       
       <div :class="['templates-grid', viewMode]">
@@ -222,7 +237,10 @@ const {
   getTemplatesByCategory, 
   applyTemplate: applyTemplateAction,
   createCustomTemplate,
-  deleteCustomTemplate
+  deleteCustomTemplate,
+  refreshTemplates: refreshTemplatesAction,
+  isLoadingTemplates,
+  templatesError
 } = useTemplates();
 
 const { showSuccess, showError } = useNotification();
@@ -298,9 +316,12 @@ async function createTemplate() {
   if (!newTemplateName.value.trim()) return;
   
   try {
-    const template = createCustomTemplate(
-      newTemplateName.value.trim(),
-      newTemplateCategory.value
+    const name = newTemplateName.value.trim();
+    const description = newTemplateDescription.value.trim();
+    const template = await createCustomTemplate(
+      name,
+      newTemplateCategory.value,
+      description || undefined
     );
     
     if (template) {
@@ -312,7 +333,8 @@ async function createTemplate() {
     }
   } catch (error) {
     console.error('Error creating template:', error);
-    showError('Error creating template');
+    const message = error instanceof Error ? error.message : 'Error creating template';
+    showError(`Error creating template: ${message}`);
   }
 }
 
@@ -322,21 +344,32 @@ function resetCreateForm() {
   newTemplateDescription.value = '';
 }
 
-function deleteTemplate(templateId) {
+async function deleteTemplate(templateId) {
   if (confirm('Are you sure you want to delete this template?')) {
     try {
-      deleteCustomTemplate(templateId);
+      await deleteCustomTemplate(templateId);
       showSuccess('Template deleted successfully!');
+      if (selectedTemplate.value?.id === templateId) {
+        selectedTemplate.value = null;
+      }
     } catch (error) {
       console.error('Error deleting template:', error);
-      showError('Error deleting template');
+      const message = error instanceof Error ? error.message : 'Error deleting template';
+      showError(`Error deleting template: ${message}`);
     }
   }
 }
 
-function refreshTemplates() {
-  // Refresh templates (placeholder for future implementation)
-  showSuccess('Templates refreshed');
+async function handleRefreshTemplates() {
+  try {
+    const category = selectedCategory.value === 'all' ? undefined : selectedCategory.value;
+    await refreshTemplatesAction(category);
+    showSuccess('Templates refreshed');
+  } catch (error) {
+    console.error('Error refreshing templates:', error);
+    const message = error instanceof Error ? error.message : 'Failed to refresh templates';
+    showError(`Failed to refresh templates: ${message}`);
+  }
 }
 </script>
 
@@ -357,6 +390,11 @@ function refreshTemplates() {
   padding: 16px;
   border-bottom: 1px solid #e5e7eb;
   background: #f9fafb;
+}
+
+.btn-icon[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .header-actions {
@@ -547,6 +585,26 @@ function refreshTemplates() {
 
 .templates-grid.list {
   grid-template-columns: 1fr;
+}
+
+.status-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.status-message.loading {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.status-message.error {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .template-card {

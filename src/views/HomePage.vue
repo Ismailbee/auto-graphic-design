@@ -19,10 +19,14 @@
       </div>
 
       <!-- Sidebar -->
-      <side-bar :sidebarOpen="sidebarOpen" @toggle="toggleSidebar" />
+     <side-bar
+        :sidebarOpen="sidebarOpen"
+        @toggle="toggleSidebar"
+        @scroll-to-templates="scrollToTemplates"
+      />
 
       <!-- Main Content -->
-    <div :class="contentTransitionClass">
+    <div :class="contentTransitionClass" @click="closeSidebarIfOpen">
 
       <!-- Slide-down App Header -->
      <transition name="slide-down">
@@ -32,8 +36,6 @@
           :class="headerClasses"
           :showHeader="showHeader"
         />
-
-
       </transition>
 
 
@@ -46,10 +48,10 @@
         <div class="w-full ">
           <CarouselCards />
 
-          <div class="mb-[100px]">
-
+          <div class="mb-[100px]" ref="templatesSection">
             <Templates />
           </div>
+
             <UsersComment />
         </div>
         
@@ -87,13 +89,30 @@ const contentTransitionClass = computed(() => {
     : 'flex flex-col transition-none ml-0';
 });
 
-
+const closeSidebarIfOpen = () => {
+  if (sidebarOpen.value) {
+    sidebarOpen.value = false
+  }
+}
 
 // Sidebar toggle
 const sidebarOpen = ref(false)
 const toggleSidebar = () => {
   sidebarOpen.value = !sidebarOpen.value
 }
+
+const templatesSection = ref(null)
+
+// Scroll to Templates section
+const scrollToTemplates = () => {
+  if (templatesSection.value && scrollContainer.value) {
+    scrollContainer.value.scrollTo({
+      top: templatesSection.value.offsetTop - 60, // adjust offset for header
+      behavior: "smooth"
+    })
+  }
+}
+
 
 // Scroll tracking for app-header visibility
 const scrollContainer = ref(null)
@@ -135,7 +154,6 @@ const headerClasses = computed(() => {
 
   return `${base} ${marginLeft} ${bgColor}`
 })
-
 
 
 const isMobile = ref(window.innerWidth < 640) // sm: 640px in Tailwind

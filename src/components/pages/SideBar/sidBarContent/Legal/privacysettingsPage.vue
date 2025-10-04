@@ -3,6 +3,13 @@
     <page-header label="Privacy Settings" />
     <ion-content>
       <div class="bg-secondary min-h-screen w-full px-6 pb-24 sm:px-24 py-10">
+           <Breadcrumb
+          prevPageName="Home"
+          prevPageRoute="/home"
+          currentPageName="Privacy Settings"
+          class="pb-6"
+        />
+
         <div class="mx-auto max-w-2xl bg-white rounded-2xl shadow-lg p-8">
           <h1 class="text-3xl font-extrabold text-primary mb-6 text-center">Privacy Settings</h1>
           <p class="text-gray-700 mb-6 text-center">
@@ -62,6 +69,7 @@
 <script setup>
 import { ref } from 'vue'
 import pageHeader from "../../../Header/pageHeader.vue";
+import Breadcrumb from '../../../Breadcrumb.vue';
 
 const settings = ref({
   profileVisible: true,

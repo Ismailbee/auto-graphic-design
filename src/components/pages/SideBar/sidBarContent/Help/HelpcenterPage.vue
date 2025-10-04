@@ -3,8 +3,16 @@
     <page-header label="Help Center" />
 
     <ion-content class="ion-padding">
-      <div class="max-w-4xl mx-auto">
-        
+      <div class=" p-8">
+          <Breadcrumb
+          prevPageName="Home"
+          prevPageRoute="/home"
+          currentPageName="Help Center"
+          class="pb-6"
+        />
+
+
+        <div class="max-w-4xl mx-auto">
         <!-- Welcome and Search Section -->
         <section class="text-center bg-white p-8 rounded-lg shadow-md">
           <ion-icon :icon="helpCircleOutline" class="text-5xl text-primary mb-4"></ion-icon>
@@ -62,6 +70,7 @@
         </section>
 
       </div>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -69,6 +78,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Breadcrumb from '../../../Breadcrumb.vue';
 import { 
   IonPage, 
   IonContent, 

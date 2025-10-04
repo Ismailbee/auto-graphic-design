@@ -22,6 +22,10 @@ const routes = [
   { path: '/template', component: () => import('../components/pages/SideBar/sidBarContent/Template.vue') },
   { path: '/mockupPage', component: () => import('../components/pages/SideBar/sidBarContent/mockupPage.vue') },
   { path: '/videos', component: () => import('../components/pages/SideBar/sidBarContent/Videos.vue') },
+  
+
+  // Add Imposition route
+  { path: '/imposition', component: () => import('../components/pages/ImpositionPage.vue') },
 
   // Help Pages
   { path: '/subscriPage', component: () => import('../components/pages/SideBar/sidBarContent/Help/subscriPage.vue') },

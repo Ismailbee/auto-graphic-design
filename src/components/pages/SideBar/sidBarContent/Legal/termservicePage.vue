@@ -4,6 +4,13 @@
 
     <ion-content>
       <div class="bg-secondary min-h-screen w-full px-6 pb-24 sm:px-24 py-10">
+          <Breadcrumb
+          prevPageName="Home"
+          prevPageRoute="/home"
+          currentPageName="Terms of Service"
+          class="pb-6"
+        />
+
         <div class="mx-auto max-w-3xl bg-white rounded-2xl shadow-lg p-8">
           <h1 class="text-3xl font-extrabold text-primary mb-6 text-center">Terms of Service</h1>
           <p class="text-gray-700 mb-6 text-center">
@@ -73,6 +80,7 @@
 
 <script setup>
 import pageHeader from "../../../Header/pageHeader.vue";
+import Breadcrumb from "../../../Breadcrumb.vue";
 </script>
 
 <style scoped>

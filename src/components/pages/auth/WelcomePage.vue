@@ -2,7 +2,7 @@
   <div class="welcome-page">
     <div class="content-wrapper">
       <div class="logo-container">
-        <img src="/public/image/logoauto.png" alt="Audio Graphic Design Logo" class="logo" />
+        <img src="/image/logoauto.png" alt="Audio Graphic Design Logo" class="logo" />
         <h1 class="app-title">Audio Graphic Design</h1>
       </div>
       <h2 class="main-headline">Where Creativity Meets Sound</h2>

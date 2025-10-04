@@ -1,10 +1,11 @@
 import { ref, computed } from 'vue';
 import { useCanvasStore } from '../stores/canvas-konva';
+import { backendApi } from '@/services/backendApi.js';
 
 export function useTemplates() {
   const canvasStore = useCanvasStore();
   
-  const templates = ref([
+  const defaultTemplates = [
     {
       id: 'social-post-square',
       name: 'Instagram Post',
@@ -259,7 +260,12 @@ export function useTemplates() {
         }
       ]
     }
-  ]);
+  ];
+
+  const templates = ref([...defaultTemplates]);
+  const isLoadingTemplates = ref(false);
+  const templatesError = ref(null);
+  const templatesLoaded = ref(false);
 
   const categories = computed(() => {
     const cats = new Set(templates.value.map(t => t.category));
@@ -284,6 +290,39 @@ export function useTemplates() {
   function getTemplateById(id) {
     return templates.value.find(t => t.id === id);
   }
+
+  async function refreshTemplates(category) {
+    if (isLoadingTemplates.value) {
+      return;
+    }
+
+    isLoadingTemplates.value = true;
+    templatesError.value = null;
+
+    try {
+      const result = await backendApi.getTemplates(category);
+      if (Array.isArray(result)) {
+        templates.value = result.map((template) => ({
+          ...template,
+          isCustom: template.isCustom ?? false,
+        }));
+      }
+      templatesLoaded.value = true;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      templatesError.value = message;
+      if (!templatesLoaded.value) {
+        templates.value = [...defaultTemplates];
+      }
+      throw error;
+    } finally {
+      isLoadingTemplates.value = false;
+    }
+  }
+
+  refreshTemplates().catch(error => {
+    console.error('Failed to load templates from backend:', error);
+  });
 
   async function applyTemplate(templateId) {
     const template = getTemplateById(templateId);
@@ -368,7 +407,18 @@ export function useTemplates() {
     }
   }
 
-  function createCustomTemplate(name, category = 'custom') {
+  function parseTags(description) {
+    if (!description) {
+      return undefined;
+    }
+    const tags = description
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+    return tags.length > 0 ? tags : undefined;
+  }
+
+  async function createCustomTemplate(name, category = 'custom', description) {
     const canvas = canvasStore.stage;
     if (!canvas) return null;
 
@@ -382,24 +432,32 @@ export function useTemplates() {
       }
     });
 
-    const template = {
-      id: `custom-${Date.now()}`,
-      name: name,
-      category: category,
+    const payload = {
+      name,
+      category,
       size: {
         width: canvasStore.canvasWidth,
-        height: canvasStore.canvasHeight
+        height: canvasStore.canvasHeight,
       },
-      thumbnail: generateThumbnail(),
-      elements: elements,
-      isCustom: true,
-      createdAt: new Date().toISOString()
+      thumbnail: generateThumbnail() ?? undefined,
+      elements,
+      tags: parseTags(description),
     };
 
-    templates.value.push(template);
-    saveCustomTemplates();
-    
-    return template;
+    try {
+      const created = await backendApi.createTemplate(payload);
+      const template = {
+        ...created,
+        isCustom: true,
+      };
+
+      templates.value = [...templates.value, template];
+      saveCustomTemplates();
+      return template;
+    } catch (error) {
+      console.error('Error creating custom template:', error);
+      throw error;
+    }
   }
 
   function convertObjectToTemplateElement(obj) {
@@ -475,11 +533,19 @@ export function useTemplates() {
     }
   }
 
-  function deleteCustomTemplate(templateId) {
+  async function deleteCustomTemplate(templateId) {
     const index = templates.value.findIndex(t => t.id === templateId);
-    if (index > -1 && templates.value[index].isCustom) {
+    if (index === -1) {
+      return;
+    }
+
+    try {
+      await backendApi.deleteTemplate(templateId);
       templates.value.splice(index, 1);
       saveCustomTemplates();
+    } catch (error) {
+      console.error('Error deleting custom template:', error);
+      throw error;
     }
   }
 
@@ -515,6 +581,9 @@ export function useTemplates() {
     getTemplateById,
     applyTemplate,
     createCustomTemplate,
-    deleteCustomTemplate
+    deleteCustomTemplate,
+    refreshTemplates,
+    isLoadingTemplates: computed(() => isLoadingTemplates.value),
+    templatesError: computed(() => templatesError.value)
   };
 }

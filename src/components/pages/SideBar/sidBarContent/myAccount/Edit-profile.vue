@@ -202,20 +202,32 @@
               <ion-card-content>
                 <!-- Existing Payment Options -->
                 <div class="flex justify-between items-center w-full">
-                  <div class="flex-1">
-                    <div class="mb-4">
-                      <img :src="visaLogo" alt="VISA" class="w-[90px]" />
+                      <div class="flex flex-col gap-4">
+                        <div class="flex">
+                          <img :src="visaLogo" alt="VISA" class="w-[50px]" />
+                          <img :src="masterCardLogo" alt="MasterCard" class="w-[50px]" />
+                      </div>
+                    <div
+                      v-for="(card, index) in user.cards"
+                      :key="index"
+                      class="flex justify-between items-center border p-3 rounded-xl w-full"
+                    >
+                      <div>
+                        <p class="font-semibold">**** **** **** {{ card.number.slice(-4) }}</p>
+                        <p class="text-sm text-gray-500">Exp: {{ card.expiry }}</p>
+                      </div>
+                      <ion-button fill="clear" color="danger" @click="user.removePaymentMethod(index)">
+                        Remove
+                      </ion-button>
                     </div>
-                    <p>**** **** **** 1234</p>
-                  </div>
-
-                  <div class="flex-1">
-                    <div class="mb-4 block">
-                      <img :src="masterCardLogo" alt="MasterCard" class="w-[90px]" />
                     </div>
-                    <p>**** **** **** 5678</p>
-                  </div>
+                 
                 </div>
+                
+
+
+
+
 
                 <!-- Add Payment Method Button -->
                 <div class="mt-4">
@@ -318,6 +330,9 @@ const member = ref(user.member)
 const city = ref(user.city)
 const stateProvince = ref(user.stateProvince)
 const country = ref(user.country || "")
+const gender = ref(user.gender || "")
+const language = ref(user.language || "")
+
 
 // -------------------------
 // Dropdown data
@@ -404,9 +419,12 @@ const showPaymentForm = ref(false)
 const newCard = ref({ number: "", expiry: "", cvv: "" })
 
 function savePaymentMethod() {
-  console.log("New Card Added:", newCard.value)
+  user.savePaymentMethod(newCard.value)   // ✅ save into store
+  newCard.value = { number: "", expiry: "", cvv: "" }
   showPaymentForm.value = false
 }
+
+
 
 // -------------------------
 // Save Profile
@@ -423,9 +441,13 @@ function saveProfile() {
     city: city.value,
     stateProvince: stateProvince.value,
     country: country.value,
+    gender: gender.value,
+    language: language.value,
+    dob: `${dobYear.value}-${dobMonth.value}-${dobDay.value}`,
   })
   router.push("/myAccountPage")
 }
+
 </script>
 
 

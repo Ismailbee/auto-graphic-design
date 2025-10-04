@@ -220,8 +220,8 @@ const stockItems = ref([
   { 
     id: 3, 
     name: 'Logo Auto', 
-    thumbnail: '/public/image/logoauto.png', 
-    url: '/public/image/logoauto.png',
+    thumbnail: '/image/logoauto.png', 
+    url: '/image/logoauto.png',
     category: 'Logos'
   },
   { 
@@ -526,7 +526,7 @@ onMounted(() => {
     },
     {
       name: 'logo.png',
-      url: '/public/image/logoauto.png',
+      url: '/image/logoauto.png',
       type: 'image/png',
       size: '45 KB',
       date: new Date('2023-05-20')
