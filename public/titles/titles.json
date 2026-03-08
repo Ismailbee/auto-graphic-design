@@ -1,0 +1,10 @@
+[
+  {
+    "id": "stikertitle",
+    "name": "Congratulation Wedding Ceremony",
+    "category": "congratulation",
+    "file": "congratulation/stikertitle.svg",
+    "keywords": ["congratulation", "wedding", "ceremony"],
+    "textElements": ["title-text"]
+  }
+]

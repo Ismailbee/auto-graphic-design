@@ -1,0 +1,45 @@
+{
+  "name": "modnet-bg-removal-migration",
+  "version": "1.0.0",
+  "description": "MODNet background removal migration - Add these to your package.json",
+  "scripts": {
+    "test:bg-removal": "vitest run tests/modnet-bg-removal.functional.test.ts",
+    "benchmark:bg-removal": "vitest run tests/modnet-bg-removal.performance.test.ts",
+    "server:bg-removal": "node server/remove-bg-server.js",
+    "server:bg-removal:dev": "nodemon server/remove-bg-server.js",
+    "convert:modnet": "./tools/convert_modnet_to_onnx.sh",
+    "download:modnet": "wget https://huggingface.co/Xenova/modnet/resolve/main/onnx/model.onnx -O public/models/modnet_photographic_portrait_matting.onnx"
+  },
+  "dependencies": {
+    "onnxruntime-web": "^1.21.0"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "optionalDependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.0",
+    "onnxruntime-node": "^1.21.0"
+  },
+  "notes": {
+    "migration": "This file contains the dependencies and scripts needed for MODNet migration",
+    "installation": "Copy the relevant sections to your main package.json",
+    "dependencies": {
+      "onnxruntime-web": "Required for browser-based background removal",
+      "express": "Optional - only needed for server fallback",
+      "multer": "Optional - only needed for server fallback",
+      "sharp": "Optional - only needed for server fallback",
+      "onnxruntime-node": "Optional - only needed for server fallback"
+    },
+    "scripts": {
+      "test:bg-removal": "Run functional tests",
+      "benchmark:bg-removal": "Run performance benchmarks",
+      "server:bg-removal": "Start background removal server",
+      "convert:modnet": "Convert PyTorch MODNet to ONNX",
+      "download:modnet": "Download pre-converted ONNX model from Hugging Face"
+    }
+  }
+}
+

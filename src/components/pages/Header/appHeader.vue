@@ -1,0 +1,163 @@
+<template>
+  <!-- tailwindcss-intellisense-disable-next-line -->
+  <div
+    class="fixed top-0 left-0 z-40 flex items-center justify-between w-full h-[75px] px-4 py-3 bg-[#f6ebcd] whitespace-nowrap min-w-0 flex-shrink overflow-visible"
+  >
+    <!-- Mobile Toggle -->
+    <button
+      class="flex items-center justify-center ml-5 transition cursor-pointer sm:hidden"
+      @click.stop="handleMobileToggle"
+      type="button"
+    >
+      <ion-icon
+        :icon="reorderThree"
+        class="text-[30px] transition-colors duration-200"
+      />
+    </button>
+
+    <!-- Left Section -->
+    <div class="items-center min-w-0 flex-shrink gap-3 ml-10 md:ml-5 hidden sm:flex">
+      <headerTemplate :icon="logoSlack" label="Template" :label-icon="chevronUp"/>
+      <header-icon :icon="logoAppleAppstore" label="My Edit" @click="navigateTo('/myedit-page')" />
+      <header-icon :icon="server" label="Token" @click="navigateTo('/tokenPage')" />
+      <header-icon :icon="diamond" label="Reward" @click="navigateTo('/rewardPage')" />
+    </div>
+
+    <!-- Middle Section (Search Bar) -->
+    <!-- tailwindcss-intellisense-disable-next-line -->
+    <div class="relative hidden md:flex lg:flex flex-shrink justify-center px-4 md:w-[250px] lg:w-[300px] xl:w-[600px]">
+      <SearchQuery />
+    </div>
+
+    <!-- Right Section -->
+    <div class="flex items-center justify-end flex-shrink-0 min-w-0 gap-3 sm:justify-end sm:flex-nowrap">
+      <div v-if="showHeader">
+        <mobileSearchQuery />
+      </div>
+
+      <!-- Profile Image Dropdown Trigger -->
+      <div class="relative" ref="dropdownRef">
+        <div
+          @click="toggleDropdown"
+          class="cursor-pointer rounded-full w-[30px] h-[30px] overflow-hidden"
+        >
+          <img
+            :src="userStore.profileImageUrl || '/default-profile.png'"
+            alt="Profile"
+            class="object-cover w-full h-full"
+          />
+        </div>
+
+        <myAccountDrop
+          v-if="showDropdown"
+          @close="showDropdown = false"
+        />
+      </div>
+
+      <!-- Notifications -->
+      <div
+        class="relative flex items-center justify-end pt-2 cursor-pointer shrink-0"
+        @click="navigateToNotifications"
+      >
+        <ion-icon :icon="notificationsOutline" class="text-2xl" />
+        <div
+          v-if="notificationCount > 0"
+          class="absolute flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-red-600 rounded-full top-1 -right-1"
+        >
+          {{ notificationCount }}
+        </div>
+      </div>
+
+      <!-- Logo -->
+      <div
+        class="flex items-center justify-center bg-primary w-[50px] h-[30px] rounded-[8px] shrink-0"
+      >
+        <img :src="imageUrl" alt="Logo" class="w-[35px] h-[22px]" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
+import { useNotification } from "@/composables/useNotification";
+import { IonIcon } from '@ionic/vue';
+import {
+  logoSlack,
+  reorderThree,
+  chevronUp,
+  diamond,
+  logoAppleAppstore,
+  notificationsOutline,
+  server,
+} from "ionicons/icons";
+
+import headerTemplate from "../Header/headerTemplate.vue";
+import headerIcon from "../Header/headerIcon.vue";
+import mobileSearchQuery from "../../SearchQuery/mobileSearchQuery.vue";
+import SearchQuery from "../../SearchQuery/SearchQuery.vue";
+import myAccountDrop from "../SideBar/sidBarContent/myAccount/myAccountDrop.vue";
+
+const userStore = useUserStore();
+const router = useRouter();
+const imageUrl = ref("image/logoauto.png");
+
+// ✅ Props
+defineProps({ showHeader: Boolean });
+
+// ✅ Notifications composable
+const { notificationCount } = useNotification();
+function navigateToNotifications() {
+  router.push("/notification");
+}
+
+// ✅ Navigation helper
+function navigateTo(path) {
+  router.push(path);
+}
+
+// ✅ Dropdown logic
+const showDropdown = ref(false);
+const dropdownRef = ref(null);
+
+function toggleDropdown() {
+  showDropdown.value = !showDropdown.value;
+}
+
+function closeDropdown() {
+  showDropdown.value = false;
+}
+
+function handleClickOutside(event) {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
+    closeDropdown();
+  }
+}
+
+// ✅ Mobile toggle handler
+const emit = defineEmits(['toggle'])
+function handleMobileToggle() {
+  emit('toggle')
+}
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+</script>
+
+<style scoped>
+/* Optional extra spacing below the header if it's fixed */
+body {
+  padding-top: 72px;
+}
+
+ion-icon::part(icon) {
+  stroke: none !important;
+}
+</style>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MODNet vs @imgly Background Removal - Visual Comparison</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    
+    .upload-section {
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 30px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .upload-section:hover {
+      border-color: #4CAF50;
+      background: #f9f9f9;
+    }
+    
+    .upload-section.dragover {
+      border-color: #4CAF50;
+      background: #e8f5e9;
+    }
+    
+    input[type="file"] {
+      display: none;
+    }
+    
+    .btn {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: #45a049;
+    }
+    
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .comparison-item {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .comparison-header {
+      background: #f5f5f5;
+      padding: 15px;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .comparison-image {
+      position: relative;
+      background: 
+        linear-gradient(45deg, #ccc 25%, transparent 25%),
+        linear-gradient(-45deg, #ccc 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ccc 75%),
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .comparison-image img {
+      max-width: 100%;
+      max-height: 500px;
+      display: block;
+    }
+    
+    .comparison-stats {
+      padding: 15px;
+      background: #fafafa;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .stat-label {
+      font-weight: 500;
+    }
+    
+    .processing {
+      color: #ff9800;
+      font-weight: 600;
+    }
+    
+    .success {
+      color: #4CAF50;
+      font-weight: 600;
+    }
+    
+    .error {
+      color: #f44336;
+      font-weight: 600;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #4CAF50;
+      transition: width 0.3s;
+    }
+    
+    .winner-badge {
+      background: #4CAF50;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Background Removal Visual Comparison</h1>
+    <p class="subtitle">Compare MODNet (ONNX Runtime) vs @imgly/background-removal</p>
+    
+    <div class="upload-section" id="uploadSection">
+      <h2>📤 Upload Image</h2>
+      <p>Click to select or drag and drop an image</p>
+      <input type="file" id="fileInput" accept="image/*">
+      <button class="btn" onclick="document.getElementById('fileInput').click()">
+        Choose Image
+      </button>
+    </div>
+    
+    <div class="comparison-grid" id="comparisonGrid" style="display: none;">
+      <!-- Original Image -->
+      <div class="comparison-item">
+        <div class="comparison-header">
+          <span>Original Image</span>
+        </div>
+        <div class="comparison-image">
+          <img id="originalImage" alt="Original">
+        </div>
+        <div class="comparison-stats">
+          <div class="stat-row">
+            <span class="stat-label">Dimensions:</span>
+            <span id="originalDimensions">-</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">File Size:</span>
+            <span id="originalSize">-</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MODNet Result -->
+      <div class="comparison-item">
+        <div class="comparison-header">
+          <span>MODNet (ONNX Runtime)</span>
+          <span id="modnetBadge"></span>
+        </div>
+        <div class="comparison-image">
+          <img id="modnetImage" alt="MODNet Result">
+        </div>
+        <div class="comparison-stats">
+          <div class="stat-row">
+            <span class="stat-label">Status:</span>
+            <span id="modnetStatus">Waiting...</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Processing Time:</span>
+            <span id="modnetTime">-</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Execution Provider:</span>
+            <span id="modnetProvider">-</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">File Size:</span>
+            <span id="modnetSize">-</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="modnetProgress" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- @imgly Result -->
+      <div class="comparison-item">
+        <div class="comparison-header">
+          <span>@imgly/background-removal</span>
+          <span id="imglyBadge"></span>
+        </div>
+        <div class="comparison-image">
+          <img id="imglyImage" alt="@imgly Result">
+        </div>
+        <div class="comparison-stats">
+          <div class="stat-row">
+            <span class="stat-label">Status:</span>
+            <span id="imglyStatus">Waiting...</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Processing Time:</span>
+            <span id="imglyTime">-</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">File Size:</span>
+            <span id="imglySize">-</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="imglyProgress" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="module">
+    // Import both libraries
+    import { removeBackground as modnetRemoveBackground } from '../src/lib/modnet-bg-removal.js'
+    // Note: @imgly/background-removal would be imported here if available
+    
+    const uploadSection = document.getElementById('uploadSection')
+    const fileInput = document.getElementById('fileInput')
+    const comparisonGrid = document.getElementById('comparisonGrid')
+    
+    // Drag and drop handlers
+    uploadSection.addEventListener('dragover', (e) => {
+      e.preventDefault()
+      uploadSection.classList.add('dragover')
+    })
+    
+    uploadSection.addEventListener('dragleave', () => {
+      uploadSection.classList.remove('dragover')
+    })
+    
+    uploadSection.addEventListener('drop', (e) => {
+      e.preventDefault()
+      uploadSection.classList.remove('dragover')
+      
+      const files = e.dataTransfer.files
+      if (files.length > 0) {
+        handleFile(files[0])
+      }
+    })
+    
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFile(e.target.files[0])
+      }
+    })
+    
+    async function handleFile(file) {
+      // Show comparison grid
+      comparisonGrid.style.display = 'grid'
+      
+      // Display original image
+      const originalUrl = URL.createObjectURL(file)
+      document.getElementById('originalImage').src = originalUrl
+      
+      const img = new Image()
+      img.onload = () => {
+        document.getElementById('originalDimensions').textContent = `${img.width} × ${img.height}`
+      }
+      img.src = originalUrl
+      
+      document.getElementById('originalSize').textContent = formatFileSize(file.size)
+      
+      // Process with both methods
+      await Promise.all([
+        processMODNet(file),
+        processImgly(file)
+      ])
+      
+      // Determine winner
+      determineWinner()
+    }
+    
+    async function processMODNet(file) {
+      const statusEl = document.getElementById('modnetStatus')
+      const timeEl = document.getElementById('modnetTime')
+      const providerEl = document.getElementById('modnetProvider')
+      const sizeEl = document.getElementById('modnetSize')
+      const imageEl = document.getElementById('modnetImage')
+      const progressEl = document.getElementById('modnetProgress')
+      
+      statusEl.textContent = 'Processing...'
+      statusEl.className = 'processing'
+      
+      try {
+        const result = await modnetRemoveBackground(file, {
+          onProgress: (progress) => {
+            progressEl.style.width = `${progress}%`
+          }
+        })
+        
+        imageEl.src = result.dataUrl
+        timeEl.textContent = `${result.processingTime.toFixed(0)}ms`
+        providerEl.textContent = result.executionProvider
+        sizeEl.textContent = formatFileSize(result.blob.size)
+        
+        statusEl.textContent = 'Complete'
+        statusEl.className = 'success'
+        progressEl.style.width = '100%'
+        
+        // Store for comparison
+        window.modnetResult = result
+      } catch (error) {
+        statusEl.textContent = `Error: ${error.message}`
+        statusEl.className = 'error'
+        console.error('MODNet error:', error)
+      }
+    }
+    
+    async function processImgly(file) {
+      const statusEl = document.getElementById('imglyStatus')
+      const timeEl = document.getElementById('imglyTime')
+      const sizeEl = document.getElementById('imglySize')
+      const imageEl = document.getElementById('imglyImage')
+      const progressEl = document.getElementById('imglyProgress')
+      
+      statusEl.textContent = 'Not available (library not loaded)'
+      statusEl.className = 'error'
+      
+      // If @imgly/background-removal is available, uncomment:
+      /*
+      try {
+        const startTime = performance.now()
+        const blob = await removeBackground(file)
+        const processingTime = performance.now() - startTime
+        
+        const dataUrl = URL.createObjectURL(blob)
+        imageEl.src = dataUrl
+        timeEl.textContent = `${processingTime.toFixed(0)}ms`
+        sizeEl.textContent = formatFileSize(blob.size)
+        
+        statusEl.textContent = 'Complete'
+        statusEl.className = 'success'
+        progressEl.style.width = '100%'
+        
+        window.imglyResult = { blob, processingTime }
+      } catch (error) {
+        statusEl.textContent = `Error: ${error.message}`
+        statusEl.className = 'error'
+      }
+      */
+    }
+    
+    function determineWinner() {
+      const modnetResult = window.modnetResult
+      const imglyResult = window.imglyResult
+      
+      if (modnetResult && imglyResult) {
+        if (modnetResult.processingTime < imglyResult.processingTime) {
+          document.getElementById('modnetBadge').innerHTML = '<span class="winner-badge">⚡ Faster</span>'
+        } else {
+          document.getElementById('imglyBadge').innerHTML = '<span class="winner-badge">⚡ Faster</span>'
+        }
+      }
+    }
+    
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' B'
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+      return (bytes / 1024 / 1024).toFixed(1) + ' MB'
+    }
+  </script>
+</body>
+</html>
+

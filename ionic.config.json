@@ -1,0 +1,8 @@
+{
+  "name": "DesignPro",
+  "integrations": {},
+  "type": "custom",
+  "serve": {
+    "command": "ionic serve"
+  }
+}

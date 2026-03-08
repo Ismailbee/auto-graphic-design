@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1.24811in" height="0.75652in" viewBox="0 0 1818.72 1102.39">
+ <defs>
+  <style type="text/css">
+   .fil0 {fill:#FEFEFE}
+   .fnt4 {font-weight:bold;font-size:191.88px;font-family:'Campton Book', Arial, sans-serif}
+   .fnt3 {font-weight:bold;font-size:216.12px;font-family:'Campton Book', Arial, sans-serif}
+   .fnt1 {font-weight:normal;font-size:317.09px;font-family:'Times New Roman', serif}
+   .fnt0 {font-weight:normal;font-size:319.75px;font-family:'VIBERATE', Arial, sans-serif}
+   .fnt2 {font-weight:normal;font-size:319.75px;font-family:'VIBERATE', Arial, sans-serif}
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+    <text id="name1-first" x="1.6" y="222.86" class="fil0 fnt0">FirstName1</text>
+    <text id="name-separator" x="784.9" y="669.21" class="fil0 fnt1">&amp;</text>
+    <text id="name2-first" x="3.04" y="901.14" class="fil0 fnt2">FirstName2</text>
+    <text id="name1-last" x="343.66" y="411.19" class="fil0 fnt3"></text>
+    <text id="name2-last" x="137.7" y="1099.89" class="fil0 fnt4"></text>
+ </g>
+</svg>

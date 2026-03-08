@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: smartdesignpro-payment
+    env: node
+    plan: free
+    buildCommand: cd servers && mv ../package.json ../package.json.bak && cp server-package.json ../package.json && cd .. && npm install
+    startCommand: node servers/payment-server.js
+    envVars:
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: NODE_ENV
+        value: production

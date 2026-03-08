@@ -1,0 +1,60 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .bg { fill: #f8f9fa; }
+    .text-primary { fill: #1a1a1a; font-family: 'Montserrat'; font-weight: 700; }
+    .text-secondary { fill: #4f46e5; font-family: 'Montserrat'; font-weight: 600; }
+    .text-accent { fill: #1a1a1a; font-family: 'Montserrat'; font-weight: 500; }
+  </style>
+  
+  <!-- Background -->
+  <rect id="background" width="800" height="600" class="bg"/>
+  
+  <!-- Accent line -->
+  <rect x="0" y="280" width="800" height="2" fill="#4f46e5"/>
+  
+  <!-- Main content -->
+  <g id="content">
+    <!-- Blessing text -->
+    <text id="blessing-text" x="400" y="80" font-size="48" text-anchor="middle" class="text-secondary">
+      Celebrating
+    </text>
+    
+    <!-- Occasion text -->
+    <text id="occasion-text" x="400" y="140" font-size="32" text-anchor="middle" class="text-primary">
+      THE UNION OF
+    </text>
+    
+    <!-- Event type text -->
+    <text id="event-type-text" x="400" y="200" font-size="56" text-anchor="middle" class="text-primary">
+      MARRIAGE
+    </text>
+    
+    <!-- Ceremony text (hidden in modern) -->
+    <text id="ceremony-text" x="400" y="250" font-size="40" text-anchor="middle" class="text-secondary" display="none">
+      CEREMONY
+    </text>
+    
+    <!-- Names group -->
+    <g id="wedding-names-group" transform="translate(400, 350)">
+      <text id="name1-first" x="-60" y="0" font-size="72" text-anchor="middle" class="text-primary">
+        John
+      </text>
+      <text id="name-separator" x="0" y="0" font-size="72" text-anchor="middle" class="text-secondary">
+        &
+      </text>
+      <text id="name2-first" x="60" y="0" font-size="72" text-anchor="middle" class="text-primary">
+        Sarah
+      </text>
+    </g>
+    
+    <!-- Date text -->
+    <text id="date-text" x="400" y="500" font-size="24" text-anchor="middle" class="text-accent">
+      15th April, 2025
+    </text>
+    
+    <!-- Courtesy text -->
+    <text id="courtesy-text" x="400" y="550" font-size="18" text-anchor="middle" class="text-secondary">
+      Smith Family
+    </text>
+  </g>
+</svg>

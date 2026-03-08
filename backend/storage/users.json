@@ -1,0 +1,28 @@
+[
+  {
+    "id": "demo-user",
+    "avatar": "",
+    "fullName": "John Doe",
+    "username": "johndoe",
+    "email": "john@example.com",
+    "phone": "",
+    "bio": "",
+    "member": "",
+    "city": "",
+    "stateProvince": "",
+    "country": "",
+    "gender": "",
+    "language": "",
+    "dob": "",
+    "cards": [],
+    "social": {
+      "twitter": "",
+      "instagram": "",
+      "linkedin": "",
+      "website": ""
+    },
+    "joinDate": "2025-01-01T00:00:00.000Z",
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  }
+]

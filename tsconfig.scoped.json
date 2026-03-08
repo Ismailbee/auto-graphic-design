@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/vite-env.d.ts",
+    "src/main.ts",
+    "src/pwa.ts",
+
+    "src/services/background/**/*.ts",
+
+    "src/components/auto-design/StickerTemplatePanel.vue",
+    "src/components/auto-design/sticker/**/*.vue",
+    "src/components/auto-design/sticker/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "android",
+    "ios"
+  ]
+}

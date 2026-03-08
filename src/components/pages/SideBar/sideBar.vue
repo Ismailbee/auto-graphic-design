@@ -1,0 +1,128 @@
+<template>
+  <div :class="['fixed z-50 flex flex-col items-center justify-center h-screen transition-all duration-300', sidebarOpen ? 'w-[285px]'  : 'w-0']">
+    <ion-content v-if="sidebarOpen" class="relative w-full h-screen px-2 pt-6 text-white bg-primary rounded-b-3xl">
+
+      <!-- Collapse Arrow -->
+        <div 
+          class="z-10 flex items-center justify-center w-8 h-8 transition rounded-full cursor-pointer bg-contrast hover:scale-110 absolute top-4 right-4"  
+          @click="toggleSidebar">
+          <ion-icon :icon="chevronBackOutline" class="text-xl text-white" />
+        </div>
+
+
+      <!-- Menu Sections -->
+      <ion-list class="h-full space-y-1 md:space-y-3 overflow-y-auto pt-[50px] bg-primary">
+
+        <div class="border-[#90560a] border-b-[0.1px]">
+          <myAccountMenu :icon="personCircle" label="My Account" @click="navigateTo('/myAccountPage')" />
+        </div>
+        
+        <div class="border-[#90560a]  border-b-[0.1px]">
+          <MenuItem :icon="appsSharp" label="Scheduling" @click="navigateTo('/scheduling')" />
+          <MenuItem :icon="logoSlack" label="Template" @click="scrollToTemplates" />
+          <MenuItem :icon="walletSharp" label="Mock-ups" @click="navigateTo('/mockupPage')" />
+          <MenuItem :icon="logoYoutube" label="Videos" @click="navigateTo('/videos')" />
+          <MenuItem :icon="documentTextSharp" label="Imposition" @click="navigateTo('/imposition')" />
+       </div>
+   
+        <div class="border-[#90560a] border-b-[0.1px]">
+          <SectionTitle title="Help" />
+          <MenuItem :icon="personAddSharp" label="Subscription" @click="navigateTo('/subscriPage')" />
+          <MenuItem :icon="bagAddSharp" label="Use Redeem Code" @click="navigateTo('/useredeemcodePage')" />
+          <MenuItem :icon="bulbSharp" label="Suggest a Feature" @click="navigateTo('/suggestfeaturePage')" />
+          <MenuItem :icon="helpCircleSharp" label="Help Center" @click="navigateTo('/helpcenterPage')" />
+          <MenuItem :icon="starHalfSharp" label="Rate App" @click="navigateTo('/rateappPage')" />
+        </div>
+        
+        <div>
+        <SectionTitle title="Legal" />
+        <MenuItem :icon="chatbubbleSharp" label="Contact Support" @click="navigateTo('/contactPage')" />
+        <MenuItem :icon="readerSharp" label="Terms of Service" @click="navigateTo('/termservicePage')" />
+        <MenuItem :icon="shieldHalfSharp" label="Privacy Policy" @click="navigateTo('/privacypolicyPage')" />
+        <MenuItem :icon="shieldCheckmarkSharp" label="Privacy Settings" @click="navigateTo('/privacysettingPage')" />
+
+        </div>
+
+            <!-- Logout Button -->
+    <div class="m-0 w-full px-6">
+      <button
+        @click="logout"
+        class="menu-item w-full px-4 py-2 text-left text-contrast hover:bg-contrast hover:text-primary transition flex items-center"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+        Logout
+      </button>
+    </div>
+      </ion-list>
+
+    </ion-content>
+  </div>
+</template>
+
+<script setup>
+import { IonIcon, IonContent, IonList } from '@ionic/vue';
+import { defineEmits, defineProps } from 'vue';
+import { useIonRouter } from '@ionic/vue';
+import {
+  home, personCircle, readerSharp, walletSharp, logoYoutube, appsSharp,
+  bagAddSharp, bulbSharp, helpCircleSharp, personAddSharp, starHalfSharp,
+  chatbubbleSharp, logoSlack, shieldHalfSharp, shieldCheckmarkSharp, chevronBackOutline,
+  documentTextSharp
+} from 'ionicons/icons';
+
+import myAccountMenu from './sidBarContent/myAccount/myAccountMenu.vue';
+import MenuItem from './MenuItem.vue';
+import SectionTitle from './SectionTitle.vue';
+
+const props = defineProps({ sidebarOpen: Boolean });
+const emit = defineEmits(['toggle', 'scroll-to-templates']);
+const ionRouter = useIonRouter();
+
+const toggleSidebar = () => emit('toggle');
+const navigateTo = (route) => {
+  ionRouter.push(route)
+  emit('toggle') // auto-close on mobile
+}
+
+const scrollToTemplates = () => {
+  emit('scroll-to-templates')  // 🔥 tell HomePage to scroll
+  emit('toggle')               // close sidebar afterwards
+}
+
+async function logout() {
+  try {
+       
+    console.log("User logged out");
+    // For now, just reload the page to simulate logout
+    window.location.href = '/login';
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+}
+</script>
+
+<style scoped>
+.bg-primary { background-color: #502800; }
+.bg-contrast { background-color: #BA6900; }
+.menu-item {
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s,
+    transform 0.18s cubic-bezier(0.4,0.2,0.2,1);
+  will-change: transform, box-shadow;
+}
+.menu-item:hover,
+.menu-item:focus {
+  background: #BA6900;
+  color: #502800;
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: 0 4px 18px 0 rgba(186,105,0,0.10), 0 1.5px 6px 0 rgba(80,40,0,0.08);
+}
+.menu-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px 0 rgba(186,105,0,0.10);
+}
+</style>

@@ -1,0 +1,56 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Firebase
+.firebase
+.firebaserc
+firebase-debug.log
+firestore-debug.log
+
+# OS
+Thumbs.db
+
+# Debug and temp files
+*-debug.html
+*-test.html
+*debug*.js
+diagnose-*.js
+temp_*.html
+*.timestamp-*.mjs
+*-diagnostic-report.json
+*.PATCH.diff
+*.diff
+
+# SQLite databases (development artifacts)
+*.db
+*.db-shm
+*.db-wal
+# ICAN Micro App (colleague's local development)
+ican/

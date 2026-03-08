@@ -1,0 +1,18 @@
+[
+  {
+    "id": "bg_rose_001",
+    "name": "Rose Marble",
+    "url": "https://YOUR_CLOUDFRONT_DOMAIN/backgrounds/rose-marble-001.png",
+    "paletteKey": "light",
+    "weight": 1,
+    "category": "wedding"
+  },
+  {
+    "id": "bg_dark_ink_003",
+    "name": "Dark Ink",
+    "url": "https://YOUR_CLOUDFRONT_DOMAIN/backgrounds/dark-ink-003.png",
+    "paletteKey": "dark",
+    "weight": 0.7,
+    "category": "wedding"
+  }
+]

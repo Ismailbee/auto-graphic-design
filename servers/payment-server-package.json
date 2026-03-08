@@ -1,0 +1,22 @@
+{
+  "name": "payment-server",
+  "version": "1.0.0",
+  "description": "Payment and token management server with Paystack integration",
+  "main": "payment-server.js",
+  "scripts": {
+    "start": "node payment-server.js",
+    "dev": "nodemon payment-server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "cors": "^2.8.5",
+    "better-sqlite3": "^12.4.1",
+    "express-validator": "^7.2.1",
+    "uuid": "^13.0.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
+

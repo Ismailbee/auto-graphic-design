@@ -1,0 +1,16 @@
+{
+  "name": "cmyk-server",
+  "version": "1.0.0",
+  "description": "CMYK Export Server for SmartDesignPro",
+  "main": "cmyk-server.cjs",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node cmyk-server.cjs",
+    "dev": "node cmyk-server.cjs"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5"
+  }
+}

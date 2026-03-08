@@ -1,0 +1,73 @@
+[
+  {
+    "id": "social-post-square",
+    "name": "Instagram Post",
+    "category": "social",
+    "size": { "width": 1080, "height": 1080 },
+    "thumbnail": "/templates/instagram-post.jpg",
+    "elements": [
+      {
+        "type": "rect",
+        "x": 0,
+        "y": 0,
+        "width": 1080,
+        "height": 1080,
+        "fill": "#4f46e5"
+      },
+      {
+        "type": "text",
+        "x": 540,
+        "y": 400,
+        "text": "Your Content Here",
+        "fontSize": 48,
+        "fontFamily": "Arial",
+        "fill": "white",
+        "align": "center"
+      }
+    ],
+    "tags": ["instagram", "social", "square"],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "business-card",
+    "name": "Business Card",
+    "category": "business",
+    "size": { "width": 1050, "height": 600 },
+    "thumbnail": "/templates/business-card.jpg",
+    "elements": [
+      {
+        "type": "rect",
+        "x": 0,
+        "y": 0,
+        "width": 1050,
+        "height": 600,
+        "fill": "white",
+        "stroke": "#e5e7eb",
+        "strokeWidth": 2
+      },
+      {
+        "type": "text",
+        "x": 50,
+        "y": 150,
+        "text": "John Doe",
+        "fontSize": 36,
+        "fontFamily": "Arial",
+        "fill": "#1f2937",
+        "fontStyle": "bold"
+      },
+      {
+        "type": "text",
+        "x": 50,
+        "y": 200,
+        "text": "Creative Director",
+        "fontSize": 18,
+        "fontFamily": "Arial",
+        "fill": "#6b7280"
+      }
+    ],
+    "tags": ["business", "print"],
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  }
+]

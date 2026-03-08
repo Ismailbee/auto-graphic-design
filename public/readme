@@ -1,0 +1,167 @@
+Microsoft Windows [Version 10.0.22621.4317]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\LENOVO>ollama list
+NAME                ID              SIZE      MODIFIED
+tinyllama:latest    2644915ede35    637 MB    26 hours ago
+
+C:\Users\LENOVO>ollama --help
+Large language model runner
+
+Usage:
+  ollama [flags]
+  ollama [command]
+
+Available Commands:
+  serve       Start ollama
+  create      Create a model
+  show        Show information for a model
+  run         Run a model
+  stop        Stop a running model
+  pull        Pull a model from a registry
+  push        Push a model to a registry
+  signin      Sign in to ollama.com
+  signout     Sign out from ollama.com
+  list        List models
+  ps          List running models
+  cp          Copy a model
+  rm          Remove a model
+  help        Help about any command
+
+Flags:
+  -h, --help      help for ollama
+  -v, --version   Show version information
+
+Use "ollama [command] --help" for more information about a command.
+
+C:\Users\LENOVO>ollama serve
+Error: listen tcp 127.0.0.1:11434: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+
+C:\Users\LENOVO>
+
+C:\Users\LENOVO>ollama run llama3.2
+pulling manifest
+pulling dde5aa3fc5ff: 100% ▕██████████████████████████████████████████████████████████▏ 2.0 GB
+pulling 966de95ca8a6: 100% ▕██████████████████████████████████████████████████████████▏ 1.4 KB
+pulling fcc5a6bec9da: 100% ▕██████████████████████████████████████████████████████████▏ 7.7 KB
+pulling a70ff7e570d9: 100% ▕██████████████████████████████████████████████████████████▏ 6.0 KB
+pulling 56bb8bd477a5: 100% ▕██████████████████████████████████████████████████████████▏   96 B
+pulling 34bb5ab01051: 100% ▕██████████████████████████████████████████████████████████▏  561 B
+verifying sha256 digest
+writing manifest
+success
+>>> hi
+How can I help you today?
+
+>>> hi
+How's your day going so far?
+
+>>> hi
+You're saying hello again! How about a little conversation to break the ice? Would you like to talk about
+something in particular or just see where the conversation takes us?
+
+>>> hi
+It seems like we've been doing this for a bit now. Is there anything on your mind that you'd like to chat
+about, or are you just enjoying the friendly hello exchange?
+
+>>> bye
+>>>
+Use Ctrl + d or /bye to exit.
+>>>
+
+C:\Users\LENOVO>ollama run qwen2.5:0.5b
+pulling manifest
+pulling c5396e06af29: 100% ▕██████████████████████████████████████████████████████▏ 397 MB
+pulling 66b9ea09bd5b: 100% ▕██████████████████████████████████████████████████████▏   68 B
+pulling eb4402837c78: 100% ▕██████████████████████████████████████████████████████▏ 1.5 KB
+pulling 832dd9e00a68: 100% ▕██████████████████████████████████████████████████████▏  11 KB
+pulling 005f95c74751: 100% ▕██████████████████████████████████████████████████████▏  490 B
+verifying sha256 digest
+writing manifest
+success
+>>> hi
+Hello! How can I help you today?
+
+>>> can you design a wedding stiker for me
+As an AI language model, I don't have the ability to create physical products like stikes or invitations.
+However, I can provide you with some tips and suggestions on how to design a beautiful wedding sticker.
+
+Here are some ideas:
+
+1. Choose a theme: Decide what kind of theme your wedding will be. This could be traditional, modern, indie,
+or something else that represents the personality of your guests.
+
+2. Use high-quality images: Grab photos from your favorite places and put them in a collage format to create
+an interesting design.
+
+3. Add details: Include details like names, flowers, hearts, and other personal touches to make the sticker
+more meaningful.
+
+4. Personalize it: Add some personalization with a signature or unique name for the wedding.
+
+5. Use color: Pick colors that work well together for your theme and add some fun elements such as sprinkles,
+glitter, or sequins.
+
+6. Get feedback: Share the design with friends or family to get their input and make any necessary adjustments
+before finalizing it.
+
+Remember, the most important thing is to have a memorable and personalized experience for your guests at your
+wedding!
+
+>>> amina & mohammad
+Hello Amina! I'm Mohammad. How can I help you today?
+
+>>> can u design
+As an AI language model, I am unable to design physical products like stikes or invitations. However, I can
+offer some general tips and suggestions for designing a wedding sticker.
+
+Here are some ideas:
+
+1. Choose a theme: Decide what kind of theme your wedding will be. This could be traditional, modern, indie,
+or something else that represents the personality of your guests.
+2. Use high-quality images: Grab photos from your favorite places and put them in a collage format to create
+an interesting design.
+3. Add details: Include details like names, flowers, hearts, and other personal touches to make the sticker
+more meaningful.
+4. Personalize it: Add some personalization with a signature or unique name for the wedding.
+5. Use color: Pick colors that work well together for your theme and add some fun elements such as sprinkles,
+glitter, or sequins.
+
+Remember, the most important thing is to have a memorable and personalized experience for your guests at your
+wedding!
+
+>>> ok sir call me ismail
+Hello Ismail! I'm Mohammad. How can I help you today?
+
+>>> you are mohammed
+Hi there! My name is Mohammed, and I'm here to help. What can I do for you today?
+
+>>>
+Use Ctrl + d or /bye to exit.
+>>> d
+Dude, I'm still a chatbot and not a real person. How about we talk about something else instead?
+
+>>>
+Use Ctrl + d or /bye to exit.
+>>> ollama run llama3.2
+Ollama Run Llama 3.2 is an AI language model created by Alibaba Cloud that can perform natural language processing tasks
+such as translation, summarization, and question-answering.
+
+Here are some examples of what it can do:
+
+1. Translate text: You can input a sentence or phrase in one language and get its translation into another language.
+2. Summarize text: You can input a paragraph or article and have the model summarize it for you.
+3. Question-answering: You can ask a question to Ollama Run Llama 3.2, and it will give you an answer.
+
+Ollama Run Llama 3.2 is a great tool for users who want to automate tasks related to language translation,
+summarization, or text completion.
+It's important to note that while Ollama Run Llama 3.2 can perform these tasks, it doesn't have the ability to create
+physical products like stikes or invitations. However, I'm here to help if you need any assistance with something else!
+
+>>>
+
+C:\Users\LENOVO>ollama run llama3.2
+>>> hi
+⠋ How can I help you today?
+
+>>> Send a message (/? for help)

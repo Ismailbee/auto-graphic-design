@@ -1,0 +1,13 @@
+ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 579.05 180">
+  <style>
+    .name-fnt0 { font-weight: 700; font-size: 84.15px; font-family: 'Cinzel Decorative', serif; }
+  </style>
+  <g>
+    <g>
+      <text id="name1-first" x="-50" y="85" fill="#000000" class="name-fnt0">Muhammad</text>
+      <text id="name2-first" x="10.23" y="160" fill="#000000" class="name-fnt0">Hauwawu</text>
+      <text id="name-separator" x="-70.3" y="160.4" fill="#B8860B" class="name-fnt0">&amp;</text>
+    </g>
+   
+  </g>
+</svg>

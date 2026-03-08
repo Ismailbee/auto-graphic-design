@@ -1,0 +1,10 @@
+{
+  "name": "smart-design-pro-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for serving Smart Design Pro static files",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.3.4"
+  }
+}

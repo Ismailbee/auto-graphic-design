@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SmartDesignPro</string>
+    <string name="title_activity_main">SmartDesignPro</string>
+    <string name="package_name">com.smartdesignpro.app</string>
+    <string name="custom_url_scheme">com.smartdesignpro.app</string>
+</resources>

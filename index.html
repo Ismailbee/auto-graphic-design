@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartDesignPro - Professional Design Editor</title>
+    <meta name="description" content="Create stunning designs with SmartDesignPro - A powerful online design editor with AI capabilities" />
+
+    <!-- Preconnect to critical origins for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://firebaseapp.com">
+    <link rel="preconnect" href="https://apis.google.com">
+    
+    <!-- DNS prefetch for secondary resources -->
+    <link rel="dns-prefetch" href="https://js.paystack.co">
+    <link rel="dns-prefetch" href="https://d2laqyoj5cjs5d.cloudfront.net">
+
+    <!-- Critical fonts loaded immediately (only essential weights) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Non-critical fonts loaded async after page renders -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel+Decorative:wght@700&family=Montserrat:wght@300;400;500;600;700&family=Oswald:wght@200;300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Lato:wght@100;300;400;700;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&family=Pacifico&family=Lobster&family=Great+Vibes&family=Amatic+SC:wght@400;700&family=Caveat:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Comfortaa:wght@300;400;500;600;700&family=Righteous&family=Fredoka+One&family=Bebas+Neue&family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel+Decorative:wght@700&family=Montserrat:wght@300;400;500;600;700&family=Oswald:wght@200;300;400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Lato:wght@100;300;400;700;900&family=Nunito:wght@200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;500;600;700&family=Pacifico&family=Lobster&family=Great+Vibes&family=Amatic+SC:wght@400;700&family=Caveat:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Comfortaa:wght@300;400;500;600;700&family=Righteous&family=Fredoka+One&family=Bebas+Neue&family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"></noscript>
+  </head>
+  <body>
+    <div id="app"></div>
+    
+    <!-- Suppress Datadog warnings before any scripts load -->
+    <script>
+      (function() {
+        const originalWarn = console.warn;
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.warn = function(...args) {
+          const msg = args[0] && args[0].toString ? args[0].toString() : '';
+          if (msg.includes('Datadog') || msg.includes('No storage available')) {
+            return;
+          }
+          originalWarn.apply(console, args);
+        };
+        
+        console.log = function(...args) {
+          const msg = args[0] && args[0].toString ? args[0].toString() : '';
+          if (msg.includes('Datadog') || msg.includes('No storage available')) {
+            return;
+          }
+          originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+          const msg = args[0] && args[0].toString ? args[0].toString() : '';
+          if (msg.includes('service worker') || msg.includes('ServiceWorker') || msg.includes('Datadog Browser SDK')) {
+            return;
+          }
+          originalError.apply(console, args);
+        };
+      })();
+    </script>
+    
+    <script type="module" src="/src/main.ts"></script>
+
+    <!-- Paystack Inline JS for payment processing - deferred to not block rendering -->
+    <script src="https://js.paystack.co/v1/inline.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure proper scrolling behavior - DO NOT SET HEIGHT ON HTML/BODY/APP */
+html {
+  scroll-behavior: smooth !important;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+}
+
+#app {
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+}
+
+/* Simple scroll lock for sidebar - prevent background scrolling only */
+body.sidebar-scroll-lock {
+  overflow: hidden !important;
+  overflow-y: hidden !important;
+}
+
+/* Ensure sidebar can still scroll when body is locked */
+body.sidebar-scroll-lock .mobile-sidebar,
+body.sidebar-scroll-lock .sidebar-content {
+  overflow-y: auto !important;
+}
+
+/* Konva canvas container */
+.konva-container {
+  background: #f8f9fa;
+  background-image: 
+    linear-gradient(45deg, #e9ecef 25%, transparent 25%), 
+    linear-gradient(-45deg, #e9ecef 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #e9ecef 75%), 
+    linear-gradient(-45deg, transparent 75%, #e9ecef 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* Use default system scrollbars */
+* {
+  scrollbar-width: auto; /* Firefox - default scrollbar */
+  -ms-overflow-style: auto; /* Internet Explorer 10+ - default scrollbar */
+}
+
+/* Force light mode styles for inputs to prevent dark mode issues */
+input, textarea, select {
+  background-color: #ffffff !important;
+  color: #1a202c !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Ionic Input Overrides for consistency */
+ion-input {
+  --background: #ffffff !important;
+  --color: #1a202c !important;
+  --placeholder-color: #a0aec0 !important;
+}
+
+ion-item {
+  --background: #ffffff !important;
+  --color: #1a202c !important;
+}
+
+/* =====================
+   Lightweight micro-interactions
+   (CSS-only, no new colors, respects reduced motion)
+   ===================== */
+
+.ui-pressable {
+  transition: transform 140ms ease, filter 140ms ease;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-pressable {
+    transition: none;
+  }
+}
+
+.ui-pressable:active {
+  transform: translateY(1px) scale(0.985);
+}
+
+.ui-focusable:focus-visible {
+  outline: 2px solid var(--ion-color-primary, currentColor);
+  outline-offset: 2px;
+}
+
+@keyframes ui-success-pulse {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+.ui-success-pulse {
+  animation: ui-success-pulse 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =====================
+   PERFORMANCE OPTIMIZATIONS FOR MOBILE
+   ===================== */
+
+/* GPU-accelerated transforms for animations */
+.gpu-accelerated,
+.splash-screen,
+.route-loading-overlay,
+.modal,
+.sidebar,
+.dropdown {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Optimize scroll performance on mobile */
+.scroll-container,
+.chat-messages,
+.template-grid,
+.invoice-preview {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Use transform instead of top/left for animations */
+.slide-enter-active,
+.slide-leave-active,
+.fade-enter-active,
+.fade-leave-active {
+  will-change: transform, opacity;
+}
+
+/* Disable hover effects on touch devices to prevent sticky hover states */
+@media (hover: none) and (pointer: coarse) {
+  .hover\:scale-105:hover,
+  .hover\:bg-gray-100:hover,
+  .hover\:border-cyan-500:hover {
+    transform: none !important;
+    background-color: inherit !important;
+    border-color: inherit !important;
+  }
+}
+
+/* Optimize images */
+img {
+  content-visibility: auto;
+}
+
+/* Contain paint for large components */
+.sticker-template-panel,
+.invoice-preview,
+.receipt-preview {
+  contain: layout style paint;
+}

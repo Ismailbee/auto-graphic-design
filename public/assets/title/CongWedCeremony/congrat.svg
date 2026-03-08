@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="500" viewBox="-100 -50 1300 500">
+  <style>
+    .fil1 {fill:#ED3237}
+    .fil0 {fill:#104C6E}
+    .fil2 {fill:#152235}
+    .fnt0 {font-weight:bold;font-size:270px;font-family:'Perpetua'}
+    .fnt1 {font-style:italic;font-weight:bold;font-size:120px;font-family:'Calibri'}
+  </style>
+  <g>
+    <text x="526.06" y="10" transform="matrix(0.888746 0 0 1 -469.754 240)" class="fil0 fnt0">WEDDING</text>
+    <text x="650.64" y="140"  transform="matrix(0.888746 0 0 1 -469.754 240)" class="fil1 fnt0" style="font-size: 180px">CEREMONY</text>
+    <text x="940.49" y="-9.6" transform="matrix(0.888746 0 0 1 -798.726 50)" class="fil0 fnt1">Congratulation on your </text>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+# Files to ignore during Heroku slug compilation
+*.md
+*.txt
+docs/
+screenshots/
+tests/
+test-results/
+playwright-report/
+.vscode/
+.idea/
+*.log
+*.db-journal
+auto-design-uploads/
+exports/
+marketplace-uploads/
+
