@@ -57,6 +57,7 @@
     "@heroicons/vue": "^2.2.0",
     "@imgly/background-removal": "^1.4.5",
     "@ionic/vue": "^8.7.5",
+    "@ionic/vue-router": "^8.8.1",
     "@vueuse/core": "^10.7.0",
     "axios": "^1.12.2",
     "bcrypt": "^6.0.0",
